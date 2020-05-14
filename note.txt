@@ -1,0 +1,21 @@
+$COURSES có thể là biến thể hiện khóa học chứa block
+Suy nghĩ cách echo ra $COURSES->id
+Tại sao $COURSES->id luôn trả về giá trị 1 trong mọi khóa học cài đặt block này? mà Configurable Reports có thể thực hiện được?
+
+?? Hàm get_content vẫn lấy được courseid. Vấn đề đặt ra làm sao các PAGE con cũng nhận được courseid này.
+?? Vấn đề đặt ra: làm sao để page con thật sự thuộc về course. tức là lấy đc $COURSES->id
+=>> Câu trả lời có thể nằm ở hàm set_context: $PAGE->set_context(context_system::instance());
+
+?? Sự khác nhau giữa required_param và optional_param
+
+Tạo form: https://docs.moodle.org/dev/Form_API
+Tham khảo: configurable_reports/send_emails.php
+
+?? Khác biệt giữa layout 'standard' và 'incourse': https://docs.moodle.org/dev/Page_API
+
+?? Bảng:     
+    - html_table()  <chuẩn>
+    - Form
+    - html thuần
+
+Bảng dùng css: https://moodle.org/mod/forum/discuss.php?d=259581
