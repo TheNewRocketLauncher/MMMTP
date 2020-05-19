@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Code to be executed after the plugin's database scheme has been installed is defined here.
+ * Plugin upgrade steps are defined here.
  *
  * @package     block_educationpgrs
  * @category    upgrade
@@ -25,10 +25,25 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(__DIR__.'/upgradelib.php');
+
 /**
- * Custom code to be run on installing the plugin.
+ * Execute block_educationpgrs upgrade from the given old version.
+ *
+ * @param int $oldversion
+ * @return bool
  */
-function xmldb_block_educationpgrs_install() {
+function xmldb_block_educationpgrs_upgrade($oldversion) {
+    global $DB;
+
+    $dbman = $DB->get_manager();
+
+    // For further information please read the Upgrade API documentation:
+    // https://docs.moodle.org/dev/Upgrade_API
+    //
+    // You will also have to create the db/install.xml file by using the XMLDB Editor.
+    // Documentation for the XMLDB Editor can be found at:
+    // https://docs.moodle.org/dev/XMLDB_editor
 
     return true;
 }

@@ -15,17 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Plugin custom settings are defined here.
  *
  * @package     block_educationpgrs
+ * @category    backup
  * @copyright   2020 Sy Pham <1612572@student.hcmus.edu.vn>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'block_educationpgrs';
-$plugin->release = '0.1.0';
-$plugin->version = 2020051501;
-$plugin->requires = 2019052000;
-$plugin->maturity = MATURITY_ALPHA;
+// For more information about the backup and restore process, please visit:
+// https://docs.moodle.org/dev/Backup_2.0_for_developers
+// https://docs.moodle.org/dev/Restore_2.0_for_developers

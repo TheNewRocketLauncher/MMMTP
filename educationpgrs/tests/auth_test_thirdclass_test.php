@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * File containing tests for firstclass.
+ * File containing tests for auth_test_thirdclass.
  *
  * @package     block_educationpgrs
  * @category    test
@@ -36,13 +36,13 @@ defined('MOODLE_INTERNAL') || die();
 // https://phpunit.de
 
 /**
- * The firstclass test class.
+ * The auth_test_thirdclass test class.
  *
  * @package    block_educationpgrs
  * @copyright  2020 Sy Pham <1612572@student.hcmus.edu.vn>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_educationpgrs_firstclass_testcase extends advanced_testcase {
+class block_educationpgrs_auth_test_thirdclass_testcase extends advanced_testcase {
 
     // Write the tests here as public funcions.
 

@@ -15,35 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * File containing tests for secondclass.
+ * Code that is executed before the tables and data are dropped during the plugin uninstallation.
  *
  * @package     block_educationpgrs
- * @category    test
+ * @category    upgrade
  * @copyright   2020 Sy Pham <1612572@student.hcmus.edu.vn>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-// For installation and usage of PHPUnit within Moodle please read:
-// https://docs.moodle.org/dev/PHPUnit
-//
-// Documentation for writing PHPUnit tests for Moodle can be found here:
-// https://docs.moodle.org/dev/PHPUnit_integration
-// https://docs.moodle.org/dev/Writing_PHPUnit_tests
-//
-// The official PHPUnit homepage is at:
-// https://phpunit.de
-
 /**
- * The secondclass test class.
- *
- * @package    block_educationpgrs
- * @copyright  2020 Sy Pham <1612572@student.hcmus.edu.vn>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Custom uninstallation procedure.
  */
-class block_educationpgrs_secondclass_testcase extends advanced_testcase {
+function xmldb_block_educationpgrs_uninstall() {
 
-    // Write the tests here as public funcions.
-
+    return true;
 }

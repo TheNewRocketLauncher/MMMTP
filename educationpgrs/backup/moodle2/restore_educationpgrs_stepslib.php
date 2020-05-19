@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Backup steps for block_educationpgrs are defined here.
+ * All the steps to restore block_educationpgrs are defined here.
  *
  * @package     block_educationpgrs
- * @category    backup
+ * @category    restore
  * @copyright   2020 Sy Pham <1612572@student.hcmus.edu.vn>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,36 +30,36 @@ defined('MOODLE_INTERNAL') || die();
 // https://docs.moodle.org/dev/Restore_2.0_for_developers
 
 /**
- * Define the complete structure for backup, with file and id annotations.
+ * Defines the structure step to restore one educationpgrs block.
  */
-class backup_educationpgrs_block_structure_step extends backup_block_structure_step {
+class restore_educationpgrs_block_structure_step extends restore_structure_step {
 
     /**
-     * Defines the structure of the resulting xml file.
-     *
-     * @return backup_nested_element The structure wrapped in the block tag.
+     * Defines the structure to be restored.
      */
     protected function define_structure() {
+
+        $paths = array();
+
+        $paths[] = new restore_path_element('elt', '/path/to/file');
+
+        return $paths;
+    }
+
+    /**
+     * Processes the elt restore data.
+     */
+    protected function process_elt($data) {
         global $DB;
 
-        // Replace with the attributes and final elements that the element will handle.
-        $attributes = null;
-        $final_elements = null;
-        $root = new backup_nested_element('block_educationpgrs', $attributes, $final_elements);
+        return $data;
+    }
 
-        // Replace with the attributes and final elements that the element will handle.
-        $attributes = null;
-        $final_elements = null;
-        $elt = new backup_nested_element('elt', $attributes, $final_elements);
+    /**
+     * Defines post-execution actions.
+     */
+    protected function after_execute() {
 
-        // Build the tree with these elements with $root as the root of the backup tree.
-
-        // Define the source tables for the elements.
-
-        // Define id annotations.
-
-        // Define file annotations.
-
-        return $this->prepare_block_structure($root);
+        return;
     }
 }

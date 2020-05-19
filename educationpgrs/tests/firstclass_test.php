@@ -15,16 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin custom settings are defined here.
+ * File containing tests for firstclass.
  *
  * @package     block_educationpgrs
- * @category    backup
+ * @category    test
  * @copyright   2020 Sy Pham <1612572@student.hcmus.edu.vn>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-// For more information about the backup and restore process, please visit:
-// https://docs.moodle.org/dev/Backup_2.0_for_developers
-// https://docs.moodle.org/dev/Restore_2.0_for_developers
+// For installation and usage of PHPUnit within Moodle please read:
+// https://docs.moodle.org/dev/PHPUnit
+//
+// Documentation for writing PHPUnit tests for Moodle can be found here:
+// https://docs.moodle.org/dev/PHPUnit_integration
+// https://docs.moodle.org/dev/Writing_PHPUnit_tests
+//
+// The official PHPUnit homepage is at:
+// https://phpunit.de
+
+/**
+ * The firstclass test class.
+ *
+ * @package    block_educationpgrs
+ * @copyright  2020 Sy Pham <1612572@student.hcmus.edu.vn>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class block_educationpgrs_firstclass_testcase extends advanced_testcase {
+
+    // Write the tests here as public funcions.
+
+}

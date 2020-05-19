@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin upgrade helper functions are defined here.
+ * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
  * @package     block_educationpgrs
  * @category    upgrade
@@ -26,14 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Helper function used by the upgrade.php file.
+ * Custom code to be run on installing the plugin.
  */
-function block_educationpgrs_helper_function() {
-    global $DB;
+function xmldb_block_educationpgrs_install() {
 
-    // Please note that you should always be performing any task using raw (low
-    // level) database access exclusively, avoiding any use of the Moodle APIs.
-    //
-    // For more information please read the available Moodle documentation:
-    // https://docs.moodle.org/dev/Upgrade_API
+    return true;
 }
