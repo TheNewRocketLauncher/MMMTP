@@ -38,8 +38,6 @@ class block_educationpgrs_edit_form extends block_edit_form {
 
         // Section header title.
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
-
         // Please keep in mind that all elements defined here must start with 'config_'.
-
     }
 }

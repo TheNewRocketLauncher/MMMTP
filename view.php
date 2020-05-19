@@ -12,11 +12,8 @@ $PAGE->set_url(new moodle_url('/blocks/educationpgrs/view.php'));
 // Ouput the page header.
 echo $OUTPUT->header();
 
-// Output your custom HTML.
-// In the future, read about templates and renderers so you don't have to echo HTML like this.
-echo '<p>Test paragraph! Coursesid=</p>';
-// $id = required_param('id', PARAM_INT);
-// echo $id;
+// Output custom HTML.
+echo '<p> View paragraph! Course Id = </p>';
 echo $COURSE->id;
 
 // Output the page footer.

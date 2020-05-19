@@ -2,65 +2,50 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../config.php');
-require($CFG->dirroot.'/local/mr/bootstrap.php');
-
 global $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
-// =>> $courseid nhận giá trị từ ?courseid=2, hoặc nhận giá trị mặc định là SITEID (id của course hiện tại)
 
-
-
-// Setting up the page.
-
-// $idnew = required_param('id', PARAM_INT);
-// $PAGE->set_url(new moodle_url('/blocks/educationpgrs/view_eduprogram.php',['id' => $idnew]));
-// $PAGE->set_url('/blocks/configurable_reports/viewreport.php', ['id' => $id]);
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/view_eduprogram.php',['courseid' => $courseid]));
-// $PAGE->set_context(context_system::instance());
+// Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
     require_login();
     $context = \context_system::instance();
 } else {
     require_login($courseid);
-    $context = \context_course::instance($courseid);
-} // => tạo instance dựa vào $courseid. Suy nghĩ ý nghĩa của dòng 7 và 24?
+    $context = \context_course::instance($courseid); // Create instance base on $courseid
+}
+// Setting up the page.
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/view_eduprogram.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('incourse');
-
-// PART
-
+// Navbar.
 $PAGE->navbar->add(get_string('educationprogram', 'block_educationpgrs'));
-
-// PART
-
-$PAGE->set_title($COURSE->id);
+// Title.
+$PAGE->set_title(get_string('educationprogramdetail', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
 $PAGE->set_heading(get_string('educationprogramdetail', 'block_educationpgrs'));
-
-
 
 // Ouput the page header.
 echo $OUTPUT->header();
 
+// Output custom content.
 
+$table = new html_table();
+$table->head = array('ID', 'Name', 'Format', 'Start Date', 'End Date');
+$acs = $DB->get_records('course', ['category' => '1']);
+$sn = 1;
+echo $acs->shortname;
+foreach ($acs as $ac) {
+    echo '<p>'. $ac->fullname . '</p>';
+    // $table->data[] = [(string)$allcourse->id, $allcourse->fullname,(string)$allcourse->format,(string)$allcourse->startdate,(string)$allcourse->enddate];
+}
+echo html_writer::table($table);
 
-
-// Output your custom HTML.
-// In the future, read about templates and renderers so you don't have to echo HTML like this.
 $gpa = 7.5;
-echo "<p>1. GPA: ",$gpa,"</p>";
-echo "<p>2. CourseId: ",$courseid,"</p>";
-echo "<p>3. COURSES->id: ",$COURSE->id,"</p>";
-echo "<p>----------------------------------------------------------------------------------------------------------------</p>";
-
-$tag = new mr_html_tag();
-echo $h = $tag->a('hello');
-
-
-
-// $id = required_param('id', PARAM_INT);
-// echo $id;
-
-// echo $COURSE->id;
+echo "<p></p>";
+echo "<p>------------------------------------------------------------------------------</p>";
+echo "<p></p>";
+echo "<p>1. GPA: ", $gpa, "</p>";
+echo "<p>2. Course Id: ", $courseid, "</p>";
+echo "<p>------------------------------------------------------------------------------</p>";
 
 // Output the page footer.
 echo $OUTPUT->footer();

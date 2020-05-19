@@ -49,5 +49,3 @@ $string['gpatranscriptdetail'] = '7.5 (126 Credits)';
 $string['educationprogram'] = 'Education Program';
 $string['educationprogramdetail'] = 'Education Program 01 (89%)';
 $string['manageeducationprograms'] = 'Manage Education Programs';
-$string['hello_world'] = 'Hello World';
-// $string['manageeducationprograms'] = 'Manage Education Programs';
