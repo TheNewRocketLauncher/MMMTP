@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once('global.php');
 
 // insert into bacdt table
-function insertbacdt() {
+function insert_bacdt() {
     global $DB, $USER, $CFG, $COURSE, $bacDTinserted;
 
     $dataObj1 = new stdClass();
@@ -27,7 +27,7 @@ function insertbacdt() {
     $DB->insert_record('block_edu_bacdt', $dataObj2);
     $DB->insert_record('block_edu_bacdt', $dataObj3);
  }
- function getbacdt() {
+ function get_bacdt() {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
     $table->head = array('ID', 'Mã bậc', 'Tên bậc', 'Mô tả');

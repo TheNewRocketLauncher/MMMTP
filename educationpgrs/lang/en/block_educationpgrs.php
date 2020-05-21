@@ -45,7 +45,26 @@ $string['pluginnameediting'] = 'Rendered when editing this question type.';
 $string['pluginnamesummary'] = 'Rendered when choosing the question type to be added.';
 $string['view'] = 'View';
 $string['gpatranscript'] = 'GPA Transcript';
-$string['gpatranscriptdetail'] = '7.5 (126 Credits)';
+$string['gpatranscript_detail'] = 'fixed 7.5 (126 Credits)';
 $string['educationprogram'] = 'Education Program';
 $string['educationprogramdetail'] = 'Education Program 01 (89%)';
 $string['manageeducationprograms'] = 'Manage Education Programs';
+// Label
+$string['label_bacdt'] = 'Quản lý bậc đào tạo';
+$string['label_hedt'] = 'Quản lý hệ đào tạo';
+$string['label_nienkhoa'] = 'Quản lý niên khóa';
+$string['label_nganh'] = 'Quản lý ngành đào tạo';
+$string['label_chuyenganh'] = 'Quản lý chuyên ngành đào tạo';
+$string['label_ctdt'] = 'Quản lý chương trình đào tạo';
+$string['label_monhoc'] = 'Quản lý môn học';
+// Header
+$string['head_bacdt'] = 'Danh mục bậc đào tạo';
+$string['head_hedt'] = 'Danh mục hệ đào tạo';
+$string['head_nienkhoa'] = 'Danh mục niên khóa';
+$string['head_nganh'] = 'Danh mục ngành đào tạo';
+$string['head_chuyenganh'] = 'Danh mục chuyên ngành đào tạo';
+$string['head_ctdt'] = 'Danh mục chương trình đào tạo';
+$string['head_monhoc'] = 'Danh mục môn học';
+
+
+
