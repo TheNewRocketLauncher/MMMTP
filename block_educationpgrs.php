@@ -65,22 +65,27 @@ class block_educationpgrs extends block_list
 
         // Block content
         if (1) {
-            $url = new \moodle_url('/blocks/educationpgrs/view_transcript.php', ['courseid' => $courseid]);
-            $linktext = get_string('gpatranscriptdetail', 'block_educationpgrs');
+            $url = new \moodle_url('/blocks/educationpgrs/pages/view_bacdt.php', ['courseid' => $courseid]);
+            $linktext = get_string('label_bacdt', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
         }
         if (1) {
-            $params = ['courseid' => $courseid];
-            $url = new \moodle_url('/blocks/educationpgrs/view_eduprogram.php', $params);
-            $linktext = get_string('educationprogramdetail', 'block_educationpgrs');
+            $url = new \moodle_url('/blocks/educationpgrs/pages/view_hedt.php', ['courseid' => $courseid]);
+            $linktext = get_string('label_hedt', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
-            $this->content->items[] = "============";
         }
-        if (1) {
-            $url = new \moodle_url('/blocks/educationpgrs/managereport.php', ['courseid' => $courseid]);
-            $linktext = get_string('manageeducationprograms', 'block_educationpgrs');
-            $this->content->footer = \html_writer::link($url, $linktext);
-        }        
+       
+        
+        // if (1) {
+        //     $url = new \moodle_url('/blocks/educationpgrs/pages/view_hedt.php', ['courseid' => $courseid]);
+        //     $linktext = get_string('label_hedt', 'block_educationpgrs');
+        //     $this->content->items[] = \html_writer::link($url, $linktext);
+        // }
+        // if (1) {
+        //     $url = new \moodle_url('/blocks/educationpgrs/pages/view_nienkhoa.php', ['courseid' => $courseid]);
+        //     $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
+        //     $this->content->items[] = \html_writer::link($url, $linktext);
+        // }      
         return $this->content;
     }
 

@@ -2,6 +2,42 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../config.php');
+require_once('global.php');
+
+// insert into bacdt table
+function insert_bacdt() {
+    global $DB, $USER, $CFG, $COURSE, $bacDTinserted;
+
+    $dataObj1 = new stdClass();
+    $dataObj1->ma_bac = 'DH';
+    $dataObj1->ten = 'Đại học';
+    $dataObj1->mota = 'Bậc Đại học HCMUS';
+
+    $dataObj2 = new stdClass();
+    $dataObj2->ma_bac = 'CD';
+    $dataObj2->ten = 'Đại học';
+    $dataObj2->mota = 'Bậc Đại học HCMUS';
+
+    $dataObj3 = new stdClass();
+    $dataObj3->ma_bac = 'DTTX';
+    $dataObj3->ten = 'Đại học';
+    $dataObj3->mota = 'Bậc Đại học HCMUS';
+    
+    $DB->insert_record('block_edu_bacdt', $dataObj1);
+    $DB->insert_record('block_edu_bacdt', $dataObj2);
+    $DB->insert_record('block_edu_bacdt', $dataObj3);
+ }
+ function get_bacdt() {
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('ID', 'Mã bậc', 'Tên bậc', 'Mô tả');
+    $allbacdts = $DB->get_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS']);
+    foreach ($allbacdts as $ibacdt) {
+        $table->data[] = [(string)$ibacdt->id_bac, $ibacdt->ma_bac,(string)$ibacdt->ten,(string)$ibacdt->mota];
+    }
+    return $table;
+ }
+
 
 // Viết lại hàm nhận tham số function insertSubject($param);
 function insertSubject() {
