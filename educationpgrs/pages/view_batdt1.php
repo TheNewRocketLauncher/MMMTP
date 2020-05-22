@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>xin chao viet nam</h1>
+<input type="button" name="Release" onclick="document.write('<?php hello() ?>');" value="Click to Release">
 </body>
 </html>

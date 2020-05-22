@@ -7,41 +7,17 @@ require_once('../model/bacdt_model.php');
 // require('function.php');
 // // Bootstrap Blackboard Open LMS Framework
 // require($CFG->dirroot.'/local/mr/bootstrap.php');
-
-include "./view_batdt1.php";
-class simplehtml_form extends moodleform{
+function hello(){
+    alert('Hello I am alert');
+}
+class simplehtml_form extends moodleform
+{
     //Add elements to form
     public function definition()
     {
         global $CFG;
         $mform = $this->_form;
-        $mform->addElement('html', '
-        <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>TodoApp</title>
-	
-	<style>
-
-    .btn{
-        background-color: #333;
-        width: 30x;
-        height: 30px;
-    }
-
-
-  
-	</style>
-</head>
-<body>
-    <button><a href="http://localhost/moodle/admin/index.php">Click me</a></button>
-</body>
-<script>
-
-</script>
-</html>
-        ');
+        $mform->addElement('html', '<table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Course Code</td><td>&nbsp;&nbsp;&nbsp;&nbsp;Subject</td><td>&nbsp;&nbsp;&nbsp;&nbsp;Credit</td><td>&nbsp;&nbsp;&nbsp;&nbsp;Grade</td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;CSC13003</td><td>&nbsp;&nbsp;&nbsp;&nbsp;Kiểm chứng phần mềm</td><td>&nbsp;&nbsp;&nbsp;&nbsp;4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;7.5</td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;CSC10004</td><td>&nbsp;&nbsp;&nbsp;&nbsp;Cấu trúc dữ liệu và giải thuật</td><td>&nbsp;&nbsp;&nbsp;&nbsp;4</td><td>&nbsp;&nbsp;&nbsp;&nbsp;7.0</td></tr></table>');
     }
     //Custom validation should be added here
     function validation($data, $files)
@@ -70,6 +46,11 @@ $PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
 // Title.
 $PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
 $PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
+
+// $miurl = new \moodle_url('/blocks/educationpgrs/pages/view_bacdt.php', ['courseid' => $courseid]);
+// $milinktext = get_string('label_bacdt', 'block_educationpgrs');
+// $exitlink = html_writer::link($miurl, $milinktext);
+// $PAGE->set_button($exitlink);
 
 // Ouput the page header.
 echo $OUTPUT->header();
@@ -102,7 +83,19 @@ if (!$DB->count_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS'
 $table = get_bacdt();
 
 $mform = new simplehtml_form();
-$mform->display();
+//Form processing and displaying is done here
+if ($mform->is_cancelled()) {
+    //Handle form cancel operation, if cancel button is present on form
+} else if ($fromform = $mform->get_data()) {
+    //In this case you process validated data. $mform->get_data() returns data posted in form.
+} else {
+    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+    // or on the first display of the form. 
+    //Set default data (if any)
+    $mform->set_data($toform);
+    // displays the form
+    $mform->display();
+}
 echo html_writer::table($table);
 // if (1) {
 //     $url = new \moodle_url('/blocks/educationpgrs/pages/xem_bacdt.php', ['courseid' => $courseid]);
@@ -110,7 +103,9 @@ echo html_writer::table($table);
 //     echo html_writer::link($url, $linktext);
 // }
 // echo '<a>Chuyenhuong</a>';
+echo 'dg';
 
+echo html_writer::tag('button', 'ggwp', array('onclick' => hello()));
 // Output the page footer.
 echo $OUTPUT->footer();
 
@@ -129,4 +124,24 @@ echo $OUTPUT->footer();
 // $table->data[] = $tmp5;
 // // Print table
 // echo html_writer::table($table);
+
+
+
+
+    // <?php
+    //     require_once(`../model/bacdt_model.php`);
+    //     require_once(__DIR__ . `/../../../config.php`);
+
+    //     function click(){
+
+    //         $param1 = new stdClass()
+    //         $param1->ma_bac = `DH`;
+    //         $param1->ten = `Đại học`;
+    //         $param1->mota = `Bậc Đại học HCMUS`;
+            
+    //         insert_bacdt(param1);
+                    
+    //     }
+
+    // ?>
 ?>

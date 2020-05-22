@@ -1,7 +1,7 @@
 <?php
 
 // Standard config file and local library.
-require_once(__DIR__ . '/../../config.php');
+require_once(__DIR__ . '/../../../config.php');
 require_once('function.php');
 // // Bootstrap Blackboard Open LMS Framework
 // require($CFG->dirroot.'/local/mr/bootstrap.php');
