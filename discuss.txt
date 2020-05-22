@@ -1,0 +1,10 @@
+$COURSES: biến thể hiện khóa học chứa Block
+$COURSES->id: Block ( get_content()) / PAGE (set_context: $PAGE->set_context(context_system::instance());)
+Required_param/ optional_param
+Form: https://docs.moodle.org/dev/Form_API
+Layout: https://docs.moodle.org/dev/Page_API 'standard'/ 'incourse':
+Table:    
+    - Form
+    - html_table()
+    - Html
+Table CSS: https://moodle.org/mod/forum/discuss.php?d=259581
