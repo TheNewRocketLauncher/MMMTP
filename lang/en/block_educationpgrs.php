@@ -66,5 +66,7 @@ $string['head_chuyenganh'] = 'Danh mục chuyên ngành đào tạo';
 $string['head_ctdt'] = 'Danh mục chương trình đào tạo';
 $string['head_monhoc'] = 'Danh mục môn học';
 
+$string['btn_helloworld'] = 'Hello world';
+
 
 

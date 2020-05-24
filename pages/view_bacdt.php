@@ -103,9 +103,13 @@ echo html_writer::table($table);
 //     echo html_writer::link($url, $linktext);
 // }
 // echo '<a>Chuyenhuong</a>';
-echo 'dg';
 
-echo html_writer::tag('button', 'ggwp', array('onclick' => hello()));
+//echo html_writer::tag('button', 'ggwp', array('onclick' => hello()));
+
+$btnurl = new \moodle_url('/blocks/educationpgrs/pages/view_hedt.php', ['courseid' => $courseid]);
+$btnlbl = get_string('btn_helloworld', 'block_educationpgrs');
+echo $OUTPUT->single_button($btnurl, $btnlbl, $get);
+
 // Output the page footer.
 echo $OUTPUT->footer();
 
