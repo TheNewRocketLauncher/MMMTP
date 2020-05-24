@@ -1,28 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/educationpgrs/db" VERSION="2020042300" COMMENT="XMLDB file for Moodle blocks/educationpgrs"
+<XMLDB PATH="blocks/educationpgrs/db" VERSION="20200524" COMMENT="XMLDB file for Moodle blocks/educationpgrs"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="block_educationpgrs" COMMENT="block_educationpgrs table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="mssv" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="coursecode" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="subject" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="credit" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="1"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
     <TABLE NAME="block_edu_bacdt" COMMENT="block_edu_bacdt table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id_bac" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_bac" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id_bac"/>
@@ -31,14 +18,117 @@
     <TABLE NAME="block_edu_hedt" COMMENT="block_edu_hedt table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="id_bac" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id_he"/>
         <KEY NAME="he_bac" TYPE="foreign" FIELDS="id_bac" REFTABLE="block_edu_bacdt" REFFIELDS="id_bac"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_nienkhoa" COMMENT="block_edu_nienkhoa table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id_nienkhoa" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="id_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="id_bac" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ten_nienkhoa" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_nienkhoa"/>
+        <KEY NAME="nienkhoa_bac" TYPE="foreign" FIELDS="id_bac" REFTABLE="block_edu_bacdt" REFFIELDS="id_bac"/>
+        <KEY NAME="nienkhoa_he" TYPE="foreign" FIELDS="id_he" REFTABLE="block_edu_hedt" REFFIELDS="id_he"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_nganhdt" COMMENT="block_edu_nganh_daotao table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id_nganh" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="id_nienkhoa" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="id_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="id_bac" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ten_nganh" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_nganh"/>
+        <KEY NAME="nganh_bac" TYPE="foreign" FIELDS="id_bac" REFTABLE="block_edu_bacdt" REFFIELDS="id_bac"/>
+        <KEY NAME="nganh_he" TYPE="foreign" FIELDS="id_he" REFTABLE="block_edu_hedt" REFFIELDS="id_he"/>
+        <KEY NAME="nganh_nienkhoa" TYPE="foreign" FIELDS="id_nienkhoa" REFTABLE="block_edu_nienkhoa" REFFIELDS="id_nienkhoa"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_chuyennganhdt" COMMENT="block_edu_chuyennganh_daotao table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id_chuyennganh" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="id_nienkhoa" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="id_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="id_bac" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_chuyennganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ten_chuyennganh" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_chuyennganh"/>
+        <KEY NAME="chuyennganh_bac" TYPE="foreign" FIELDS="id_bac" REFTABLE="block_edu_bacdt" REFFIELDS="id_bac"/>
+        <KEY NAME="chuyennganh_he" TYPE="foreign" FIELDS="id_he" REFTABLE="block_edu_hedt" REFFIELDS="id_he"/>
+        <KEY NAME="chuyennganh_nienkhoa" TYPE="foreign" FIELDS="id_nienkhoa" REFTABLE="block_edu_nienkhoa" REFFIELDS="id_nienkhoa"/>
+        <KEY NAME="chuyennganh_nganh" TYPE="foreign" FIELDS="id_chuyennganh" REFTABLE="block_edu_nganhdt" REFFIELDS="id_nganh"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_loaidieukien_ktt" COMMENT="block_edu_loaidieukien_khoikienthuc table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id_loaidieukien" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="ma_loaidieukien" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_loaidieukien"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_dieukien_ktt" COMMENT="block_edu_dieukien_khoikienthuc table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id_dieukien_ktt" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="ma_dieukien" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="loai_dieukien" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="xet_tren" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="giatri_dieukien" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ten_dieukien" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="block_edu_hello_upgradephp" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT="yes"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_dieukien_ktt"/>
+        <KEY NAME="dieukienh_loaidieukien" TYPE="foreign" FIELDS="loai_dieukien" REFTABLE="block_edu_loaidieukien_ktt" REFFIELDS="id_loaidieukien"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_loai_ktt" COMMENT="block_edu_khoikienthuc table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id_loai_ktt" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="ma_loai" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ten_loai" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_loai_ktt"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_khoikienthuc" COMMENT="block_edu_khoikienthuc table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id_khoikienthuc" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="id_loai_ktt" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="co_dieukien" TYPE="binary" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_dieukien" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ten_khoi" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id_khoikienthuc"/>
+        <KEY NAME="khoikienthuc_dieukien" TYPE="foreign" FIELDS="ma_dieukien" REFTABLE="block_edu_dieukien_ktt" REFFIELDS="id_dieukien_ktt"/>
+        <KEY NAME="khoikienthuc_loai_khoikienthuc" TYPE="foreign" FIELDS="id_loai_ktt" REFTABLE="block_edu_loai_ktt" REFFIELDS="id_loai_ktt"/>
       </KEYS>
     </TABLE>
   </TABLES>
