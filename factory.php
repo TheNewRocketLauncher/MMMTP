@@ -2,7 +2,22 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../config.php');
-require_once('global.php');
+
+// Create button with method post
+function button_method_post($btn_name, $btn_value) {
+    $btn = html_writer::start_tag('form', array('method' => "post"))
+    .html_writer::tag('input', null, array('type' => "submit", 'name' => $btn_name, 'id' => $btn_name, 'value' => $btn_value))
+    .html_writer::end_tag('form');
+    return $btn;
+}
+
+// Create button with method get
+function button_method_get($btn_name, $btn_value) {
+    $btn = html_writer::start_tag('form', array('method' => "get"))
+    .html_writer::tag('input', null, array('type' => "submit", 'name' => $btn_name, 'id' => $btn_name, 'value' => $btn_value))
+    .html_writer::end_tag('form');
+    return $btn;
+}
 
 // insert into bacdt table
 function insert_bacdt() {

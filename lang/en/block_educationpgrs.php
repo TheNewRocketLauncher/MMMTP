@@ -54,7 +54,7 @@ $string['label_bacdt'] = 'Quản lý bậc đào tạo';
 $string['label_hedt'] = 'Quản lý hệ đào tạo';
 $string['label_nienkhoa'] = 'Quản lý niên khóa';
 $string['label_nganh'] = 'Quản lý ngành đào tạo';
-$string['label_chuyenganh'] = 'Quản lý chuyên ngành đào tạo';
+$string['label_chuyennganh'] = 'Quản lý chuyên ngành đào tạo';
 $string['label_ctdt'] = 'Quản lý chương trình đào tạo';
 $string['label_monhoc'] = 'Quản lý môn học';
 // Header
@@ -67,4 +67,13 @@ $string['head_ctdt'] = 'Danh mục chương trình đào tạo';
 $string['head_monhoc'] = 'Danh mục môn học';
 
 
-
+//form thong tin chung
+$string['ten_monhoc1'] = 'Tên môn học (tiếng Việt)';
+$string['ten_monhoc2'] = 'Tên môn học (tiếng Anh)';
+$string['maso_monhoc'] = 'Mã số môn học';
+$string['thuoc_khoi_kienthuc'] = 'Thuộc khối kiến thức';
+$string['so_tinchi'] = 'Sô tín chỉ';
+$string['tiet_lythuyet'] = 'Số tiết lý thuyết';
+$string['tiet_thuchanh'] = 'Số tiết thực hành';
+$string['tiet_tuhoc'] = 'Số tiết tự học';
+$string['monhoc_tienquyet'] = 'Các môn học tiên quyết';

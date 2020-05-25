@@ -65,7 +65,7 @@ class block_educationpgrs extends block_list
 
         // Block content
         if (1) {
-            $url = new \moodle_url('/blocks/educationpgrs/pages/view_bacdt.php', ['courseid' => $courseid]);
+            $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_bacdt', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
         }
@@ -76,6 +76,11 @@ class block_educationpgrs extends block_list
         }
        
         
+        if (1) {
+            $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/monhoc.php', ['courseid' => $courseid]);
+            $linktext = get_string('label_monhoc', 'block_educationpgrs');
+            $this->content->items[] = \html_writer::link($url, $linktext);
+        }
         // if (1) {
         //     $url = new \moodle_url('/blocks/educationpgrs/pages/view_hedt.php', ['courseid' => $courseid]);
         //     $linktext = get_string('label_hedt', 'block_educationpgrs');
