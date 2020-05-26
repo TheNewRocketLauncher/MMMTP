@@ -77,3 +77,46 @@ $string['tiet_lythuyet'] = 'Số tiết lý thuyết';
 $string['tiet_thuchanh'] = 'Số tiết thực hành';
 $string['tiet_tuhoc'] = 'Số tiết tự học';
 $string['monhoc_tienquyet'] = 'Các môn học tiên quyết';
+
+////From Thêm chương trình đào tạo
+//Phần thông tin chung
+$string['themctdt_thongtintongquat'] = 'Tên chương trình';
+$string['themctdt_tenchuogntrinh'] = 'Tên chương trình';
+$string['themctdt_trinhdodt'] = 'Trình độ đào tạo';
+$string['themctdt_nganhdt'] = 'Ngành đào tạo';
+$string['themctdt_manganh'] = 'Mã ngành';
+$string['themctdt_hedt'] = 'Hệ đào tạo';
+$string['themctdt_khoatuyen'] = 'Khoá tuyển';
+$string['themctdt_lable'] = 'Thêm chương trình đào tạo';
+$string['themctdt_title'] = 'Thêm CTĐT mới';
+$string['themctdt_head'] = 'Thêm chương trình đào tạo';
+//Phần text cho chữ
+$string['themctdt_lbl_mtdt'] = 'Mục tiêu đào tạo';
+$string['themctdt_mtc'] = '1.1 Mục tiêu chung';
+$string['themctdt_mtct'] = '1.2 Mục tiêu cụ thể - chuẩn đầu ra của chương trình đào tạo';
+$string['themctdt_cdr'] = '1.2.2 Chuẩn đầu ra của chương trình giáo dục';
+$string['themctdt_chnn'] = '1.3 Cơ hội nghề nghiệp';
+$string['themctdt_lbl_tgdt'] = 'Thời gian đào tạo ';
+$string['themctdt_lbl_klkt'] = 'Khối lượng kiến thức toàn khoá';
+$string['themctdt_lbl_dtts'] = 'Đối tượng tuyển sinh';
+$string['themctdt_lbl_qtdt'] = 'Quy trình đào tạo, điều kiện tốt nghiệp';
+$string['themctdt_qtdt'] = '5.1 Quy trình đạo tạo';
+$string['themctdt_dktn'] = '5.2 Điều kiện tốt nghiệp';
+$string['themctdt_lbl_ctct'] = 'Cấu trúc chương trình';
+$string['themctdt_lbl_ndct'] = 'Nội dung chương trình';
+$string['themctdt_lbl_importfile'] = 'Import File';
+$string['themctdt_importfilehere'] = 'Kéo thả file vào đây';
+$string['themctdt_apdungcho'] = 'Áp dụng cho';
+//Phần text cho button
+$string['themctdt_btn_delall'] = 'Xoá tất cả';
+$string['themctdt_btn_themmuc'] = 'Thêm mục';
+$string['themctdt_btn_choncaykkt'] = 'Chọn cây khối kiến thức';
+$string['themctdt_btn_updatetodown'] = 'Cập nhật xuống mục 7';
+$string['themctdt_btn_updatefromdown'] = 'Cặp nhật từ mục 7';
+$string['themctdt_btn_xemcay'] = 'Xem chi tiết cây';
+$string['themctdt_btn_choncaykkt'] = 'Chọn cây khối kiến thức';
+$string['themctdt_btn_updatefromup'] = 'Cập nhật từ mục 6';
+$string['themctdt_btn_apdung'] = 'Áp dụng';
+$string['themctdt_btn_review'] = 'Xem trước';
+$string['themctdt_btn_complete'] = 'Hoàn tất';
+
