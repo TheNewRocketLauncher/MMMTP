@@ -19,7 +19,7 @@
       <FIELDS>
         <FIELD NAME="id_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
