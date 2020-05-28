@@ -84,7 +84,7 @@ class block_educationpgrs extends block_list
             $this->content->items[] = \html_writer::link($url, $linktext);
         }
         if (1) {
-            $url = new \moodle_url('/blocks/educationpgrs/pages/nganh/qlnganh.php', ['courseid' => $courseid]);
+            $url = new \moodle_url('/blocks/educationpgrs/pages/nganh/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_nganh', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
         }
@@ -96,7 +96,7 @@ class block_educationpgrs extends block_list
         }
         if (1) {
             //edit file index.php tương ứng trong thư mục page. trỏ đến đường dẫn chứa file đó
-             $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
+            $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/monhoc.php', ['courseid' => $courseid]);
             $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
         }

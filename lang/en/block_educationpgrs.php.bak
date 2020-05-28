@@ -177,10 +177,9 @@ $string['themctdt_btn_review'] = 'Xem trước';
 $string['themctdt_btn_complete'] = 'Hoàn tất';
 
 //nien khoa
-$string['themnienkhoa_mahe'] = 'Mã hệ';
-$string['themnienkhoa_mabac'] = 'Mã bậc';
+$string['themnienkhoa_idhe'] = 'Id hệ';
 $string['themnienkhoa_manienkhoa'] = 'Mã niên khóa';
-$string['themnienkhoa_tennienkhoa'] = 'Tên niên khóa';
+$string['themnienkhoa_ten'] = 'Tên niên khóa';
 $string['themnienkhoa_mota'] = 'Mô tả';
 $string['nienkhoa'] = 'Niên khóa';
 $string['label_taonienkhoa'] = 'Tạo niên khóa';
