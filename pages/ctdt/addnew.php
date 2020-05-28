@@ -40,7 +40,7 @@ if ($courseid == SITEID) {
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/ctdt/newctdt.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/ctdt/addnew.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
@@ -55,20 +55,17 @@ echo $OUTPUT->header();
 ///-------------------------------------------------------------------------------------------------------///
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 require_once('../../form/ctdt/newctdt.php');
-$tenchuogntrinh = "hello1";
-$trinhdodt = "hello2";
-$nganhdt = "hello3";
-$manganh = "hello4";
-$hedt = "hello5";
-$khoatuyen = "hello6";
+$mform = new ctdt_addnew_form();
 
-
-$mform = new ctdt_addnew_form($tenchuogntrinh, $trinhdodt, $nganhdt, $manganh, $hedt, $khoatuyen);
 
 //Form processing and displaying is done here
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-} else if ($fromform = $mform->get_data()) {
+}elseif ($mform->no_submit_button_pressed()) { 
+
+
+}
+else if ($fromform = $mform->get_data()) {
     //In this case you process validated data. $mform->get_data() returns data posted in form.
 } else {
     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
@@ -78,9 +75,6 @@ if ($mform->is_cancelled()) {
     // displays the form
     $mform->display();
 }
-
-
-
 
 
 

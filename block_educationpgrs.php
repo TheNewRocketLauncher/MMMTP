@@ -83,7 +83,7 @@ class block_educationpgrs extends block_list
         }
 
         if (1) {
-            $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/addnew.php', ['courseid' => $courseid]);
+            $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_ctdt', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
         }
