@@ -3,7 +3,7 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('function.php');
+require_once('factory.php');
 // // Bootstrap Blackboard Open LMS Framework
 // require($CFG->dirroot.'/local/mr/bootstrap.php');
 class simplehtml_form extends moodleform

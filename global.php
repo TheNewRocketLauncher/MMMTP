@@ -1,3 +1,0 @@
-<?php  
-    $bacDTinserted = 1;
-
