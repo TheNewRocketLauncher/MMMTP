@@ -66,7 +66,7 @@ if ($mform->is_cancelled()) {
 // $tag = new mr_html_tag();
 // echo $tag->b('Use BlackBoard Open LMS Framework');
 // if ($mycon==1) insert_bacdt();
-if (!$DB->count_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS'])) {
+if (!$DB->count_records('block_edu_bacdt', [])) {
     insert_bacdt();
 }
 $table = get_bacdt();

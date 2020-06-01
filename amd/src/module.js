@@ -26,18 +26,37 @@ define(['jquery'], function($) {
             // Put whatever you like here. $ is available
             // to you as normal.
             $("#btn_delete_bacdt").click(function() {
-                alert("Progress will delete BDT!");
+                var list_id_bac = [];
+                var cusid_ele = document.getElementsByClassName('bdtcheckbox');
+                for (var i = 0; i < cusid_ele.length; ++i) {
+                    var item = cusid_ele[i];  
+                    
+                    if(item.value == '1')
+                    {
+                        list_id_bac.push(item.name);
+                    }
+                }
+                console.log(list_id_bac)
+                // get all elemeent by class
                 // Call to file php in ajax directory
                 // Ajax call to get the results.
-                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/delete_bdt.php', {
-                course: 1,
-                id_bac: 1
-            }).done(function(data){
-                alert(data);
-            }).fail(function(){
-                alert('Something wrong!');
-            });
-              });
+                
+                list_id_bac.forEach(element => {
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/delete_bdt.php', {
+                        course: 1,
+                        id_bac: element
+                    }).done(function(data){
+                        alert(data);
+                    }).fail(function(){
+                        alert('Something wrong!');
+                    });
+                    
+                });
+
+
+
+                
+              }); // end del
             $("#btn206").click(function() {
                 alert("Handler for .click() called.");
               });

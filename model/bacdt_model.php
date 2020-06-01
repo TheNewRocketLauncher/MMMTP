@@ -78,7 +78,7 @@ require_once('../../js.php');
       // Create checkbox
       // $check_id = 'bdt' . $ibacdt->id_bac;
 
-      $checkbox = html_writer::tag('input', ' ', array('type' => "checkbox", 'name' => 'checkbok_name2', 'id' => 'bdt' . $ibacdt->id_bac, 'value' => $ibacdt->id_bac, 'onclick' => "changecheck($ibacdt->id_bac)"));   
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'bdtcheckbox','type' => "checkbox", 'name' => $ibacdt->id_bac, 'id' => 'bdt' . $ibacdt->id_bac, 'value' => '0', 'onclick' => "changecheck($ibacdt->id_bac)"));   
       $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/qlbac.php', ['courseid' => $courseid, 'id' => $ibacdt->id_bac]);
       $ten_url = \html_writer::link($url, $ibacdt->ten);
       $table->data[] = [$checkbox, (string)$stt, $ten_url,(string)$ibacdt->mota];

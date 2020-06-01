@@ -17,7 +17,7 @@ function delete_bacdt($id_bac) {
     // Xóa bậc đào tạo có id_bac truyền vào
     delete_bacdt($id_bac);
     // return
-    $output = "Delete successfully!";
+    $output = "Deleted BDT has ID = " . $id_bac . " successfully!";
     echo $output;
     exit;
  

@@ -69,7 +69,7 @@ $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 echo $OUTPUT->header();
 
 // Insert data if table is empty
-if (!$DB->count_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS'])) {
+if (!$DB->count_records('block_edu_bacdt', [])) {
     $param1 = new stdClass();
     $param2 = new stdClass();
     $param3 = new stdClass();
