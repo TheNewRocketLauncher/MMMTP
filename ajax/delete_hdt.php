@@ -4,7 +4,7 @@
 require_once(__DIR__ . '/../../../config.php');
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
-function delete_hedt($id) {
+function delete_bacdt($id) {
      /*
       $param = new stdClass();
       $param->ma_bac = 'DH';
@@ -12,12 +12,12 @@ function delete_hedt($id) {
       $param->mota = 'Bậc Đại học HCMUS'
      */
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_bacdt', array('id' => $id));
+    $DB->delete_records('block_edu_hedt', array('id' => $id));
 }
     // Xóa bậc đào tạo có id truyền vào
-    delete_hedt($id);
+    delete_bacdt($id);
     // return
-    $output = "Deleted HDT has ID = " . $id . " successfully!";
+    $output = "Deleted BDT has ID = " . $id . " successfully!";
     echo $output;
     exit;
  

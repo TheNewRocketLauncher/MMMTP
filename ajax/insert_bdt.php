@@ -16,17 +16,17 @@ function insert_bacdt($param) {
     $param2 = new stdClass();
     $param3 = new stdClass();
     // $param
-    // $param1->id_bac = 1;
+    // $param1->id = 1;
     $param1->ma_bac = 'DHtest';
     $param1->ten = 'Đại học';
     $param1->mota = 'Bậc Đại học HCMUS';
     // $param
-    // $param2->id_bac = 2;
+    // $param2->id = 2;
     $param2->ma_bac = 'CDtest';
     $param2->ten = 'Cao đẳng';
     $param2->mota = 'Bậc Cao đẳng HCMUS';
     // $param
-    // $param3->id_bac = 3;
+    // $param3->id = 3;
     $param3->ma_bac = 'DTTXtest';
     $param3->ten = 'Đào tạo từ xa';
     $param3->mota = 'Bậc Đào tạo từ xa HCMUS';

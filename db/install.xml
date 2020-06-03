@@ -6,25 +6,25 @@
   <TABLES>
     <TABLE NAME="block_edu_bacdt" COMMENT="block_edu_bacdt table retrofitted from MySQL">
       <FIELDS>
-        <FIELD NAME="id_bac" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id_bac"/>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="block_edu_hedt" COMMENT="block_edu_hedt table retrofitted from MySQL">
       <FIELDS>
-        <FIELD NAME="id_he" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id_he"/>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="block_edu_nienkhoa" COMMENT="block_edu_nienkhoa table retrofitted from MySQL">

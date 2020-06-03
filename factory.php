@@ -48,7 +48,7 @@ function insert_bacdt() {
     $table->head = array('ID', 'Mã bậc', 'Tên bậc', 'Mô tả');
     $allbacdts = $DB->get_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS']);
     foreach ($allbacdts as $ibacdt) {
-        $table->data[] = [(string)$ibacdt->id_bac, $ibacdt->ma_bac,(string)$ibacdt->ten,(string)$ibacdt->mota];
+        $table->data[] = [(string)$ibacdt->id, $ibacdt->ma_bac,(string)$ibacdt->ten,(string)$ibacdt->mota];
     }
     return $table;
  }

@@ -1,8 +1,3 @@
-<!-- <script>
-function btn2065() {
-    alert("The paragraph was clicked.");
-}
-</script> -->
 <?php
 
 // Standard config file and local library.
@@ -45,7 +40,10 @@ class simplehtml_form extends moodleform
     }
 }
 global $COURSE;
+
+// Định dang courseid, item_id
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
+
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -57,114 +55,56 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/add_bdt.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
 $PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
+
 // Title.
-$PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
-// Require js amd
-$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
-// Print header
+$PAGE->set_title('Thêm Bậc đào tạo ');
+$PAGE->set_heading('Thêm mới Bậc đào tạo ');
 echo $OUTPUT->header();
 
-
-// Insert data if table is empty
-if (!$DB->count_records('block_edu_bacdt', [])) {
-    $param1 = new stdClass();
-    $param2 = new stdClass();
-    $param3 = new stdClass();
-    // $param
-    $param1->id = 1;
-    $param1->ma_bac = 'DH';
-    $param1->ten = 'Đại học';
-    $param1->mota = 'Bậc Đại học HCMUS';
-    // $param
-    $param2->id = 2;
-    $param2->ma_bac = 'CD';
-    $param2->ten = 'Cao đẳng';
-    $param2->mota = 'Bậc Cao đẳng HCMUS';
-    // $param
-    $param3->id = 3;
-    $param3->ma_bac = 'DTTX';
-    $param3->ten = 'Đào tạo từ xa';
-    $param3->mota = 'Bậc Đào tạo từ xa HCMUS';
-    insert_bacdt($param1);
-    insert_bacdt($param2);
-    insert_bacdt($param3);
-}
-// Get and print table
-// $table = get_bacdt();
-// echo html_writer::table($table);
-
-// Create button insert data
-echo \html_writer::tag(
-    'button',
-    'Thêm BDT',
-    array('id' => 'btn_insert_bacdt'));
-
-echo '<br>';
-// Catch event click btnAdd (method post)
-$count = 1;
-if(array_key_exists('btnAdd',$_POST)){
-    $param = new stdClass();    
-    $str_count = (string)$count;
-    // while($str_count.strlen()<3) {
-    //     $str_count = '0'.$str_count;
-    // }
-    // $param->ma_bac = 'NEWBDT'.$str_count;
-    // $param->ten = 'Bậc '.$param->ma_bac;
-    // $param->mota = $param->ten.' HCMUS';
-    
-
-    $param->ma_bac = 'NEWBDT';
-    $param->ten = 'Bậc NEWBDT';
-    $param->mota = 'Bậc NEWBDT HCMUS';
-
-    
-    // insert
-    insert_bacdt($param);
-    
-    
- }
-
-$table = get_bacdt($courseid);
-echo html_writer::table($table);
-
  // Form
- // Button open form
- echo \html_writer::tag(
-    'button',
-    'Open add BDT',
-    array('id' => 'btn_open_form_insert_bacdt'));
-
-echo '<br>';
-
- require_once('../../form/bacdt/new_form.php');
-
- $mform = new new_form();
+ require_once('../../form/bacdt/qlbac_form.php');
+ $mform = new qlbac_form();
  //Form processing and displaying is done here
  if ($mform->is_cancelled()) {
-     //Handle form cancel operation, if cancel button is present on form
- } else if($mform->no_submit_button_pressed()) {
-     //
-     $mform->display();
+    //Handle form cancel operation, if cancel button is present on form
+} else if($mform->no_submit_button_pressed()) {
+    //
+    $mform->display();
 
- } else if ($fromform = $mform->get_data()) {
-     //In this case you process validated data. $mform->get_data() returns data posted in form.
-     // Thực hiện insert
- } else if ($mform->is_submitted()) {
-     //
- } else {
-     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-     // or on the first display of the form. 
-     //Set default data (if any)
-     $mform->set_data($toform);
-     // displays the form
-    //  $mform->display();
- }
+} else if ($fromform = $mform->get_data()) {
+    //In this case you process validated data. $mform->get_data() returns data posted in form.
+    // Thực hiện insert
+    $param1 = new stdClass();
+    // $param
+    $param1->ma_bac = $mform->get_data()->mabac;
+    $param1->ten = $mform->get_data()->tenbac;
+    $param1->mota = $mform->get_data()->mota;
+    insert_bacdt($param1);
+    // Hiển thị thêm thành công
+    echo '<h2>Thêm mới thành công!</h2>';
+    echo '<br>';
+    //link đến trang danh sách
+    $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_bacdt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
+    // $mform->display();
+
+
+} else if ($mform->is_submitted()) {
+    //
+} else {
+    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+    // or on the first display of the form. 
+    //Set default data (if any)
+    $mform->set_data($toform);
+    // displays the form
+    $mform->display();
+}
 
  // Footere
 echo $OUTPUT->footer();

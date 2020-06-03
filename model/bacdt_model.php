@@ -37,6 +37,16 @@ require_once('../../js.php');
     global $DB, $USER, $CFG, $COURSE;
     $DB->insert_record('block_edu_bacdt', $param);
  }
+ function update_bacdt($param) {
+   /*
+    $param = new stdClass();
+    $param->ma_bac = 'DH';
+    $param->ten = 'Đại học';
+    $param->mota = 'Bậc Đại học HCMUS'
+   */
+  global $DB, $USER, $CFG, $COURSE;
+  $DB->update_record('block_edu_bacdt', $param, $bulk = false);
+}
  function get_bacdt($courseid) {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
@@ -44,7 +54,7 @@ require_once('../../js.php');
     $allbacdts = $DB->get_records('block_edu_bacdt', []);
     $stt = 1;    
     foreach ($allbacdts as $ibacdt) {
-      $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/qlbac.php', ['courseid' => $courseid, 'id' => $ibacdt->id_bac]);
+      $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/update_bdt.php', ['courseid' => $courseid, 'id' => $ibacdt->id]);
       $ten_url = \html_writer::link($url, $ibacdt->ten);
         $table->data[] = [(string)$stt, $ten_url,(string)$ibacdt->mota];
         $stt = $stt+1;
@@ -55,14 +65,14 @@ require_once('../../js.php');
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
     $table->head = array('STT', 'Bậc đào tạo', 'Mô tả');
-    $bacdt = $DB->get_record('block_edu_bacdt', ['id_bac' => $id]);
+    $bacdt = $DB->get_record('block_edu_bacdt', ['id' => $id]);
     $table->data[] = [(string)$id,(string)$bacdt->ten,(string)$bacdt->mota];
     return $table;
  }
 
  function get_bacdt_byID($id) {
     global $DB, $USER, $CFG, $COURSE;    
-    $bacdt = $DB->get_record('block_edu_bacdt', ['id_bac' => $id]);
+    $bacdt = $DB->get_record('block_edu_bacdt', ['id' => $id]);
     return $bacdt;
  }
  
@@ -76,10 +86,10 @@ require_once('../../js.php');
 
    foreach ($allbacdts as $ibacdt) {
       // Create checkbox
-      // $check_id = 'bdt' . $ibacdt->id_bac;
+      // $check_id = 'bdt' . $ibacdt->id;
 
-      $checkbox = html_writer::tag('input', ' ', array('class' => 'bdtcheckbox','type' => "checkbox", 'name' => $ibacdt->id_bac, 'id' => 'bdt' . $ibacdt->id_bac, 'value' => '0', 'onclick' => "changecheck($ibacdt->id_bac)"));   
-      $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/qlbac.php', ['courseid' => $courseid, 'id' => $ibacdt->id_bac]);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'bdtcheckbox','type' => "checkbox", 'name' => $ibacdt->id, 'id' => 'bdt' . $ibacdt->id, 'value' => '0', 'onclick' => "changecheck($ibacdt->id)"));   
+      $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/update_bdt.php', ['courseid' => $courseid, 'id' => $ibacdt->id]);
       $ten_url = \html_writer::link($url, $ibacdt->ten);
       $table->data[] = [$checkbox, (string)$stt, $ten_url,(string)$ibacdt->mota];
       $stt = $stt+1;
