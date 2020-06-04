@@ -49,6 +49,7 @@ $string['gpatranscript_detail'] = 'fixed 7.5 (126 Credits)';
 $string['educationprogram'] = 'Education Program';
 $string['educationprogramdetail'] = 'Education Program 01 (89%)';
 $string['manageeducationprograms'] = 'Manage Education Programs';
+$string['arr'] = ['1', '2'];
 // Label
 $string['label_bacdt'] = 'Quản lý bậc đào tạo';
 $string['label_hedt'] = 'Quản lý hệ đào tạo';

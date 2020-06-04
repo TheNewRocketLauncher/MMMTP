@@ -17,7 +17,9 @@ require_once(__DIR__ . '/../../../config.php');
     $allnganhs = $DB->get_records('block_edu_nganhdt', []);
     $stt = 1;
     foreach ($allnganhs as $inganh) {
-        $table->data[] = [(string)$stt,(string)$inganh->ma_nganh,(string)$inganh->ten_nganh,(string)$inganh->mota];
+      $url = new \moodle_url('/blocks/educationpgrs/pages/nganh/qlnganh.php', ['courseid' => $courseid, 'id' => $inganh->id_nganh]);
+      $ten_url = \html_writer::link($url, $inganh->ten_nganh);
+        $table->data[] = [(string)$stt,(string)$inganh->ma_nganh,$ten_url,(string)$inganh->mota];
         $stt = $stt+1;
     }
     return $table;

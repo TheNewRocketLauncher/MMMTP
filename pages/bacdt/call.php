@@ -1,9 +1,14 @@
+<script>
+function btn2065() {
+    alert("The paragraph was clicked.");
+}
+</script>
 <?php
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/nganhdt_model.php');
+require_once('../../model/bacdt_model.php');
 // require_once('../factory.php');
 
 // Create button with method post
@@ -52,63 +57,80 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_nganhdt.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_nganh', 'block_educationpgrs'));
+$PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
 // Title.
-$PAGE->set_title(get_string('label_nganh', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_nganh', 'block_educationpgrs'));
+$PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
+$PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
+// Require js amd
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
+// Print header
 echo $OUTPUT->header();
 
+
 // Insert data if table is empty
-if (!$DB->count_records('block_edu_nganhdt', [])) {
+if (!$DB->count_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS'])) {
     $param1 = new stdClass();
     $param2 = new stdClass();
     $param3 = new stdClass();
-    // $param->id_bac = 1;
-    $param1->ma_nganh = '7480101';
-    $param1->ten_nganh = 'Khoa học máy tính';
-    $param1->mota = 'Đại học,chính quy,niên khóa: 2016 - 2020';
-    // $param->id_bac = 2;
-    $param2->ma_nganh = '7480103';
-    $param2->ten_nganh = 'Kỹ thuật phần mềm';
-    $param2->mota = 'Đại học,chính quy,niên khóa: 2016 - 2020';
-    // $param->id_bac = 3;
-    $param3->ma_nganh = '7480104';
-    $param3->ten_nganh = 'Hệ thống thông tin';
-    $param3->mota = 'Đại học,chính quy,niên khóa: 2016 - 2020';
-    insert_nganh($param1);
-    insert_nganh($param2);
-    insert_nganh($param3);
+    // $param
+    $param1->id_bac = 1;
+    $param1->ma_bac = 'DH';
+    $param1->ten = 'Đại học';
+    $param1->mota = 'Bậc Đại học HCMUS';
+    // $param
+    $param2->id_bac = 2;
+    $param2->ma_bac = 'CD';
+    $param2->ten = 'Cao đẳng';
+    $param2->mota = 'Bậc Cao đẳng HCMUS';
+    // $param
+    $param3->id_bac = 3;
+    $param3->ma_bac = 'DTTX';
+    $param3->ten = 'Đào tạo từ xa';
+    $param3->mota = 'Bậc Đào tạo từ xa HCMUS';
+    insert_bacdt($param1);
+    insert_bacdt($param2);
+    insert_bacdt($param3);
 }
+// Get and print table
+// $table = get_bacdt();
+// echo html_writer::table($table);
 
+// Create button insert data
+echo \html_writer::tag(
+    'button',
+    'Thêm BDT',
+    array('id' => 'btn_insert_bacdt'));
 
-// Create button insert data, function import from factory.php
-$mybtn = button_method_post('btnAdd', 'Thêm mới');
-echo $mybtn;
 echo '<br>';
 // Catch event click btnAdd (method post)
 $count = 1;
 if(array_key_exists('btnAdd',$_POST)){
     $param = new stdClass();    
     $str_count = (string)$count;
-    
+    // while($str_count.strlen()<3) {
+    //     $str_count = '0'.$str_count;
+    // }
+    // $param->ma_bac = 'NEWBDT'.$str_count;
+    // $param->ten = 'Bậc '.$param->ma_bac;
+    // $param->mota = $param->ten.' HCMUS';
     
 
-    $param->ma_nganh = 'NEWNDT';
-    $param->ten_nganh = 'Bậc NEWNDT';
-    $param->mota = 'Bậc NEWNDT HCMUS';
+    $param->ma_bac = 'NEWBDT';
+    $param->ten = 'Bậc NEWBDT';
+    $param->mota = 'Bậc NEWBDT HCMUS';
 
     
     // insert
-    insert_nganh($param);
+    insert_bacdt($param);
     
     
  }
 
-$table = get_nganh();
+$table = get_bacdt($courseid);
 echo html_writer::table($table);
 
  // Form
@@ -130,4 +152,4 @@ echo html_writer::table($table);
  // Footere
 echo $OUTPUT->footer();
 
-?>
+ ?>

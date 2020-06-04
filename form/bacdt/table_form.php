@@ -3,41 +3,25 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 // require_once("../../../style.css")
 
-    class new_form extends moodleform {
+    class table_form extends moodleform {
         
         public function definition()
         {
             global $CFG;
             $mform = $this->_form;
+            $action = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+            $mform->addElement('hidden', 'action', $action);
+
+
+            $mform->addElement('html', '<table><tr><td>Item 1</td><td>Item 2</td></tr></table>');
+
+
             // Header
-            $btn = html_writer::start_tag('form', array('method' => "post"))
-            .html_writer::tag('input', ' ', array('type' => "submit", 'name' => "MyBTN", 'id' => "MyBTN", 'value' => "Mục lớn 1"))
-            .html_writer::end_tag('form');
-            // $mform->addElement('header', 'general', $btn);
+            $mform->addElement('header', 'general', 'Quản lý thông tin');
 
-            $mform->addElement('choosecoursefile', 'mediafile', 'My Media File', array('courseid' =>null,  //if it is null (default then use global $COURSE
-            'height'   =>500,   // height of the popup window
-            'width'    =>750,   // width of the popup window
-            'options'  =>'none'));
-            $mform->addElement('header', 'generaln', 'First');
-            $myBtn = $mform->createElement('submit', 'submitbutton1', 'Node');
-            $a1_b1 = $myBtn;
-            $a1_b2 = $myBtn;
-            $a1_b3 = $myBtn;
-
-            $a1 = array();
-            $a1[] = $a1_b1;
-            // $a1[] = '<br>';
-            $a1[] = $a1_b2;
-            // $a1[] =& $a1_b3;
-            $mform->addGroup($a1, 'baca', $btn, array(' '), true);
-
-
-
-            $mform->addElement('header', 'general', 'Đai học');
+            // Tên bậc
             $tenbac=array();
             $tenbac[] =& $mform->createElement('text', 'tenbac', 'ÁDASD', 'size="70"');
-            
             $mform->addGroup($tenbac, 'tenbac', 'Tên bậc đào tạo', array(' '), false);
 
 
@@ -62,7 +46,7 @@ require_once("$CFG->libdir/formslib.php");
             // $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
             //Button
             $buttonarray=array();
-            $buttonarray[] = $mform->createElement('submit', 'submitbutton', '1 Cập nhật');
+            $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Cập nhật');
             $buttonarray[] = $mform->createElement('cancel', null , 'Hủy');
             $mform->addGroup($buttonarray, 'buttonar', '', ' ', false);
         }

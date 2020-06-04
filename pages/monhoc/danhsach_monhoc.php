@@ -94,38 +94,4 @@ $mform = new danhsach_monhoc_form();
  // Footere
 echo $OUTPUT->footer();
 
-// Set table.
-// $table = new html_table();
-// $tmp1 = ['CSC10004', 'Cấu trúc dữ liệu và giải thuật', '4', '7.0'];
-// $tmp2 = ['CSC13003', 'Kiểm chứng phần mềm', '4', '7.5'];
-// $tmp3 = ['MTH00050', 'Toán học tổ hợp', '4', '8.0'];
-// $tmp4 = ['CSC10007', 'Hệ điều hành', '4', '7.0'];
-// $tmp5 = ['CSC13112', 'Thiết kế giao diện', '4', '8.0'];
-// $table->head = array('Course Code', 'Subject', 'Credit', 'Grade');
-// $table->data[] = $tmp1;
-// $table->data[] = $tmp2;
-// $table->data[] = $tmp3;
-// $table->data[] = $tmp4;
-// $table->data[] = $tmp5;
-// // Print table
-// echo html_writer::table($table);
-
-
-
-
-    // <?php
-    //     require_once(`../model/bacdt_model.php`);
-    //     require_once(__DIR__ . `/../../../config.php`);
-
-    //     function click(){
-
-    //         $param1 = new stdClass()
-    //         $param1->ma_bac = `DH`;
-    //         $param1->ten = `Đại học`;
-    //         $param1->mota = `Bậc Đại học HCMUS`;
-            
-    //         insert_bacdt(param1);
-                    
-    //     }
-
-    // ?>
+ ?>
