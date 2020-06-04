@@ -3,7 +3,7 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/bacdt_model.php');
+require_once('../../model/chuyennganhdt_model.php');
 // require_once('../factory.php');
 
 // Create button with method post
@@ -52,23 +52,59 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_chuyennganhdt.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
+$PAGE->navbar->add(get_string('label_chuyennganh', 'block_educationpgrs'));
 // Title.
-$PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
+$PAGE->set_title(get_string('label_chuyennganh', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
+$PAGE->set_heading(get_string('head_chuyenganh', 'block_educationpgrs'));
 echo $OUTPUT->header();
 
+// Insert data if table is empty
+if (!$DB->count_records('block_edu_chuyennganhdt', [])) {
+    $param1 = new stdClass();
+    $param2 = new stdClass();
 
+    // $param->id_chuyennganh = 1;
+    $param1->ten_chuyennganh = 'Công nghệ tri thức';
+    $param1->mota = 'Ngành khoa học máy tính,Hệ chính quy,Bậc đại học,khóa 2016';
+    // $param->id_chuyennganh = 2;
+    $param2->ten_chuyennganh = 'Thị giác máy tính và khoa học Rô Bốt';
+    $param2->mota = 'Ngành khoa học máy tính,Hệ chính quy,Bậc đại học,khóa 2016';
+    
+   
+    insert_chuyennganhdt($param1);
+    insert_chuyennganhdt($param2);
+}
 
-//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
- require_once('../../form/decuong_monhoc/thong_tin_chung.php');
- $mform = new thong_tin_chung_form();
+// Create button insert data, function import from factory.php
+$mybtn = button_method_post('btnAdd', 'Thêm mới');
+echo $mybtn;
+echo '<br>';
+// Catch event click btnAdd (method post)
+$count = 1;
+if(array_key_exists('btnAdd',$_POST)){
+    $param = new stdClass();    
+    $str_count = (string)$count;
+    
 
+    $param->ten_chuyennganh = 'Chuyên ngành NEWCN';
+    $param->mota = 'Chuyên ngành NEWCN HCMUS';
 
+    
+    // insert
+    insert_chuyennganhdt($param);
+    
+    
+ }
+
+$table = get_chuyennganhdt();
+echo html_writer::table($table);
+
+ // Form
+ $mform = new simplehtml_form();
  //Form processing and displaying is done here
  if ($mform->is_cancelled()) {
      //Handle form cancel operation, if cancel button is present on form
@@ -86,38 +122,9 @@ echo $OUTPUT->header();
  // Footere
 echo $OUTPUT->footer();
 
-// Set table.
-// $table = new html_table();
-// $tmp1 = ['CSC10004', 'Cấu trúc dữ liệu và giải thuật', '4', '7.0'];
-// $tmp2 = ['CSC13003', 'Kiểm chứng phần mềm', '4', '7.5'];
-// $tmp3 = ['MTH00050', 'Toán học tổ hợp', '4', '8.0'];
-// $tmp4 = ['CSC10007', 'Hệ điều hành', '4', '7.0'];
-// $tmp5 = ['CSC13112', 'Thiết kế giao diện', '4', '8.0'];
-// $table->head = array('Course Code', 'Subject', 'Credit', 'Grade');
-// $table->data[] = $tmp1;
-// $table->data[] = $tmp2;
-// $table->data[] = $tmp3;
-// $table->data[] = $tmp4;
-// $table->data[] = $tmp5;
-// // Print table
-// echo html_writer::table($table);
 
 
 
 
-    // <?php
-    //     require_once(`../model/bacdt_model.php`);
-    //     require_once(__DIR__ . `/../../../config.php`);
 
-    //     function click(){
-
-    //         $param1 = new stdClass()
-    //         $param1->ma_bac = `DH`;
-    //         $param1->ten = `Đại học`;
-    //         $param1->mota = `Bậc Đại học HCMUS`;
-            
-    //         insert_bacdt(param1);
-                    
-    //     }
-
-    // ?>
+    ?>

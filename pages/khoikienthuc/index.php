@@ -39,21 +39,20 @@ if ($courseid == SITEID) {
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/ctdt/index.php'));
+$PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php'));
 // Title.
-$PAGE->set_title(get_string('label_ctdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('label_ctdt', 'block_educationpgrs'));
+$PAGE->set_title(get_string('label_khoikienthuc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
+$PAGE->set_heading(get_string('label_khoikienthuc', 'block_educationpgrs'));
 echo $OUTPUT->header();
-
 
 
 ///-------------------------------------------------------------------------------------------------------///
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-require_once('../../form/ctdt/index_form.php');
+require_once('../../form/khoikienthuc/index_form.php');
 
 $customdata = array('hiddenID' => substr($hiddenID, 2));
 //$form = new viewlpstudent_form(null, $customdata);
@@ -61,55 +60,27 @@ $customdata = array('hiddenID' => substr($hiddenID, 2));
 $mform = new index_form();
 //$mform->setDefault('hiddenID', $this->_customdata[0]);
 
-
-
-// $listctdt = get_ctdt_byMa('DHCQ16_CNTT_KTPM');
-// echo $listctdt;
-// echo $listctdt['ma_nganh'];
-// if(empty($listctdt)){
-//     echo 'empty';
-// }
-// foreach($listctdt as $i){
-//     echo '1';
-//     echo $i->$ma_nganh;
-//     echo '2';
-// }
-
 //Form processing and displaying is done here
 if ($mform->is_cancelled()) {
-    //Handle form cancel operation, if cancel button is present on form
+    
 } else if ($mform->no_submit_button_pressed()) {
-    if ($mform->get_submit_value('newctdt')) {
-        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/ctdt/newctdt.php");
-    }    
-
-    $mform->display();
+    if ($mform->get_submit_value('newkkt')) {
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/newkkt.php");
+    }
 
 } else if ($fromform = $mform->get_data()) {
-    //In this case you process validated data. $mform->get_data() returns data posted in form.
-    //delete_ctdt();
-    
 
 } else if ($mform->is_submitted()) {
-    //In this case you process validated data. $mform->get_data() returns data posted in form.
-    
-    
-    
 
 } else {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form. 
-    //Set default data (if any)
-    //echo 'hello';
     $mform->set_data($toform);
-    // displays the form
     $mform->display();
 }
 
 
-// $btnurl = new \moodle_url('/blocks/educationpgrs/pages/ctdt/newctdt.php', ['courseid' => $courseid]);
-// $btnlbl = get_string('themctdt_head', 'block_educationpgrs');
-// echo $OUTPUT->single_button($btnurl, $btnlbl, $get);
+
+
+
 
  // Footere
 echo $OUTPUT->footer();

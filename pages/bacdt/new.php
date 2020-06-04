@@ -40,7 +40,11 @@ class simplehtml_form extends moodleform
     }
 }
 global $COURSE;
-$courseid = optional_param('courseid', SITEID, PARAM_INT);
+
+// Định dang courseid, item_id
+$id = optional_param('id', 0, PARAM_INT) || 1;
+$courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
+
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -52,23 +56,26 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/new.php', ['courseid' => $courseid, 'id' => $id]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
+$bacdt = get_bacdt_byID($id);
+$PAGE->navbar->add($bacdt->ten);
 // Title.
-$PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
+$PAGE->set_title('Quản lý Bậc ' . $bacdt->ten);
+$PAGE->set_heading('Quản lý Bậc ' . $bacdt->ten);
 echo $OUTPUT->header();
 
+$table = get_table_bacdt_byID($id);
+// echo html_writer::table($table);
+echo '<br>';
 
+ // Form
+ require_once('../../form/bacdt/qlbac_form.php');
+ require_once('../../form/bacdt/new_form.php');
 
-//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
- require_once('../../form/decuong_monhoc/thong_tin_chung.php');
- $mform = new thong_tin_chung_form();
-
-
+ $mform = new new_form();
  //Form processing and displaying is done here
  if ($mform->is_cancelled()) {
      //Handle form cancel operation, if cancel button is present on form

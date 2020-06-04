@@ -2,19 +2,24 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 
-    class ctdt extends moodleform {
+    class index_form extends moodleform {
         
         public function definition()
         {
             global $CFG;
             $mform = $this->_form;
-            //text-align: center;
 
-            // $mform->registerNoSubmitButton('newctdt');
-            // $mform->addElement('submit', 'newctdt', get_string('themctdt_head', 'block_educationpgrs'));
+            $mform->registerNoSubmitButton('newctdt');
+            $mform->addElement('submit', 'newctdt', get_string('themctdt_head', 'block_educationpgrs'));
             
+            // $mform->registerNoSubmitButton('hellomoodle');
+            // $mform->addElement('submit', 'hellomoodle', get_string('themctdt_head', 'block_educationpgrs'));
 
-            
+            // $mform->addElement('submit', 'hello', get_string('themctdt_head', 'block_educationpgrs'));
+            // $this->add_action_buttons();
+
+            // //$mform->addElement('hidden', 'hiddenID', $this->_customdata['hiddenID']);
+            // //$mform->setType('hiddenID', PARAM_INT);            
         }
 
         //Custom validation should be added here
@@ -33,6 +38,8 @@ require_once("$CFG->libdir/formslib.php");
             $mform = & $this->_form;
             $mform->addElement('submit', 'newct', get_string('themctdt_btn_updatefromup', 'block_educationpgrs'));
         }
+
+       
         
     }
 ?>

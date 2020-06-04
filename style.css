@@ -1,6 +1,8 @@
 /*  CSS Format  */
-.ten_mh{
+
+.myclass{
     width: auto;
     margin-bottom: 0;
     color: red;
+    border-radius: 10px !important;
 }

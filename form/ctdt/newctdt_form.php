@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 
-    class ctdt_addnew_form extends moodleform {
+    class newctdt_form extends moodleform {
         
         public function definition()
         {
@@ -48,7 +48,7 @@ require_once("$CFG->libdir/formslib.php");
             ///----------------------------------------------------------------------------------------------------------------------///            
             
             $eGroup=array();
-            $eGroup[] =& $mform->createElement('textarea', '1.1', '', 'wrap="virtual" rows="10" cols="105"');
+            $eGroup[] =& $mform->createElement('textarea', 'mtc_1_1', '', 'wrap="virtual" rows="10" cols="105"');
             $mform->addGroup($eGroup, 'mtdt1', get_string('themctdt_mtc', 'block_educationpgrs'), array(' '), false);
 
 
@@ -56,15 +56,15 @@ require_once("$CFG->libdir/formslib.php");
                                 get_string('themctdt_mtctcdr', 'block_educationpgrs') . '</p>');
             
             $eGroup=array();
-            $eGroup[] =& $mform->createElement('textarea', '1.2', '', 'wrap="virtual" rows="10" cols="105"');
+            $eGroup[] =& $mform->createElement('textarea', 'mtc_1_2_1', '', 'wrap="virtual" rows="10" cols="105"');
             $mform->addGroup($eGroup, 'mtdt21', get_string('themctdt_mtct', 'block_educationpgrs'), array(' '), false);
             
             $eGroup=array();
-            $eGroup[] =& $mform->createElement('textarea', '1.2', '', 'wrap="virtual" rows="10" cols="105"');
+            $eGroup[] =& $mform->createElement('textarea', 'mtc_1_2_2', '', 'wrap="virtual" rows="10" cols="105"');
             $mform->addGroup($eGroup, 'mtdt22', get_string('themctdt_cdr', 'block_educationpgrs'), array(' '), false);
             
             $eGroup=array();
-            $eGroup[] =& $mform->createElement('textarea', '1.2', '', 'wrap="virtual" rows="10" cols="105"');
+            $eGroup[] =& $mform->createElement('textarea', 'mtc_1_3', '', 'wrap="virtual" rows="10" cols="105"');
             $mform->addGroup($eGroup, 'mtdt3', get_string('themctdt_chnn', 'block_educationpgrs'), array(' '), false);
             
 
@@ -177,9 +177,5 @@ require_once("$CFG->libdir/formslib.php");
             return array();
         }
 
-        function get_submit_value($elementname) {
-            $mform = & $this->_form;
-            return $mform->getSubmitValue($elementname);
-        }
     }
 ?>

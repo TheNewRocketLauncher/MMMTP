@@ -37,15 +37,36 @@ require_once(__DIR__ . '/../../../config.php');
     global $DB, $USER, $CFG, $COURSE;
     $DB->insert_record('block_edu_bacdt', $param);
  }
- function get_bacdt() {
+ function get_bacdt($courseid) {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
     $table->head = array('STT', 'Bậc đào tạo', 'Mô tả');
     $allbacdts = $DB->get_records('block_edu_bacdt', []);
-    $stt = 1;
+    $stt = 1;    
     foreach ($allbacdts as $ibacdt) {
-        $table->data[] = [(string)$stt,(string)$ibacdt->ten,(string)$ibacdt->mota];
+      $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/qlbac.php', ['courseid' => $courseid, 'id' => $ibacdt->id_bac]);
+      $ten_url = \html_writer::link($url, $ibacdt->ten);
+        $table->data[] = [(string)$stt, $ten_url,(string)$ibacdt->mota];
         $stt = $stt+1;
     }
+
+    
+
+
     return $table;
  }
+ function get_table_bacdt_byID($id) {
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('STT', 'Bậc đào tạo', 'Mô tả');
+    $bacdt = $DB->get_record('block_edu_bacdt', ['id_bac' => $id]);
+    $table->data[] = [(string)$id,(string)$bacdt->ten,(string)$bacdt->mota];
+    return $table;
+ }
+
+ function get_bacdt_byID($id) {
+    global $DB, $USER, $CFG, $COURSE;    
+    $bacdt = $DB->get_record('block_edu_bacdt', ['id_bac' => $id]);
+    return $bacdt;
+ }
+ 

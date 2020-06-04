@@ -2,50 +2,85 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . './global_model.php');
 
-// insert into bacdt table
-// function insert_bacdt() {
-//     global $DB, $USER, $CFG, $COURSE, $bacDTinserted;
+//Sample data
+    // $dataObj1 = new stdClass();
+    // $dataObj1->ma_ctdt = "DHCQ16_CNTT_KTPM";
+    // $dataObj1->ma_chuyennganh = "DHCQ16_CNTT_KTPM";
+    // $dataObj1->ma_nganh = "DHCQ16_CNTT";
+    // $dataObj1->ma_nienkhoa = "DHCQ16";
+    // $dataObj1->ma_he = "DHCQ";
+    // $dataObj1->ma_bac = "DH";
+    // $dataObj1->thoigia_daotao = "4 năm";
+    // $dataObj1->khoiluong_kienthuc = "137 tín chỉ";
+    // $dataObj1->doituong_tuyensinh = "Đại học";
+    // $dataObj1->quytrinh_daotao = "Hello world";
+    // $dataObj1->dienkien_totnghiep = "abc";
+    // $dataObj1->ma_cay_khoikienthuc = "ADS";
+    // $dataObj1->mota = "Hello world";
 
-//     $dataObj1 = new stdClass();
-//     $dataObj1->ma_bac = 'DH';
-//     $dataObj1->ten = 'Đại học';
-//     $dataObj1->mota = 'Bậc Đại học HCMUS';
 
-//     $dataObj2 = new stdClass();
-//     $dataObj2->ma_bac = 'CD';
-//     $dataObj2->ten = 'Đại học';
-//     $dataObj2->mota = 'Bậc Đại học HCMUS';
-
-//     $dataObj3 = new stdClass();
-//     $dataObj3->ma_bac = 'DTTX';
-//     $dataObj3->ten = 'Đại học';
-//     $dataObj3->mota = 'Bậc Đại học HCMUS';
+//insert into ctdt table
+function insert_ctdt($param) {
+    global $DB, $USER, $CFG, $COURSE;    
     
-//     $DB->insert_record('block_edu_bacdt', $dataObj1);
-//     $DB->insert_record('block_edu_bacdt', $dataObj2);
-//     $DB->insert_record('block_edu_bacdt', $dataObj3);
-//  }
+    if(userIsAdmin()){
+        $DB->insert_record('block_edu_ctdt', $param);
+    } else{
 
-//  function insert_bacdt($param) {
-//      /*
-//      $param = new stdClass();
-//      $param->ma_bac = 'DH';
-//      $param->ten = 'Đại học';
-//      $param->mota = 'Bậc Đại học HCMUS'
-//      */
-//     global $DB, $USER, $CFG, $COURSE;
-//     $DB->insert_record('block_edu_bacdt', $param);
-//  }
-//  function get_bacdt() {
-//     global $DB, $USER, $CFG, $COURSE;
-//     $table = new html_table();
-//     $table->head = array('STT', 'Bậc đào tạo', 'Mô tả');
-//     $allbacdts = $DB->get_records('block_edu_bacdt', []);
-//     $stt = 1;
-//     foreach ($allbacdts as $ibacdt) {
-//         $table->data[] = [(string)$stt,(string)$ibacdt->ten,(string)$ibacdt->mota];
-//         $stt = $stt+1;
-//     }
-//     return $table;
-//  }
+    }
+    
+ }
+
+function get_list_ctdt(){
+    global $DB, $USER, $CFG, $COURSE;
+
+    if(userIsAdmin()){
+        $listctdt = $DB->get_records('block_edu_ctdt', ['ma_ctdt' => ma_ctdt]);
+    } else{
+        $listctdt = NULL;
+    }
+
+    return $listctdt;
+}
+
+function get_ctdt_byID($id){
+    global $DB, $USER, $CFG, $COURSE;
+
+    if(userIsAdmin()){
+        $listctdt = $DB->get_records('block_edu_ctdt', ['id_ctdt' => $id]);
+    } else{
+        $listctdt = NULL;
+    }
+
+    return $listctdt;
+}
+
+function get_ctdt_byMa($ma_ctdt){
+    global $DB, $USER, $CFG, $COURSE;
+
+    if(userIsAdmin()){
+        $listctdt = $DB->get_records('block_edu_ctdt', array('ma_ctdt' => $ma_ctdt));
+    } else{
+        $listctdt = NULL;
+    }
+
+    return $listctdt;
+}
+
+function delete_ctdt($id){
+    global $DB, $USER, $CFG, $COURSE;
+
+    if(userIsAdmin()){
+        $DB->delete_records('block_edu_ctdt', array('id' => $id));
+    } else{
+        return false;
+    }
+    return true;
+}
+
+// function get_ctdt_is_using($param){
+//     global $DB, $USER, $CFG, $COURSE;    
+
+// }

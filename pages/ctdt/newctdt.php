@@ -40,12 +40,12 @@ if ($courseid == SITEID) {
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/ctdt/addnew.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/ctdt/newctdt.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'));
-$PAGE->navbar->add(get_string('themctdt_lable', 'block_educationpgrs'));
+$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/ctdt/index.php'));
+$PAGE->navbar->add(get_string('themctdt_lable', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/ctdt/newctdt.php'));
 // Title.
 $PAGE->set_title(get_string('themctdt_title', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
 $PAGE->set_heading(get_string('themctdt_head', 'block_educationpgrs'));
@@ -53,20 +53,40 @@ echo $OUTPUT->header();
 
 
 ///-------------------------------------------------------------------------------------------------------///
-//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-require_once('../../form/ctdt/newctdt.php');
-$mform = new ctdt_addnew_form();
+// Tạo form
+require_once('../../form/ctdt/newctdt_form.php');
+$mform = new newctdt_form();
 
-
-//Form processing and displaying is done here
+// Lưu ý sự kiện button click đều gây load lại trang và lưu lại toàn bộ thông tin trong form
+// Tiến trình xử lý của form ở dưới đây
 if ($mform->is_cancelled()) {
-    //Handle form cancel operation, if cancel button is present on form
-}elseif ($mform->no_submit_button_pressed()) { 
+    // Gọi khi Cancel button được bấm 
+    // VD: element cancel hoặc button cancel tạo ra từ add_action_buttons()
+} else if ($mform->no_submit_button_pressed()) { 
+    // Gọi khi button được khai báo là no submit được click
+    // $mform->registerNoSubmitButton('btnchoosetree');
+    // $mform->addElement('submit', 'btnchoosetree', get_string('themctdt_btn_choncaykkt', 'block_educationpgrs'));
 
+    if ($mform->_form->get_submit_value('btnchoosetree')) {
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/newkkt_form.php");
+        //get_submit_value này lấy được bất kì thông tin nào đang có trên form lmao :D 
+        echo $mform->get_submit_value()->tct;
+    }
+    $mform->display();
+} else if ($fromform = $mform->get_data()) {
+    // Gọi khi và chỉ khi ( !$this->is_cancelled() and $this->is_submitted() and $this->is_validated() )
+    // Chi tiết xử lí hàm ở trong file formlib.php dòng 661
+    // Sự kiện Submit button click load lại file php này và thêm dữ liệu là form đã được submit -> dẫn tới hàm này được chạy vì thoả điều kiện.
+    // Lưu ý $mform->get_data() trả về stdClass và nó không thể ép kiểu sang string
 
-}
-else if ($fromform = $mform->get_data()) {
-    //In this case you process validated data. $mform->get_data() returns data posted in form.
+    // Cách lấy data submit từ form:
+    echo $mform->get_data()->tct;
+    
+    echo $mform->get_data()->mtc_1_1;
+    // với tct là name của element
+
+    // Tuỳ xử lí tiếp theo mà có nên cho form hiện lại hay không
+    $mform->display();
 } else {
     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
     // or on the first display of the form. 
