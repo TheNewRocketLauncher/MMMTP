@@ -66,13 +66,13 @@ if (!$DB->count_records('block_edu_nienkhoa', ['mota' => 'Niên khóa Đại h�
     $param1 = new stdClass();
     $param2 = new stdClass();
     $param3 = new stdClass();
-    // $param->id_bac = 1;
+    // $param->id = 1;
     $param1->ma_he = '3';
     $param1->ma_bac = '3';
     $param1->ma_nienkhoa='AB';
     $param1->ten_nienkhoa='phong dep trai';
     $param1->mota = 'hello';
-    // $param->id_bac = 1;
+    // $param->id = 1;
     
     insert_nienkhoa($param1);
     

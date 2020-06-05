@@ -3,7 +3,7 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/monhoc_model.php');
+require_once('../../model/bacdt_model.php');
 // require_once('../factory.php');
 
 // Create button with method post
@@ -40,7 +40,17 @@ class simplehtml_form extends moodleform
     }
 }
 global $COURSE;
-$courseid = optional_param('courseid', SITEID, PARAM_INT);
+
+// Định dang courseid, item_id
+$id = 1;
+$founded_id = false;
+if (optional_param('id', 0, PARAM_INT))
+{
+    $id = optional_param('id', 0, PARAM_INT);
+    $founded_id = true;
+}
+$courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
+
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -52,48 +62,72 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/update_bdt.php', ['courseid' => $courseid, 'id' => $id]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_monhoc', 'block_educationpgrs'));
+$bacdt = get_bacdt_byID($id);
+$navbar_name = 'Bậc ĐT';
+$title_heading = 'ĐT';
+if($founded_id == true)
+{
+    $navbar_name = $bacdt->ten;
+    $title_heading = $bacdt->ten;
+}
+else
+{
+    //
+}
+$PAGE->navbar->add($navbar_name);
 // Title.
-$PAGE->set_title(get_string('label_monhoc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_monhoc', 'block_educationpgrs'));
+$PAGE->set_title('Cập nhật Bậc ' . $title_heading);
+$PAGE->set_heading('Cập nhật Bậc ' . $title_heading);
 echo $OUTPUT->header();
 
-
-//get ma_monhoc truoc
-$btn_them_decuong = html_writer::tag('button','Thêm đề cương môn học', array('onClick' => "window.location.href='them_decuong_monhoc.php'"));
-echo $btn_them_decuong;
-echo '<br>';
-
-$btn_mo_khoahoc = html_writer::tag('button','Mở khóa học', array('onClick' => "window.location.href='mo_khoahoc.php'"));
-echo $btn_mo_khoahoc;
-echo '<br>';
-
-
-$table = get_monhoc_table();
-echo html_writer::table($table);
-
-//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-require_once('../../form/decuong_monhoc/danhsach_monhoc_form.php');
-$mform = new danhsach_monhoc_form();
-
-
+ // Form
+ require_once('../../form/bacdt/qlbac_form.php');
+ $mform = new qlbac_form();
  //Form processing and displaying is done here
  if ($mform->is_cancelled()) {
-     //Handle form cancel operation, if cancel button is present on form
- } else if ($fromform = $mform->get_data()) {
-     //In this case you process validated data. $mform->get_data() returns data posted in form.
- } else {
-     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-     // or on the first display of the form. 
-     //Set default data (if any)
-     $mform->set_data($toform);
-     // displays the form
-     $mform->display();
- }
+    //Handle form cancel operation, if cancel button is present on form
+} else if($mform->no_submit_button_pressed()) {
+    //
+    $mform->display();
+
+} else if ($fromform = $mform->get_data()) {
+    //In this case you process validated data. $mform->get_data() returns data posted in form.
+    // Thực hiện insert
+    $param1 = new stdClass();
+    // $param
+    $param1->id = $mform->get_data()->idbac; // The data object must have the property "id" set.
+    $param1->ma_bac = $mform->get_data()->mabac;
+    $param1->ten = $mform->get_data()->tenbac;
+    $param1->mota = $mform->get_data()->mota;
+    update_bacdt($param1);
+    // Hiển thị thêm thành công
+    echo '<h2>Cập nhật thành công!</h2>';
+    echo '<br>';
+    //edit file index.php tương ứng trong thư mục page. trỏ đến đường dẫn chứa file đó
+    $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_bacdt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
+    // $mform->display();
+
+
+} else if ($mform->is_submitted()) {
+    //
+} else {
+    //Set default data from DB
+    $toform;
+    $toform->idbac = $bacdt->id;
+    $toform->mabac = $bacdt->ma_bac;
+    $toform->tenbac = $bacdt->ten;
+    $toform->mota = $bacdt->mota;
+    $mform->set_data($toform);
+
+    // displays the form
+    $mform->display();
+}
 
  // Footere
 echo $OUTPUT->footer();

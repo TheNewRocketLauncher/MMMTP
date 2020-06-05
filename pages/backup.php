@@ -48,19 +48,19 @@ $PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
 echo $OUTPUT->header();
 
 // Insert data if table is empty
-if (!$DB->count_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS'])) {
+if (!$DB->count_records('block_edu_bacdt', [])) {
     $param1 = new stdClass();
     $param2 = new stdClass();
     $param3 = new stdClass();
-    // $param->id_bac = 1;
+    // $param->id = 1;
     $param1->ma_bac = 'DH';
     $param1->ten = 'Đại học';
     $param1->mota = 'Bậc Đại học HCMUS';
-    // $param->id_bac = 1;
+    // $param->id = 1;
     $param2->ma_bac = 'CD';
     $param2->ten = 'Cao đẳng';
     $param2->mota = 'Bậc Cao đẳng HCMUS';
-    // $param->id_bac = 1;
+    // $param->id = 1;
     $param3->ma_bac = 'DTTX';
     $param3->ten = 'Đào tạo từ xa';
     $param3->mota = 'Bậc Đào tạo từ xa HCMUS';

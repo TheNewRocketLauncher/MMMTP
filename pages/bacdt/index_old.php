@@ -4,9 +4,6 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/bacdt_model.php');
-require_once('../../js.php');
-
-
 // require_once('../factory.php');
 
 // Create button with method post
@@ -63,9 +60,6 @@ $PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
 // Title.
 $PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
 $PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
-// Require js amd
-$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
-// Print header
 echo $OUTPUT->header();
 
 // Insert data if table is empty
@@ -92,81 +86,58 @@ if (!$DB->count_records('block_edu_bacdt', [])) {
     insert_bacdt($param2);
     insert_bacdt($param3);
 }
+else
+{
+    $param1 = new stdClass();
+    // $param
+    $param1->id = 1;
+    $param1->ma_bac = 'DH f';
+    $param1->ten = 'Đại học f';
+    $param1->mota = 'Bậc Đại học HCMUS f';
+    update_bacdt($param1);
+}
 // Get and print table
 // $table = get_bacdt();
 // echo html_writer::table($table);
 
 // Create button insert data, function import from factory.php
-// $mybtn = button_method_get('btnAdd', 'Thêm mới get');
-// echo $mybtn;
-// echo '<br>';
-
-// $checkbox = html_writer::tag('input', ' ', array('type' => "checkbox", 'name' => 'checkbok_name2', 'id' => 'bdt2', 'value' => 'checkbok_value', 'onclick' => "changecheck('bdt2')"));   
-// $mcheckbox = html_writer::tag('input', ' ', array('type' => "checkbox", 'name' => 'checkbok_name2', 'id' => 'bdt10', 'value' => 'checkbok_value', 'onclick' => "actiondel()"));   
-// echo $mcheckbox;
- // Thêm mới
-$url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/add_bdt.php', ['courseid' => $courseid]);
-$ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
-echo  \html_writer::link($url, $ten_url);
+$form = new html_form();
+$form->button->text = $linkname;
+$form->button->title = $title;
+$form->button->id = $id;
+$form->url = $url;
+$form->add_class($class);
+$form->button->add_action(new popup_action('click', $url, $name, $options));
+echo $OUTPUT->button($form);
+$mybtn = button_method_post('btnAdd', 'Thêm mới');
+echo $mybtn;
 echo '<br>';
-echo '<br>';
-
-// Create table
-$table = get_bacdt_checkbox($courseid);
-echo html_writer::table($table);
-
-// Xóa
-echo '  ';
-echo \html_writer::tag(
-    'button',
-    'Xóa BDT',
-    array('id' => 'btn_delete_bacdt'));
-
-echo '<br>';
-
 // Catch event click btnAdd (method post)
 $count = 1;
-if(array_key_exists('mmmy',$_SESSION)){
-    echo 'the s';
-    // xoa by id, id= ???
-    // echo htmlspecialchars($_SESSION["test"]);
-    
-    echo 'the end';
-
-
-    // $param = new stdClass();    
-    // $str_count = (string)$count;
-    // // while($str_count.strlen()<3) {
-    // //     $str_count = '0'.$str_count;
-    // // }
-    // // $param->ma_bac = 'NEWBDT'.$str_count;
-    // // $param->ten = 'Bậc '.$param->ma_bac;
-    // // $param->mota = $param->ten.' HCMUS';
+if(array_key_exists('btnAdd',$_POST)){
+    $param = new stdClass();    
+    $str_count = (string)$count;
+    // while($str_count.strlen()<3) {
+    //     $str_count = '0'.$str_count;
+    // }
+    // $param->ma_bac = 'NEWBDT'.$str_count;
+    // $param->ten = 'Bậc '.$param->ma_bac;
+    // $param->mota = $param->ten.' HCMUS';
     
 
-    // $param->ma_bac = 'NEWBDT';
-    // $param->ten = 'Bậc NEWBDT';
-    // $param->mota = 'Bậc NEWBDT HCMUS';
+    $param->ma_bac = 'NEWBDT';
+    $param->ten = 'Bậc NEWBDT';
+    $param->mota = 'Bậc NEWBDT HCMUS';
 
     
-    // // insert
-    // insert_bacdt($param);
-    foreach ($table->data as $data) {
-        // $checkbox_unchecked = html_writer::tag('input', ' ', array('type' => "checkbox", 'name' => 'checkbok_name', 'id' => 'checkbok_name', 'value' => 'checkbok_value', 'checked' => 'true'));   
-        // if($data[0]==$checkbox_unchecked) {
-        //     echo 'true';
-        // }
-        // else {
-        //     echo 'false';
-        //     $data[0]=$checkbox_unchecked;
-        // }
-        // echo $data[0];
-    }
-        
+    // insert
+    insert_bacdt($param);
+    
     
  }
 
-
+$table = get_bacdt($courseid);
+echo html_writer::table($table);
 
  // Form
  $mform = new simplehtml_form();

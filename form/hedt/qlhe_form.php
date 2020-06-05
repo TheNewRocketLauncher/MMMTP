@@ -12,10 +12,20 @@ require_once("$CFG->libdir/formslib.php");
             // Header
             $mform->addElement('header', 'general', 'Quản lý thông tin');
 
-            // Tên bậc
-            $tenbac=array();
-            $tenbac[] =& $mform->createElement('text', 'tenbac', 'A', 'size="70"');
-            $mform->addGroup($tenbac, 'tenbac', 'Tên bậc đào tạo', array(' '), false);
+            // id
+            $idhe=array();
+            $idhe[] =& $mform->createElement('text', 'idhe', 'ÁDASD', 'size="70"');
+            $mform->addGroup($idhe, 'idhe', 'ID', array(' '), false);
+
+            // Mã bậc
+            $mabac=array();
+            $mabac[] =& $mform->createElement('text', 'mabac', 'ÁDASD', 'size="70"');
+            $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
+
+            // Mã hệ
+            $mahe=array();
+            $mahe[] =& $mform->createElement('text', 'mahe', 'ÁDASD', 'size="70"');
+            $mform->addGroup($mahe, 'mahe', 'Mã hệ đào tạo', array(' '), false);
 
             // Tên hệ
             $tenhe=array();
@@ -41,7 +51,7 @@ require_once("$CFG->libdir/formslib.php");
             // $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
             //Button
             $buttonarray=array();
-            $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Cập nhật');
+            $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Thực hiện');
 
             $buttonarray[] = $mform->createElement('cancel', null , 'Hủy');
             $mform->addGroup($buttonarray, 'buttonar', '', ' ', false);

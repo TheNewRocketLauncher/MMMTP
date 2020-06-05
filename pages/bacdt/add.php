@@ -1,12 +1,14 @@
+<!-- <script>
+function btn2065() {
+    alert("The paragraph was clicked.");
+}
+</script> -->
 <?php
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/bacdt_model.php');
-require_once('../../js.php');
-
-
 // require_once('../factory.php');
 
 // Create button with method post
@@ -68,6 +70,7 @@ $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
 
+
 // Insert data if table is empty
 if (!$DB->count_records('block_edu_bacdt', [])) {
     $param1 = new stdClass();
@@ -96,92 +99,71 @@ if (!$DB->count_records('block_edu_bacdt', [])) {
 // $table = get_bacdt();
 // echo html_writer::table($table);
 
-// Create button insert data, function import from factory.php
-// $mybtn = button_method_get('btnAdd', 'Thêm mới get');
-// echo $mybtn;
-// echo '<br>';
-
-// $checkbox = html_writer::tag('input', ' ', array('type' => "checkbox", 'name' => 'checkbok_name2', 'id' => 'bdt2', 'value' => 'checkbok_value', 'onclick' => "changecheck('bdt2')"));   
-// $mcheckbox = html_writer::tag('input', ' ', array('type' => "checkbox", 'name' => 'checkbok_name2', 'id' => 'bdt10', 'value' => 'checkbok_value', 'onclick' => "actiondel()"));   
-// echo $mcheckbox;
- // Thêm mới
-$url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/add_bdt.php', ['courseid' => $courseid]);
-$ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
-echo  \html_writer::link($url, $ten_url);
-echo '<br>';
-echo '<br>';
-
-// Create table
-$table = get_bacdt_checkbox($courseid);
-echo html_writer::table($table);
-
-// Xóa
-echo '  ';
+// Create button insert data
 echo \html_writer::tag(
     'button',
-    'Xóa BDT',
-    array('id' => 'btn_delete_bacdt'));
+    'Thêm BDT',
+    array('id' => 'btn_insert_bacdt'));
 
 echo '<br>';
-
 // Catch event click btnAdd (method post)
 $count = 1;
-if(array_key_exists('mmmy',$_SESSION)){
-    echo 'the s';
-    // xoa by id, id= ???
-    // echo htmlspecialchars($_SESSION["test"]);
-    
-    echo 'the end';
-
-
-    // $param = new stdClass();    
-    // $str_count = (string)$count;
-    // // while($str_count.strlen()<3) {
-    // //     $str_count = '0'.$str_count;
-    // // }
-    // // $param->ma_bac = 'NEWBDT'.$str_count;
-    // // $param->ten = 'Bậc '.$param->ma_bac;
-    // // $param->mota = $param->ten.' HCMUS';
+if(array_key_exists('btnAdd',$_POST)){
+    $param = new stdClass();    
+    $str_count = (string)$count;
+    // while($str_count.strlen()<3) {
+    //     $str_count = '0'.$str_count;
+    // }
+    // $param->ma_bac = 'NEWBDT'.$str_count;
+    // $param->ten = 'Bậc '.$param->ma_bac;
+    // $param->mota = $param->ten.' HCMUS';
     
 
-    // $param->ma_bac = 'NEWBDT';
-    // $param->ten = 'Bậc NEWBDT';
-    // $param->mota = 'Bậc NEWBDT HCMUS';
+    $param->ma_bac = 'NEWBDT';
+    $param->ten = 'Bậc NEWBDT';
+    $param->mota = 'Bậc NEWBDT HCMUS';
 
     
-    // // insert
-    // insert_bacdt($param);
-    foreach ($table->data as $data) {
-        // $checkbox_unchecked = html_writer::tag('input', ' ', array('type' => "checkbox", 'name' => 'checkbok_name', 'id' => 'checkbok_name', 'value' => 'checkbok_value', 'checked' => 'true'));   
-        // if($data[0]==$checkbox_unchecked) {
-        //     echo 'true';
-        // }
-        // else {
-        //     echo 'false';
-        //     $data[0]=$checkbox_unchecked;
-        // }
-        // echo $data[0];
-    }
-        
+    // insert
+    insert_bacdt($param);
+    
     
  }
 
-
+$table = get_bacdt($courseid);
+echo html_writer::table($table);
 
  // Form
- $mform = new simplehtml_form();
+ // Button open form
+ echo \html_writer::tag(
+    'button',
+    'Open add BDT',
+    array('id' => 'btn_open_form_insert_bacdt'));
+
+echo '<br>';
+
+ require_once('../../form/bacdt/new_form.php');
+
+ $mform = new new_form();
  //Form processing and displaying is done here
  if ($mform->is_cancelled()) {
      //Handle form cancel operation, if cancel button is present on form
+ } else if($mform->no_submit_button_pressed()) {
+     //
+     $mform->display();
+
  } else if ($fromform = $mform->get_data()) {
      //In this case you process validated data. $mform->get_data() returns data posted in form.
+     // Thực hiện insert
+ } else if ($mform->is_submitted()) {
+     //
  } else {
      // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
      // or on the first display of the form. 
      //Set default data (if any)
      $mform->set_data($toform);
      // displays the form
-     $mform->display();
+    //  $mform->display();
  }
 
  // Footere

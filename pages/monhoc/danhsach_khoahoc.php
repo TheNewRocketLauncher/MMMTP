@@ -3,7 +3,10 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/monhoc_model.php');
+require_once('../../model/khoahoc_model.php');
+require_once('../../js.php');
+
+
 // require_once('../factory.php');
 
 // Create button with method post
@@ -52,35 +55,61 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_monhoc', 'block_educationpgrs'));
+$PAGE->navbar->add(get_string('label_khoahoc', 'block_educationpgrs'));
 // Title.
-$PAGE->set_title(get_string('label_monhoc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_monhoc', 'block_educationpgrs'));
+$PAGE->set_title(get_string('label_khoahoc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
+$PAGE->set_heading(get_string('head_khoahoc', 'block_educationpgrs'));
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
+
 echo $OUTPUT->header();
 
 
 //get ma_monhoc truoc
-$btn_them_decuong = html_writer::tag('button','Thêm đề cương môn học', array('onClick' => "window.location.href='them_decuong_monhoc.php'"));
-echo $btn_them_decuong;
-echo '<br>';
 
 $btn_mo_khoahoc = html_writer::tag('button','Mở khóa học', array('onClick' => "window.location.href='mo_khoahoc.php'"));
 echo $btn_mo_khoahoc;
 echo '<br>';
 
 
-$table = get_monhoc_table();
+$table = get_khoahoc_checkbox($courseid);
 echo html_writer::table($table);
 
+// Xóa
+echo '  ';
+echo \html_writer::tag(
+    'button',
+    'Xóa khóa học',
+    array('id' => 'btn_delete_khoahoc'));
+
+echo '<br>';
+
+
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-require_once('../../form/decuong_monhoc/danhsach_monhoc_form.php');
-$mform = new danhsach_monhoc_form();
+require_once('../../form/decuong_monhoc/danhsach_khoahoc_form.php');
+$mform = new danhsach_khoahoc_form();
 
 
+$count = 1;
+if(array_key_exists('mmmy',$_SESSION)){
+    echo 'the s';
+    echo 'the end';
+
+
+    foreach ($table->data as $data) {
+      
+    }
+        
+    
+ }
+
+
+
+ // Form
+ $mform = new simplehtml_form();
  //Form processing and displaying is done here
  if ($mform->is_cancelled()) {
      //Handle form cancel operation, if cancel button is present on form
@@ -97,39 +126,5 @@ $mform = new danhsach_monhoc_form();
 
  // Footere
 echo $OUTPUT->footer();
-
-// Set table.
-// $table = new html_table();
-// $tmp1 = ['CSC10004', 'Cấu trúc dữ liệu và giải thuật', '4', '7.0'];
-// $tmp2 = ['CSC13003', 'Kiểm chứng phần mềm', '4', '7.5'];
-// $tmp3 = ['MTH00050', 'Toán học tổ hợp', '4', '8.0'];
-// $tmp4 = ['CSC10007', 'Hệ điều hành', '4', '7.0'];
-// $tmp5 = ['CSC13112', 'Thiết kế giao diện', '4', '8.0'];
-// $table->head = array('Course Code', 'Subject', 'Credit', 'Grade');
-// $table->data[] = $tmp1;
-// $table->data[] = $tmp2;
-// $table->data[] = $tmp3;
-// $table->data[] = $tmp4;
-// $table->data[] = $tmp5;
-// // Print table
-// echo html_writer::table($table);
-
-
-
-
-    // <?php
-    //     require_once(`../model/bacdt_model.php`);
-    //     require_once(__DIR__ . `/../../../config.php`);
-
-    //     function click(){
-
-    //         $param1 = new stdClass()
-    //         $param1->ma_bac = `DH`;
-    //         $param1->ten = `Đại học`;
-    //         $param1->mota = `Bậc Đại học HCMUS`;
-            
-    //         insert_bacdt(param1);
-                    
-    //     }
 
     // ?>

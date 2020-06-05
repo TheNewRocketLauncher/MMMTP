@@ -1,3 +1,9 @@
+<script>
+function btn20655() {
+    alert("The paragraph was clicked.");
+}
+</script>
+
 <?php
 // This file is part of Moodle - http://moodle.org/
 //
@@ -99,12 +105,24 @@ class block_educationpgrs extends block_list
              $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
+            $this->content->items[] = \html_writer::start_tag('p', array('class' => 'quick_course_clear'))
+                .html_writer::tag(
+                    'small',
+                    html_writer::link('#', get_string('clear', 'block_quick_course'),
+                    array('id' => 'testbtn'))
+                )
+                .html_writer::end_tag('p');
         }
 	    if (1) {
 	            $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['courseid' => $courseid]);
 	            $linktext = get_string('label_ctdt', 'block_educationpgrs');
-	            $this->content->items[] = \html_writer::link($url, $linktext);
-	        }      
+                $this->content->items[] = \html_writer::tag(
+                    'button',
+                    'The Button',
+                    array('id' => 'btn206'));
+            }
+        $this->page->requires->js_call_amd('block_educationpgrs/module', 'init');
+
         return $this->content;
     }
 

@@ -49,6 +49,7 @@ $string['gpatranscript_detail'] = 'fixed 7.5 (126 Credits)';
 $string['educationprogram'] = 'Education Program';
 $string['educationprogramdetail'] = 'Education Program 01 (89%)';
 $string['manageeducationprograms'] = 'Manage Education Programs';
+$string['arr'] = ['1', '2'];
 // Label
 $string['label_bacdt'] = 'Quản lý bậc đào tạo';
 $string['label_hedt'] = 'Quản lý hệ đào tạo';
@@ -58,6 +59,7 @@ $string['label_chuyennganh'] = 'Quản lý chuyên ngành đào tạo';
 $string['label_ctdt'] = 'Quản lý chương trình đào tạo';
 $string['label_monhoc'] = 'Quản lý môn học';
 $string['label_decuong'] = 'Thêm đề cương môn học';
+$string['label_mokhoahoc'] = 'Mở khóa học';
 // Header
 $string['head_bacdt'] = 'Danh mục bậc đào tạo';
 $string['head_hedt'] = 'Danh mục hệ đào tạo';
@@ -67,7 +69,7 @@ $string['head_chuyenganh'] = 'Danh mục chuyên ngành đào tạo';
 $string['head_ctdt'] = 'Danh mục chương trình đào tạo';
 $string['head_monhoc'] = 'Danh mục môn học';
 $string['head_decuong'] = 'Thêm đề cương môn học';
-
+$string['head_mokhoahoc'] = 'Mở khóa học';
 //group
 $string['group_thong_tin_chung'] = 'Thông tin chung';
 $string['group_muctieu_monhoc'] = 'Mục tiêu môn hoc';
@@ -185,4 +187,11 @@ $string['themnienkhoa_mota'] = 'Mô tả';
 $string['nienkhoa'] = 'Niên khóa';
 $string['label_taonienkhoa'] = 'Tạo niên khóa';
 
+//mo khoa hoc
+$string['ten_khoahoc'] = '*Tên khóa học';
+$string['giaovien_phutrach'] = '*Giáo viên phụ trách';
+$string['mota_khoahoc'] = '*Mô tả';
+$string['mokhoahoc'] = 'Mở khóa học';
+$string['label_khoahoc'] = 'Danh sách khóa học';
+$string['head_khoahoc'] = 'Danh sách khóa học';
 ?>

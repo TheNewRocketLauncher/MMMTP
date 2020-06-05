@@ -62,21 +62,21 @@ $PAGE->set_heading(get_string('head_nienkhoa', 'block_educationpgrs'));
 echo $OUTPUT->header();
 
 // Insert data if table is empty
-if (!$DB->count_records('block_edu_nienkhoa', ['mota' => 'Niên khóa Đại học HCMUS'])) {
+if (!$DB->count_records('block_edu_nienkhoa', [])) {
     $param1 = new stdClass();
     $param2 = new stdClass();
     $param3 = new stdClass();
-    // $param->id_bac = 1;
+    // $param->id = 1;
     $param1->id_he = '3';
     $param1->ma_nienkhoa='AB';
     $param1->ten='phong dep trai';
     $param1->mota = 'hello';
-    // $param->id_bac = 1;
+    // $param->id = 1;
     $param2->id_he = '3';
     $param2->ma_nienkhoa='AB';
     $param2->ten='phong dep trai';
     $param2->mota = 'hello';
-    // $param->id_bac = 1;
+    // $param->id = 1;
     $param3->id_he = '3';
     $param3->ma_nienkhoa='AB';
     $param3->ten='phong dep trai';

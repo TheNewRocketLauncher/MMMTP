@@ -3,34 +3,34 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 // require_once("../../../style.css")
 
-    class qlbac_form extends moodleform {
+    class table_form extends moodleform {
         
         public function definition()
         {
             global $CFG;
             $mform = $this->_form;
+            $action = $_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING'];
+            $mform->addElement('hidden', 'action', $action);
+
+
+            $mform->addElement('html', '<table><tr><td>Item 1</td><td>Item 2</td></tr></table>');
+
+
             // Header
             $mform->addElement('header', 'general', 'Quản lý thông tin');
-
-            // id
-            $idbac=array();
-            $idbac[] =& $mform->createElement('text', 'idbac', 'ÁDASD', 'size="70"');
-            $mform->addGroup($idbac, 'idbac', 'ID', array(' '), false);
-
-            // Mã bậc
-            $mabac=array();
-            $mabac[] =& $mform->createElement('text', 'mabac', 'ÁDASD', 'size="70"');
-            $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
 
             // Tên bậc
             $tenbac=array();
             $tenbac[] =& $mform->createElement('text', 'tenbac', 'ÁDASD', 'size="70"');
             $mform->addGroup($tenbac, 'tenbac', 'Tên bậc đào tạo', array(' '), false);
 
+
+            $mform->addElement('header', 'ge', 'Quản lý thông tin');
+
             // Mô tả
             $mota = array();
             $mota[] =& $mform->createElement('textarea', 'mota', '', 'wrap="virtual" rows="7" cols="75"');
-            $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), false);
+            $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), true);
             
             
             
@@ -46,7 +46,7 @@ require_once("$CFG->libdir/formslib.php");
             // $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
             //Button
             $buttonarray=array();
-            $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Thực hiện');
+            $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Cập nhật');
             $buttonarray[] = $mform->createElement('cancel', null , 'Hủy');
             $mform->addGroup($buttonarray, 'buttonar', '', ' ', false);
         }
