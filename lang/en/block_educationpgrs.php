@@ -190,7 +190,7 @@ $string['label_taonienkhoa'] = 'Tạo niên khóa';
 //Thêm khối kiến thúc
 $string['themkkt_lbl_bac'] = 'Bậc đào tạo';
 $string['themkkt_lbl_he'] = 'Hệ đào tạo';
-$string['themkkt_lbl_khoa'] = 'Khoa';
+$string['themkkt_lbl_khoa'] = 'Niên khoá';
 $string['themkkt_lbl_nganh'] = 'Ngành';
 $string['themkkt_lbl_chuyenganh'] = 'Chuyên ngành';
 $string['themkkt_lbl_makhoi'] = 'Mã khối';

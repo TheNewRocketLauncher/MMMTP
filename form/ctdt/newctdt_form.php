@@ -47,9 +47,15 @@ require_once("$CFG->libdir/formslib.php");
             $mform->addElement('header', 'general1', get_string('themctdt_lbl_mtdt', 'block_educationpgrs'));
             ///----------------------------------------------------------------------------------------------------------------------///            
             
+            $context = 'rrrr';
             $eGroup=array();
-            $eGroup[] =& $mform->createElement('textarea', 'mtc_1_1', '', 'wrap="virtual" rows="10" cols="105"');
+            $eGroup[] =& $mform->createElement('editor', 'mtc_1_1', '', NULL, array('context' => $context));
+            $mform->setType('mtc_1_1', PARAM_RAW);
             $mform->addGroup($eGroup, 'mtdt1', get_string('themctdt_mtc', 'block_educationpgrs'), array(' '), false);
+
+            // $eGroup=array();
+            // $eGroup[] =& $mform->createElement('textarea', 'mtc_1_1', '', 'wrap="virtual" rows="10" cols="105"');
+            // $mform->addGroup($eGroup, 'mtdt1', get_string('themctdt_mtc', 'block_educationpgrs'), array(' '), false);
 
 
             $mform->addElement('html', '<p class="mtdt2" style="text-align: left; padding-left: 0px;">' . 
@@ -176,6 +182,16 @@ require_once("$CFG->libdir/formslib.php");
         {
             return array();
         }
+
+        function get_submit_value($elementname) {
+            $mform = & $this->_form;
+            return $mform->getSubmitValue($elementname);
+        }
+
+        // function get_value_editor($elementname) {
+        //     $mform = & $this->_form;
+        //     return $mform->getValues($elementname);
+        // }
 
     }
 ?>

@@ -70,7 +70,7 @@ if ($mform->is_cancelled()) {
     if ($mform->_form->get_submit_value('btnchoosetree')) {
         redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/newkkt_form.php");
         //get_submit_value này lấy được bất kì thông tin nào đang có trên form lmao :D 
-        echo $mform->get_submit_value()->tct;
+        echo $mform->get_submit_value();
     }
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -78,12 +78,35 @@ if ($mform->is_cancelled()) {
     // Chi tiết xử lí hàm ở trong file formlib.php dòng 661
     // Sự kiện Submit button click load lại file php này và thêm dữ liệu là form đã được submit -> dẫn tới hàm này được chạy vì thoả điều kiện.
     // Lưu ý $mform->get_data() trả về stdClass và nó không thể ép kiểu sang string
+    // if(get_submit_value('newctdt') != NULL && 
+    //     get_submit_value('newctdt') != NULL && 
+    //     get_submit_value('newctdt') != NULL && 
+    //     get_submit_value('newctdt') != NULL && 
+    //     get_submit_value('newctdt') != NULL && 
+    //     get_submit_value('newctdt') != NULL && 
+    //     get_submit_value('newctdt') != NULL
+    // ){
+    //     $param;
+    //     insert_ctdt($param);
+    // }
 
-    // Cách lấy data submit từ form:
-    echo $mform->get_data()->tct;
-    
-    echo $mform->get_data()->mtc_1_1;
-    // với tct là name của element
+    $muctieu = $mform->get_value_editor('mtc_1_1');
+    if(empty($muctieu)){
+        echo 'yes';
+    } else{
+        echo 'no data';
+    }
+    echo $muctieu['context'];
+
+    $muctieu = $mform->get_value_editor()->mtc_1_1;
+
+    if(empty($muctieu)){
+        echo 'yes';
+    } else{
+        echo 'no data';
+    }
+    echo $muctieu['context'];
+
 
     // Tuỳ xử lí tiếp theo mà có nên cho form hiện lại hay không
     $mform->display();

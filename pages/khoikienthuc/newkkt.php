@@ -4,7 +4,10 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
-// require_once('../factory.php');
+require_once('../../model/bacdt_model.php');
+require_once('../../model/hedt_model.php');
+// require_once('../../model/global_model.php');
+// require_once('../../factory.php');
 
 // Create button with method post
 function button_method_post($btn_name, $btn_value) {
@@ -21,6 +24,8 @@ function button_method_get($btn_name, $btn_value) {
     .html_writer::end_tag('form');
     return $btn;
 }
+
+
 
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
@@ -41,7 +46,7 @@ $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/newkkt.p
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-//$PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/block/index.php'));
+$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/block_edu.php'));
 $PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php'));
 $PAGE->navbar->add(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/newkkt.php'));
 // Title.
@@ -62,30 +67,36 @@ if ($mform->is_cancelled()) {
 } else if ($mform->no_submit_button_pressed()) {
     if ($mform->get_submit_value('btn_newkkt')) {
 
-        $data = $mform->get_submit_value('txt_khoa');
-        if (empty($data)) {
-            if(validatedata()){
-                // $param = new stdClass();
-                // $param->ma_khoi = $mform->get_submit_value('txt_khoa');;
-                // $param->id_loai_kkt = $mform->get_submit_value('txt_khoa');
-                // $param->co_dieukien = $mform->get_submit_value('txt_khoa');
-                // $param->ma_dieukien = $mform->get_submit_value('txt_khoa');
-                // $param->ten_khoi = $mform->get_submit_value('txt_khoa');
-                // $param->mota = $mform->get_submit_value('txt_khoa');
-                // insert_kkt($param);
+        // $data = $mform->get_submit_value('txt_khoa');
+        // if (empty($data)) {
+        //     if(validatedata()){
+        //         // $param = new stdClass();
+        //         // $param->ma_khoi = $mform->get_submit_value('txt_khoa');;
+        //         // $param->id_loai_kkt = $mform->get_submit_value('txt_khoa');
+        //         // $param->co_dieukien = $mform->get_submit_value('txt_khoa');
+        //         // $param->ma_dieukien = $mform->get_submit_value('txt_khoa');
+        //         // $param->ten_khoi = $mform->get_submit_value('txt_khoa');
+        //         // $param->mota = $mform->get_submit_value('txt_khoa');
+        //         // insert_kkt($param);
 
-                $m = array();
-                $m['hello'] = 'yes';
-                $m['hell'] = 'no';
+        //         $m = array();
+        //         $m['hello'] = 'yes';
+        //         $m['hell'] = 'no';
 
-                echo $m['hello'];
+        //         echo $m['hello'];
                 
-            } else{
+        //     } else{
 
-            }
-        } else {
-            echo $data;
-        }
+        //     }
+
+        
+        // } else {
+        //     echo $data;
+        // }
+
+        
+        $index = $mform->get_submit_value('txt_bac');
+        echo $index;
 
     } else if($mform->get_submit_value('btn_newkktcon')){
         
@@ -98,7 +109,8 @@ if ($mform->is_cancelled()) {
     // }
 
 } else if ($fromform = $mform->get_data()) {
-    
+    $index = $mform->get_data()->txt_bac;
+    echo $index;
 
 } else {
     $datatest = array(

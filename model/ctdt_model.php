@@ -37,7 +37,7 @@ function get_list_ctdt(){
     global $DB, $USER, $CFG, $COURSE;
 
     if(userIsAdmin()){
-        $listctdt = $DB->get_records('block_edu_ctdt', ['ma_ctdt' => ma_ctdt]);
+        $listctdt = $DB->get_records('block_edu_ctdt', []);
     } else{
         $listctdt = NULL;
     }
@@ -80,7 +80,19 @@ function delete_ctdt($id){
     return true;
 }
 
-// function get_ctdt_is_using($param){
-//     global $DB, $USER, $CFG, $COURSE;    
+function update_ctdt($param){
+    global $DB, $USER, $CFG, $COURSE;
 
-// }
+    if(userIsAdmin()){
+        $DB->update_record('block_edu_ctdt', $param, $bulk=false);
+    } else{
+        return false;
+    }
+    return true;
+}
+function checkingRef(){
+    if(userIsAdmin()){
+        return true;
+    }
+    return false;
+}

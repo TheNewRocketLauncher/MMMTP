@@ -2,8 +2,8 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../config.php');
-require_once(__DIR__ . './global_model.php');
-require_once(__DIR__ . './cay_kkt_model.php');
+require_once('../../model/global_model.php');
+// require_once('./cay_kkt_model.php');
 
 //Sample data
     // $param = new stdClass();
@@ -82,3 +82,24 @@ function delete_kkt($id){
     }
 }
 
+function update_kkt($param){
+    global $DB, $USER, $CFG, $COURSE;
+
+    if(userIsAdmin()){
+        $DB->update_record('block_edu_ctdt', $param, $bulk=false);
+    } else{
+        return false;
+    }
+    return true;
+}
+
+// Checking if file linked
+// function checking(){
+//     if(userIsAdmin()){
+//         return true;
+//     }
+//     return false;
+// }
+
+
+?>

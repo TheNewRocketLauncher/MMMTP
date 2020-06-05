@@ -2,7 +2,7 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../config.php');
-require_once(__DIR__ . './global_model.php');
+//require_once('./global_model.php');
 
 //Sample data
     // $param = new stdClass();
@@ -81,3 +81,4 @@ function delete_kkt($id){
     }
 }
 
+?>

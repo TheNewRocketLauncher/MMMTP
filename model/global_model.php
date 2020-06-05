@@ -7,3 +7,4 @@ function userIsAdmin(){
     return true;
 }
 
+?>

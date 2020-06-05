@@ -59,36 +59,18 @@ $customdata = array('hiddenID' => substr($hiddenID, 2));
 //$form = new viewlpstudent_form(null, $customdata);
 
 $mform = new index_form();
-//$mform->setDefault('hiddenID', $this->_customdata[0]);
-
-
-
-// $listctdt = get_ctdt_byMa('DHCQ16_CNTT_KTPM');
-// echo $listctdt;
-// echo $listctdt['ma_nganh'];
-// if(empty($listctdt)){
-//     echo 'empty';
-// }
-// foreach($listctdt as $i){
-//     echo '1';
-//     echo $i->$ma_nganh;
-//     echo '2';
-// }
 
 //Form processing and displaying is done here
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
 } else if ($mform->no_submit_button_pressed()) {
     if ($mform->get_submit_value('newctdt')) {
-        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/ctdt/newctdt.php");
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/ctdt/newctdt.php");        
     }    
 
     $mform->display();
 
-} else if ($fromform = $mform->get_data()) {
-    //In this case you process validated data. $mform->get_data() returns data posted in form.
-    //delete_ctdt();
-    
+} else if ($fromform = $mform->get_data()) {    
 
 } else if ($mform->is_submitted()) {
     //In this case you process validated data. $mform->get_data() returns data posted in form.
@@ -97,10 +79,17 @@ if ($mform->is_cancelled()) {
     
 
 } else {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form. 
-    //Set default data (if any)
-    //echo 'hello';
+
+    $listctdt = get_ctdt_byID(1);
+    if(empty($listctdt)){
+        echo 'empty';
+    }
+    echo $listctdt->ma_bac;
+
+    $toform = array(
+        txt_bac => $listctdt->ma_bac
+    );
+
     $mform->set_data($toform);
     // displays the form
     $mform->display();
