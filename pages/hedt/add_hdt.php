@@ -80,8 +80,11 @@ echo $OUTPUT->header();
     //In this case you process validated data. $mform->get_data() returns data posted in form.
     // Thực hiện insert
     $param1 = new stdClass();
+    $index_mabac = $mform->get_data()->mabac;
     // $param
-    $param1->ma_bac = $mform->get_data()->mabac;
+    $param1->ma_bac = $mform->get_data()->mabac;    
+    $allbacdts = $DB->get_records('block_edu_bacdt', []);
+    $param1->ma_bac = $allbacdts[$index_mabac + 1 ]->ma_bac;
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;
     $param1->mota = $mform->get_data()->mota;
@@ -99,12 +102,12 @@ echo $OUTPUT->header();
 } else if ($mform->is_submitted()) {
     //
 } else {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form. 
-    //Set default data (if any)
+    // th
     $mform->set_data($toform);
+
     // displays the form
     $mform->display();
+    
 }
 
  // Footere

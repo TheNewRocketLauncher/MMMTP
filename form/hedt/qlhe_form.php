@@ -7,7 +7,7 @@ require_once("$CFG->libdir/formslib.php");
         
         public function definition()
         {
-            global $CFG;
+            global $CFG, $DB;
             $mform = $this->_form;
             // Header
             $mform->addElement('header', 'general', 'Quản lý thông tin');
@@ -18,8 +18,18 @@ require_once("$CFG->libdir/formslib.php");
             $mform->addGroup($idhe, 'idhe', 'ID', array(' '), false);
 
             // Mã bậc
+            // $mabac=array();
+            // $mabac[] =& $mform->createElement('text', 'mabac', 'ÁDASD', 'size="70"');
+            // $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
+
+            // Ma bac new
             $mabac=array();
-            $mabac[] =& $mform->createElement('text', 'mabac', 'ÁDASD', 'size="70"');
+            $allbacdts = $DB->get_records('block_edu_bacdt', []);
+            $arr_mabac = array();
+            foreach ($allbacdts as $ibacdt) {
+                $arr_mabac[] =& $ibacdt->ma_bac;
+              }
+            $mabac[] =& $mform->createElement('select', 'mabac', 'Test Select:', $arr_mabac, array(''));
             $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
 
             // Mã hệ

@@ -104,7 +104,7 @@ echo $OUTPUT->header();
     $param1->ten = $mform->get_data()->tenbac;
     $param1->mota = $mform->get_data()->mota;
     update_bacdt($param1);
-    // Hiển thị thêm thành công
+    // Hiển thị thêm thành côngz
     echo '<h2>Cập nhật thành công!</h2>';
     echo '<br>';
     //edit file index.php tương ứng trong thư mục page. trỏ đến đường dẫn chứa file đó

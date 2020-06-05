@@ -57,14 +57,14 @@ require_once(__DIR__ . '/../../../config.php');
  function get_hedt_checkbox($courseid) {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('STT', 'Bậc đào tạo', 'Hệ đào tạo', 'Mô tả');
+   $table->head = array('', 'STT', 'Bậc đào tạo', 'Hệ đào tạo', 'Mô tả');
    $allhedts = $DB->get_records('block_edu_hedt', []);
    $stt = 1;
    foreach ($allhedts as $ihedt) {
      $checkbox = html_writer::tag('input', ' ', array('class' => 'hdtcheckbox','type' => "checkbox", 'name' => $ihedt->id, 'id' => 'hdt' . $ihedt->id, 'value' => '0', 'onclick' => "changecheck_hedt($ihedt->id)"));   
      $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/update_hdt.php', ['courseid' => $courseid, 'id' => $ihedt->id]);
      $ten_url = \html_writer::link($url, $ihedt->ten);
-       $table->data[] = [$checkbox, (string)$stt,'Đại học',$ten_url,(string)$ihedt->mota];
+       $table->data[] = [$checkbox, (string)$stt,(string)$ihedt->ma_bac,$ten_url,(string)$ihedt->mota];
        $stt = $stt+1;
    }
    return $table;
