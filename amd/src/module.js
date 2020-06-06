@@ -101,17 +101,11 @@ define(['jquery'], function($) {
                 var cusid_ele = document.getElementsByClassName('khoahoccheckbox');
                 for (var i = 0; i < cusid_ele.length; ++i) {
                     var item = cusid_ele[i];  
-                    
                     if(item.value == '1')
                     {
                         list_id.push(item.name);
                     }
                 }
-                console.log(list_id)
-                // get all elemeent by class
-                // Call to file php in ajax directory
-                // Ajax call to get the results.
-                
                 list_id.forEach(element => {
                     $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/delete_khoahoc.php', {
                         course: 1,
@@ -121,13 +115,36 @@ define(['jquery'], function($) {
                     }).fail(function(){
                         alert('Something wrong!');
                     });
-                    
                 });
-
-
-
                 location.reload(true);
               }); // end del
+
+
+              //delete nien khoa
+              $("#btn_delete_nienkhoa").click(function() {
+                var list_id = [];
+                var cusid_ele = document.getElementsByClassName('nienkhoacheckbox');
+                for (var i = 0; i < cusid_ele.length; ++i) {
+                    var item = cusid_ele[i];  
+                    if(item.value == '1')
+                    {
+                        list_id.push(item.name);
+                    }
+                }
+                list_id.forEach(element => {
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/delete_nienkhoa.php', {
+                        course: 1,
+                        id: element
+                    }).done(function(data){
+                        // alert(data);
+                    }).fail(function(){
+                        alert('Something wrong!');
+                    });
+                });
+                location.reload(true);
+              }); // end del
+
+
 
 
 

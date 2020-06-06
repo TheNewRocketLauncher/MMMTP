@@ -4,7 +4,7 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/nienkhoa/nienkhoa_model.php');
+require_once('../../model/nienkhoa_model.php');
 
 // require_once('../factory.php');
 
@@ -37,7 +37,7 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_nienkhoa.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/nienkhoa/create.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
@@ -48,21 +48,60 @@ $PAGE->set_heading(get_string('head_nienkhoa', 'block_educationpgrs'));
 echo $OUTPUT->header();
 
 
- require_once('../../form/nienkhoa/nien_khoa.php');
+ require_once('../../form/nienkhoa/nien_khoa_form.php');
  $mform = new nien_khoa_form();
 
-
  if ($mform->is_cancelled()) {
- } else if ($fromform = $mform->get_data()) {
- } else {
+    //Handle form cancel operation, if cancel button is present on form
+} else if($mform->no_submit_button_pressed()) {
+    //
+    $mform->display();
 
-     $mform->set_data($toform);
-     $mform->display();
- }
+} else if ($fromform = $mform->get_data()) {
+    //In this case you process validated data. $mform->get_data() returns data posted in form.
+    // Thực hiện insert
+    $param1 = new stdClass();
+    $index_mabac = $mform->get_data()->mabac;
+    // $param
+    $param1->ma_bac = $mform->get_data()->mabac;    
+    $allbacdts = $DB->get_records('block_edu_bacdt', []);
+    $param1->ma_bac = $allbacdts[$index_mabac + 1 ]->ma_bac;
+
+    $index_mahe = $mform->get_data()->mahe;
+    // $param
+    $param1->ma_he = $mform->get_data()->mahe;    
+    $allhedts = $DB->get_records('block_edu_hedt', []);
+    $param1->ma_he = $allhedts[$index_mahe + 1 ]->ma_he;
+
+    $param1->ma_nienkhoa = $mform->get_data()->ma_nienkhoa;
+
+    $param1->ten_nienkhoa = $mform->get_data()->ten_nienkhoa;
+    $param1->mota = $mform->get_data()->mota;
+    insert_nienkhoa($param1);
+    // Hiển thị thêm thành công
+    echo '<h2>Thêm mới thành công!</h2>';
+    echo '<br>';
+    //link đến trang danh sách
+    $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
+    // $mform->display();
 
 
+} else if ($mform->is_submitted()) {
+    //
+} else {
+    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+    // or on the first display of the form. 
+    //Set default data (if any)
+    $mform->set_data($toform);
+    // displays the form
+    $mform->display();
+}
 
-
+ // Footere
+echo $OUTPUT->footer();
+?>
  
 
 
@@ -87,13 +126,3 @@ echo $OUTPUT->header();
 
 
 
-
-
-
-
-
-
-
-
-echo $OUTPUT->footer();
-?>

@@ -3,7 +3,8 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/nienkhoa/nienkhoa_model.php');
+require_once('../../model/nienkhoa_model.php');
+require_once('../../js.php');
 
 // require_once('../factory.php');
 
@@ -51,74 +52,71 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_nienkhoa.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
 $PAGE->navbar->add(get_string('label_nienkhoa', 'block_educationpgrs'));
 // Title.
 $PAGE->set_title(get_string('label_nienkhoa', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_nienkhoa', 'block_educationpgrs'));
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 echo $OUTPUT->header();
 
-// Insert data if table is empty
-if (!$DB->count_records('block_edu_nienkhoa', ['mota' => 'Niên khóa Đại học HCMUS'])) {
-    $param1 = new stdClass();
-    $param2 = new stdClass();
-    $param3 = new stdClass();
-    // $param->id = 1;
-    $param1->ma_he = '3';
-    $param1->ma_bac = '3';
-    $param1->ma_nienkhoa='AB';
-    $param1->ten_nienkhoa='phong dep trai';
-    $param1->mota = 'hello';
-    // $param->id = 1;
-    
-    insert_nienkhoa($param1);
-    
-}
 
-
-if (1) {
-
-
-    $btn = html_writer::tag('button', 'Thêm niên khóa', array  ('onClick' => "window.location.href='create.php'"  ));
-    echo $btn;
-}
-
-
-
-$mybtn2 = button_method_post('btnEdit', 'Sửa Niên Khóa');
-echo $mybtn2;
-$mybtn2 = button_method_post('btnDelete', 'Xóa Niên Khóa');
-echo $mybtn2;
-
-
-// Catch event click btnAdd (method post)
-$count = 1;
-if(array_key_exists('btnAdd',$_POST)){
-    $param = new stdClass();    
-    $str_count = (string)$count;
-    
-    
-
-    $param1->ma_he = '3';
-    $param1->ma_bac = '3';
-    $param1->ma_nienkhoa='AB';
-    $param1->ten_nienkhoa='phong dep trai';
-    $param1->mota = 'hello';
-    
-    // insert
-    insert_nienkhoa($param);
-    
- }
-
-$table = get_nienkhoa();
+$btn_mo_khoahoc = html_writer::tag('button','Mở niên khóa', array('onClick' => "window.location.href='create.php'"));
+echo $btn_mo_khoahoc;
+echo '<br>';
+$table = get_nienkhoa_checkbox($courseid);
 echo html_writer::table($table);
 
 
 
+echo '  ';
+echo \html_writer::tag(
+    'button',
+    'Xóa niên khóa',
+    array('id' => 'btn_delete_khoahoc'));
 
+echo '<br>';
+
+
+//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
+require_once('../../form/nienkhoa/nien_khoa_form.php');
+$mform = new nien_khoa_form();
+
+
+$count = 1;
+if(array_key_exists('mmmy',$_SESSION)){
+    echo 'the s';
+    echo 'the end';
+
+
+    foreach ($table->data as $data) {
+      
+    }
+        
+    
+ }
+
+
+
+ // Form
+ $mform = new simplehtml_form();
+ //Form processing and displaying is done here
+ if ($mform->is_cancelled()) {
+     //Handle form cancel operation, if cancel button is present on form
+ } else if ($fromform = $mform->get_data()) {
+     //In this case you process validated data. $mform->get_data() returns data posted in form.
+ } else {
+     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+     // or on the first display of the form. 
+     //Set default data (if any)
+     $mform->set_data($toform);
+     // displays the form
+     $mform->display();
+ }
 
  // Footere
-echo $OUTPUT->footer();
+ echo $OUTPUT->footer();
+
+ // ?>

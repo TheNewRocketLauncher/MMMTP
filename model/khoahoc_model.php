@@ -40,19 +40,6 @@ require_once('../../js.php');
 
 
 
- function get_khoahoc_table() {
-   global $DB, $USER, $CFG, $COURSE;
-   $table = new html_table();
-   $table->head = array('STT', 'Id môn học','Tên khóa học', 'Giáo viên phụ trách','Mô tả');
-   $allkhoahocs = $DB->get_records('block_edu_khoahoc', []);
-   $stt = 1;
-   foreach ($allkhoahocs as $ikhoahoc) {
-       $table->data[] = [(string)$stt,(string)$ikhoahoc->id_monhoc,(string)$ikhoahoc->ten_khoahoc, (string)$ikhoahoc->giaovien_phutrach,(string)$ikhoahoc->mota];
-       $stt = $stt+1;
-   }
-   return $table;
-
- }
 
  function get_khoahoc_byID($id) {
       global $DB, $USER, $CFG, $COURSE;    
@@ -94,3 +81,18 @@ function get_khoahoc_checkbox($courseid) {
   global $DB, $USER, $CFG, $COURSE;
   $DB->update_record('block_edu_khoahoc', $param, $bulk = false);
 }
+
+
+function get_khoahoc_table() {
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array('STT', 'Id môn học','Tên khóa học', 'Giáo viên phụ trách','Mô tả');
+   $allkhoahocs = $DB->get_records('block_edu_khoahoc', []);
+   $stt = 1;
+   foreach ($allkhoahocs as $ikhoahoc) {
+       $table->data[] = [(string)$stt,(string)$ikhoahoc->id_monhoc,(string)$ikhoahoc->ten_khoahoc, (string)$ikhoahoc->giaovien_phutrach,(string)$ikhoahoc->mota];
+       $stt = $stt+1;
+   }
+   return $table;
+
+ }

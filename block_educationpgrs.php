@@ -89,6 +89,16 @@ class block_educationpgrs extends block_list
             $linktext = get_string('label_monhoc', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
         }
+
+        if (1) {
+            //edit file index.php tương ứng trong thư mục page. trỏ đến đường dẫn chứa file đó
+            $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_khoahoc.php', ['courseid' => $courseid]);
+            $linktext = get_string('label_khoahoc', 'block_educationpgrs');
+            $this->content->items[] = \html_writer::link($url, $linktext);
+        }
+
+
+
         if (1) {
             $url = new \moodle_url('/blocks/educationpgrs/pages/nganh/qlnganh.php', ['courseid' => $courseid]);
             $linktext = get_string('label_nganh', 'block_educationpgrs');
