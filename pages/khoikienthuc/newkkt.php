@@ -6,6 +6,7 @@ require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
 require_once('../../model/bacdt_model.php');
 require_once('../../model/hedt_model.php');
+require_once('../../model/global_model.php');
 // require_once('../../model/global_model.php');
 // require_once('../../factory.php');
 
@@ -61,46 +62,64 @@ require_once('../../form/khoikienthuc/newkkt_form.php');
 
 $mform = new newkkt_form();
 
+// $table = get_monhoc_table();
+// echo html_writer::table($table);
+
 //Form processing and displaying is done here
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
 } else if ($mform->no_submit_button_pressed()) {
     if ($mform->get_submit_value('btn_newkkt')) {
+            if(validatedata()){
+                $param = new stdClass();
+                $param->ma_khoi = $mform->get_submit_value('txt_khoa');;
+                $param->id_loai_kkt = $mform->get_submit_value('txt_khoa');
+                $param->co_dieukien = $mform->get_submit_value('txt_khoa');
+                $param->ma_dieukien = $mform->get_submit_value('txt_khoa');
+                $param->ten_khoi = $mform->get_submit_value('txt_khoa');
+                $param->mota = $mform->get_submit_value('txt_khoa');
 
-        // $data = $mform->get_submit_value('txt_khoa');
-        // if (empty($data)) {
-        //     if(validatedata()){
-        //         // $param = new stdClass();
-        //         // $param->ma_khoi = $mform->get_submit_value('txt_khoa');;
-        //         // $param->id_loai_kkt = $mform->get_submit_value('txt_khoa');
-        //         // $param->co_dieukien = $mform->get_submit_value('txt_khoa');
-        //         // $param->ma_dieukien = $mform->get_submit_value('txt_khoa');
-        //         // $param->ten_khoi = $mform->get_submit_value('txt_khoa');
-        //         // $param->mota = $mform->get_submit_value('txt_khoa');
-        //         // insert_kkt($param);
+                $param_monhoc = get_global($USER->id);
 
-        //         $m = array();
-        //         $m['hello'] = 'yes';
-        //         $m['hell'] = 'no';
+                insert_kkt($param);
 
-        //         echo $m['hello'];
-                
-        //     } else{
+            }
 
-        //     }
-
-        
-        // } else {
-        //     echo $data;
-        // }
 
         
         $index = $mform->get_submit_value('txt_bac');
         echo $index;
 
-    } else if($mform->get_submit_value('btn_newkktcon')){
+    } else if($mform->get_submit_value('btn_cancle')){
         
+        $json = '{"list_mon": ["Mon1", "Mon2", "Mon3","Mon4"],"caykkt": "ADV"}';
+
+        $str = json_decode($json, true);
+        echo $str["list_mon"][0];
+
+        $list_mon = $str["list_mon"];
         
+
+
+
+        // echo $str;
+
+        // echo '111111111111111';
+        // $list_mon = $str->list_mon;
+        // echo $list_mon[0];
+
+        // foreach($list_mon as $i){
+        //     //echo '111111111111111';
+        //     echo $i[0];
+        // }
+
+
+        // $json = '{"a":14444,"b":2,"c":3,"d":4,"e":5}';
+        // $test = json_decode($json);
+        // echo $test->a;
+        // var_dump(json_decode($json, true));
+        
+        //redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
     }
 
     $mform->display();
@@ -109,16 +128,29 @@ if ($mform->is_cancelled()) {
     // }
 
 } else if ($fromform = $mform->get_data()) {
-    $index = $mform->get_data()->txt_bac;
-    echo $index;
+
+    if(validatedata()){
+        $param_khoi = new stdClass();
+        $param_khoi->ma_khoi = $mform->get_submit_value('');
+        $param_khoi->id_loai_kkt = $mform->get_submit_value('txt_makhoi');
+        $param_khoi->co_dieukien = $mform->get_submit_value('txt_loaikhoi');
+        $param_khoi->ma_dieukien = $mform->get_submit_value('txt_loaikhoi');
+        $param_khoi->ten_khoi = $mform->get_submit_value('txt_tenkkt');
+        $param_khoi->mota = $mform->get_submit_value('txt_mota');
+
+        // $arr_mon = {'ma_monhocA', 'ma_monhocC', 'ma_monhocB'}
+        $arr_mon = convertToArrayMon(get_global($USER->id));
+
+        insert_kkt($param_khoi, $arr_mon);
+    }
 
 } else {
-    $datatest = array(
-        txt_khoa => array(
-            'lewd', 'mlem'
-        ),
-        txt_nganh => 'yes'
-    );
+    // $datatest = array(
+    //     txt_khoa => array(
+    //         'lewd', 'mlem'
+    //     ),
+    //     txt_nganh => 'yes'
+    // );
 
     $mform->set_data($datatest);
 
@@ -127,8 +159,12 @@ if ($mform->is_cancelled()) {
 }
 
 function validatedata(){
+    
+    // $str = get_global($USER->id);
+    // if(empty($str)){}
     return true;
 }
+
 
  // Footere
 echo $OUTPUT->footer();

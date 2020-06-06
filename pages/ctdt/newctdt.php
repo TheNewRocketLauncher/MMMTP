@@ -3,6 +3,7 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
+require_once('../../model/ctdt_model.php');
 // require_once('../factory.php');
 
 // Create button with method post
@@ -25,6 +26,8 @@ function button_method_get($btn_name, $btn_value) {
 ///-------------------------------------------------------------------------------------------------------///
 global $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
+$tree = optional_param('tree', SITEID, PARAM_INT);
+$qtdt = optional_param('qtdt', SITEID, PARAM_INT);
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -34,9 +37,6 @@ if ($courseid == SITEID) {
     require_login($courseid);
     $context = \context_course::instance($courseid); // Create instance base on $courseid
 }
-
-
-
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -57,69 +57,67 @@ echo $OUTPUT->header();
 require_once('../../form/ctdt/newctdt_form.php');
 $mform = new newctdt_form();
 
-// Lưu ý sự kiện button click đều gây load lại trang và lưu lại toàn bộ thông tin trong form
-// Tiến trình xử lý của form ở dưới đây
 if ($mform->is_cancelled()) {
-    // Gọi khi Cancel button được bấm 
-    // VD: element cancel hoặc button cancel tạo ra từ add_action_buttons()
+    
 } else if ($mform->no_submit_button_pressed()) { 
-    // Gọi khi button được khai báo là no submit được click
-    // $mform->registerNoSubmitButton('btnchoosetree');
-    // $mform->addElement('submit', 'btnchoosetree', get_string('themctdt_btn_choncaykkt', 'block_educationpgrs'));
-
     if ($mform->_form->get_submit_value('btnchoosetree')) {
         redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/newkkt_form.php");
         //get_submit_value này lấy được bất kì thông tin nào đang có trên form lmao :D 
-        echo $mform->get_submit_value();
+        //echo $mform->get_submit_value();
     }
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
-    // Gọi khi và chỉ khi ( !$this->is_cancelled() and $this->is_submitted() and $this->is_validated() )
-    // Chi tiết xử lí hàm ở trong file formlib.php dòng 661
-    // Sự kiện Submit button click load lại file php này và thêm dữ liệu là form đã được submit -> dẫn tới hàm này được chạy vì thoả điều kiện.
-    // Lưu ý $mform->get_data() trả về stdClass và nó không thể ép kiểu sang string
-    // if(get_submit_value('newctdt') != NULL && 
-    //     get_submit_value('newctdt') != NULL && 
-    //     get_submit_value('newctdt') != NULL && 
-    //     get_submit_value('newctdt') != NULL && 
-    //     get_submit_value('newctdt') != NULL && 
-    //     get_submit_value('newctdt') != NULL && 
-    //     get_submit_value('newctdt') != NULL
-    // ){
-    //     $param;
-    //     insert_ctdt($param);
-    // }
-
-    $muctieu = $mform->get_value_editor('mtc_1_1');
-    if(empty($muctieu)){
-        echo 'yes';
-    } else{
-        echo 'no data';
+    if(validateData()){
+        $param = new stdClass();
+        $ma_ctdt = $mform->get_submit_value('bacdt') . 
+                    $mform->get_submit_value('hedt') . 
+                    $mform->get_submit_value('khoatuyen') . 
+                    $mform->get_submit_value('nganhdt') . 
+                    $mform->get_submit_value('chuyenganh');
+        $param->ma_ctdt = $mform->get_submit_value('bacdt');
+        $param->ma_chuyennganh = $mform->get_submit_value('chuyenganh');
+        $param->ma_nganh = $mform->get_submit_value('nganhdt');
+        $param->ma_nienkhoa = $mform->get_submit_value('khoatuyen');
+        $param->ma_he = $mform->get_submit_value('hedt');
+        $param->ma_bac = $mform->get_submit_value('bacdt');
+        $param->thoigia_daotao = $mform->get_submit_value('tgdt');
+        $param->khoiluong_kienthuc = $mform->get_submit_value('klkt');
+        $param->doituong_tuyensinh = $mform->get_submit_value('dtts');
+        $param->quytrinh_daotao = $mform->get_submit_value('bacdt');
+        $param->dienkien_totnghiep = $mform->get_submit_value('bacdt');
+        //$param->ma_cay_khoikienthuc = $tree;
+        $param->mota = $mform->get_submit_value('bacdt');
+        insert_ctdt($param);
     }
-    echo $muctieu['context'];
 
-    $muctieu = $mform->get_value_editor()->mtc_1_1;
-
-    if(empty($muctieu)){
-        echo 'yes';
-    } else{
-        echo 'no data';
-    }
-    echo $muctieu['context'];
-
-
-    // Tuỳ xử lí tiếp theo mà có nên cho form hiện lại hay không
     $mform->display();
 } else {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form. 
-    //Set default data (if any)
+    
     $mform->set_data($toform);
     // displays the form
     $mform->display();
 }
 
+function validateData(){
+    // if(validata_bacdt(get_submit_value('tct')) && 
 
+        // get_submit_value('bacdt') != NULL && 
+        // get_submit_value('hedt') != NULL && 
+        // get_submit_value('khoatuyen') != NULL && 
+        // get_submit_value('nganhdt') != NULL && 
+        // get_submit_value('chuyenganh') != NULL && 
+
+        // get_submit_value('tdgt') != NULL && 
+        // get_submit_value('klkt') != NULL && 
+        // get_submit_value('dtts') != NULL && 
+        // get_submit_value('qtdt') != NULL && 
+        // get_submit_value('chuyenganh') != NULL && 
+        // get_submit_value('chuyenganh') != NULL && 
+        // get_submit_value('chuyenganh') != NULL
+    // ){
+
+    return true;
+}
 
  // Footere
 echo $OUTPUT->footer();
