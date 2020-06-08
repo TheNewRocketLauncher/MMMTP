@@ -12,6 +12,18 @@ require_once("$CFG->libdir/formslib.php");
             $mform->registerNoSubmitButton('newkkt');
             $mform->addElement('submit', 'newkkt', get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
 
+
+            
+            $khoikienthucGroup =array();
+            $khoikienthucGroup[]= $mform->createElement('text','','','size="100"');
+            $khoikienthucGroup[] =  $mform->createElement('submit', '', 'Tìm kiếm');
+            $mform->addGroup($khoikienthucGroup,'','Tìm kiếm',' ',false);
+
+
+
+
+
+
         }
 
         //Custom validation should be added here

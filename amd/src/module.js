@@ -160,6 +160,31 @@ define(["jquery"], function ($) {
         location.reload(true);
       }); // end del
 
+      $("#btn_delete_kkt").click(function () {
+        // alert("hi");
+        var list_id = [];
+        var cusid_ele = document.getElementsByClassName("kktcheckbox");
+        for (var i = 0; i < cusid_ele.length; ++i) {
+          var item = cusid_ele[i];
+          if (item.value == "1") {
+            list_id.push(item.name);
+          }
+        }
+        list_id.forEach((element) => {
+          $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/delete_kkt.php", {
+            course: 1,
+            id: element,
+          })
+            .done(function (data) {
+              // alert(data);
+            })
+            .fail(function () {
+              alert("Something wrong!");
+            });
+        });
+        location.reload(true);
+      }); // end del
+
       $("#btn206").click(function () {
         alert("Handler for .click() called.");
       });

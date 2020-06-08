@@ -28,15 +28,10 @@ require_once("$CFG->libdir/formslib.php");
             // $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Thực hiện');
             // $buttonarray[] = $mform->createElement('cancel', null , 'Hủy');
 
-            $manienkhoaGroup =array();
-            $manienkhoaGroup[]= $mform->createElement('text','ma_nienkhoa','','size="100"');
-                        $manienkhoaGroup[] =  $mform->createElement('submit', 'newctdt', 'Tìm kiếm');
-
-            $mform->addGroup($manienkhoaGroup,'',get_string('themnienkhoa_manienkhoa','block_educationpgrs'),' ',false);
-
-
-
-
+            $ctdtGroup =array();
+            $ctdtGroup[]= $mform->createElement('text','','','size="100"');
+            $ctdtGroup[] =  $mform->createElement('submit', '', 'Tìm kiếm');
+            $mform->addGroup($ctdtGroup,'','Tìm kiếm',' ',false);
 
 
             // $mform->registerNoSubmitButton('hellomoodle');

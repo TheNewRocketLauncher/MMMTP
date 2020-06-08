@@ -80,15 +80,15 @@ function get_kkt_byMa($ma_ctdt){
     return $kkt;
 }
 
-function delete_kkt($id){
-    global $DB, $USER, $CFG, $COURSE;
+// function delete_kkt($id){
+//     global $DB, $USER, $CFG, $COURSE;
 
-    if(userIsAdmin()){
-        $DB->delete_records('block_edu_khoikienthuc', array('id' => $id));
-    } else{
-        $kkt = NULL;
-    }
-}
+//     if(userIsAdmin()){
+//         $DB->delete_records('block_edu_khoikienthuc', array('id' => $id));
+//     } else{
+//         $kkt = NULL;
+//     }
+// }
 
 function update_kkt($param){
     global $DB, $USER, $CFG, $COURSE;
@@ -100,6 +100,42 @@ function update_kkt($param){
     }
     return true;
 }
+
+function get_kkt_checkbox($courseid) {
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('','STT', 'ID', 'Mã khối','ID loại KKT','Tên khối','Mô tả');
+    $allbacdts = $DB->get_records('block_edu_khoikienthuc', []);
+    $stt = 1;    
+    setcookie("arr", [0,1], time() + (86400 * 30), "/");
+   
+    foreach ($allbacdts as $ibacdt) {
+       // Create checkbox
+       // $check_id = 'bdt' . $inienkhoa->id;
+   
+       $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox','type' => "checkbox", 'name' => $ibacdt->id_khoikienthuc, 'id' => 'bdt' . $ibacdt->id_khoikienthuc, 'value' => '0', 'onclick' => "changecheck($ibacdt->id_khoikienthuc)")); 
+   
+
+       
+       $table->data[] = [$checkbox, (string)$stt , (string)$ibacdt->id_khoikienthuc ,(string)$ibacdt->ma_khoi ,(string)$ibacdt->id_loai_ktt ,(string)$ibacdt->ten_khoi ,(string)$ibacdt->mota];
+
+       $stt = $stt+1;
+    }
+    return $table;
+   }
+
+function delete_kkt($id){
+global $DB, $USER, $CFG, $COURSE;
+
+if(userIsAdmin()){
+    $DB->delete_records('block_edu_khoikienthuc', array('id_khoikienthuc' => $id));
+} else{
+    return false;
+}
+return true;
+}
+
+
 
 
 // //model mon hoc

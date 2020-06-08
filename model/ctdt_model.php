@@ -69,16 +69,7 @@ function get_ctdt_byMa($ma_ctdt){
     return $listctdt;
 }
 
-function delete_ctdt($id){
-    global $DB, $USER, $CFG, $COURSE;
 
-    if(userIsAdmin()){
-        $DB->delete_records('block_edu_ctdt', array('id' => $id));
-    } else{
-        return false;
-    }
-    return true;
-}
 
 function update_ctdt($param){
     global $DB, $USER, $CFG, $COURSE;
@@ -140,3 +131,13 @@ function get_ctdt_checkbox($courseid) {
     return $table;
    }
 
+function delete_ctdt($id){
+global $DB, $USER, $CFG, $COURSE;
+
+if(userIsAdmin()){
+    $DB->delete_records('block_edu_ctdt', array('id' => $id));
+} else{
+    return false;
+}
+return true;
+}
