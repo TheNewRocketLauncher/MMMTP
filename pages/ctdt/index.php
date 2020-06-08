@@ -3,7 +3,9 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/bacdt_model.php');
+require_once('../../model/ctdt_model.php');
+require_once('../../js.php');
+
 // require_once('../factory.php');
 
 // Create button with method post
@@ -21,7 +23,24 @@ function button_method_get($btn_name, $btn_value) {
     .html_writer::end_tag('form');
     return $btn;
 }
+class simplehtml_form extends moodleform
+{
+    //Add elements to form
+    public function definition()
+    {
+        global $CFG;
+        $mform = $this->_form;
+        $mform->addElement('html', '        
 
+
+        ');
+    }
+    //Custom validation should be added here
+    function validation($data, $files)
+    {
+        return array();
+    }
+}
 
 
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
@@ -43,58 +62,85 @@ $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['co
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
+$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/ctdt/index.php'));
 // Title.
-$PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
+$PAGE->set_title(get_string('label_ctdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
+$PAGE->set_heading(get_string('label_ctdt', 'block_educationpgrs'));
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
+
 echo $OUTPUT->header();
 
 
 
 ///-------------------------------------------------------------------------------------------------------///
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-require_once('../../form/ctdt/ctdt.php');
-$mform = new ctdt();
+require_once('../../form/ctdt/index_form.php');
+
+$customdata = array('hiddenID' => substr($hiddenID, 2));
+//$form = new viewlpstudent_form(null, $customdata);
 
 
-
-
+$mform = new index_form();
 
 //Form processing and displaying is done here
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-} elseif ($mform->no_submit_button_pressed()) {
+} else if ($mform->no_submit_button_pressed()) {
     if ($mform->get_submit_value('newctdt')) {
-        $mform->hello();
-    }
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/ctdt/newctdt.php");        
+    }    
+    
+    $mform->display();
 
+} else if ($fromform = $mform->get_data()) {    
 
-
-
-
-
-
-
-
-} else if ($fromform = $mform->get_data()) {
+} else if ($mform->is_submitted()) {
     //In this case you process validated data. $mform->get_data() returns data posted in form.
+    
+    
+    
+
 } else {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form. 
-    //Set default data (if any)
+
+    $listctdt = get_ctdt_byID(1);
+    if(empty($listctdt)){
+        echo 'empty';
+    }
+    echo $listctdt->ma_bac;
+
+    $toform = array(
+        txt_bac => $listctdt->ma_bac
+    );
+
     $mform->set_data($toform);
     // displays the form
     $mform->display();
 }
 
-$btnurl = new \moodle_url('/blocks/educationpgrs/pages/ctdt/addnew.php', ['courseid' => $courseid]);
-$btnlbl = get_string('themctdt_head', 'block_educationpgrs');
-echo $OUTPUT->single_button($btnurl, $btnlbl, $get);
 
 
 
+
+// $btnurl = new \moodle_url('/blocks/educationpgrs/pages/ctdt/newctdt.php', ['courseid' => $courseid]);
+// $btnlbl = get_string('themctdt_head', 'block_educationpgrs');
+// echo $OUTPUT->single_button($btnurl, $btnlbl, $get);
 
  // Footere
+ $table = get_ctdt_checkbox($courseid);
+ 
+echo html_writer::table($table);
+
+
+echo '  ';
+echo \html_writer::tag(
+    'button',
+    'Xóa ctđt',
+    array('id' => 'btn_delete_ctdt'));
+
+echo '<br>';
+
+
+
 echo $OUTPUT->footer();
 
 

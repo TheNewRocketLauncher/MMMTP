@@ -3,6 +3,7 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
+require_once('../../model/ctdt_model.php');
 // require_once('../factory.php');
 
 // Create button with method post
@@ -22,8 +23,7 @@ function button_method_get($btn_name, $btn_value) {
 }
 
 
-///-------------------------------------------------------------------------------------------------------///
-global $COURSE;
+
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
 // Force user login in course (SITE or Course).
@@ -37,47 +37,51 @@ if ($courseid == SITEID) {
 
 
 
-
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/ctdt/addnew.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'));
-$PAGE->navbar->add(get_string('themctdt_lable', 'block_educationpgrs'));
+$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/block_edu.php'));
+$PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php'));
 // Title.
-$PAGE->set_title(get_string('themctdt_title', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('themctdt_head', 'block_educationpgrs'));
+$PAGE->set_title(get_string('label_khoikienthuc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
+$PAGE->set_heading(get_string('label_khoikienthuc', 'block_educationpgrs'));
 echo $OUTPUT->header();
 
 
 ///-------------------------------------------------------------------------------------------------------///
-//TR? �?N FORM TUONG ?NG C?A M�NH TRONG THU M?C FORM
-require_once('../../form/ctdt/newctdt.php');
-$mform = new ctdt_addnew_form();
+//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
+require_once('../../form/khoikienthuc/index_form.php');
 
+$mform = new index_form();
+//$mform->setDefault('hiddenID', $this->_customdata[0]);
 
 //Form processing and displaying is done here
 if ($mform->is_cancelled()) {
-    //Handle form cancel operation, if cancel button is present on form
-}elseif ($mform->no_submit_button_pressed()) { 
+    
+} else if ($mform->no_submit_button_pressed()) {
+    if ($mform->get_submit_value('newkkt')) {
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/newkkt.php");
+    }
 
+} else if ($fromform = $mform->get_data()) {
 
-}
-else if ($fromform = $mform->get_data()) {
-    //In this case you process validated data. $mform->get_data() returns data posted in form.
+} else if ($mform->is_submitted()) {
+
 } else {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form. 
-    //Set default data (if any)
     $mform->set_data($toform);
-    // displays the form
     $mform->display();
 }
 
 
 
+
+
+
  // Footere
 echo $OUTPUT->footer();
+
+
 ?>

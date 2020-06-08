@@ -106,3 +106,25 @@ function insertSubject() {
     return $table;
  }
 
+ function listPages() {
+    $list;
+
+    $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_bacdt', 'block_educationpgrs');
+    $list = \html_writer::link($url, $linktext);
+
+    $list .= '<br>';
+
+    //Quản lý hệ đào tạo
+    $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_hedt', 'block_educationpgrs');
+    $list .= \html_writer::link($url, $linktext);
+
+    $list .= '<br>';
+    
+    //Quản lý ngành đào tạo
+    $url = new \moodle_url('/blocks/educationpgrs/pages/nganh/qlnganh.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_nganh', 'block_educationpgrs');
+    $list .= \html_writer::link($url, $linktext);
+    return $list;
+}

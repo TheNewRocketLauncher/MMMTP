@@ -60,6 +60,8 @@ $PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
 // Title.
 $PAGE->set_title(get_string('label_bacdt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
 $PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
+
 echo $OUTPUT->header();
 
 // Insert data if table is empty

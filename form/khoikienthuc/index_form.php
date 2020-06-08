@@ -2,19 +2,16 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 
-    class ctdt extends moodleform {
+    class index_form extends moodleform {
         
         public function definition()
         {
             global $CFG;
             $mform = $this->_form;
-            //text-align: center;
 
-            // $mform->registerNoSubmitButton('newctdt');
-            // $mform->addElement('submit', 'newctdt', get_string('themctdt_head', 'block_educationpgrs'));
-            
+            $mform->registerNoSubmitButton('newkkt');
+            $mform->addElement('submit', 'newkkt', get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
 
-            
         }
 
         //Custom validation should be added here
@@ -27,12 +24,5 @@ require_once("$CFG->libdir/formslib.php");
             $mform = $this->_form;
             return $mform->getSubmitValue($elementname);
         }
-
-        
-        function hello() {
-            $mform = & $this->_form;
-            $mform->addElement('submit', 'newct', get_string('themctdt_btn_updatefromup', 'block_educationpgrs'));
-        }
-        
     }
 ?>

@@ -14,7 +14,7 @@ if ($courseid == SITEID) {
     $context = \context_system::instance();
 } else {
     require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
+    $context = \context_course::instance($courseid); // Create instance base on $couâsrseid
 }
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/view_transcript.php', ['courseid' => $courseid]));
