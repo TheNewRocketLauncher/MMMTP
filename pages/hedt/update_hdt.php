@@ -100,12 +100,7 @@ echo $OUTPUT->header();
     $param1 = new stdClass();
     // $param
     $param1->id = $mform->get_data()->idhe; // The data object must have the property "id" set.
-    //
-    $index_mabac = $mform->get_data()->mabac;    
-    // $param1->ma_bac = $mform->get_data()->mabac;
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
-    $param1->ma_bac = $allbacdts[$index_mabac + 1 ]->ma_bac;
-    // echo $allbacdts[$index_mabac +1]->ma_bac;    
+    $param1->ma_bac = $mform->get_data()->mabac;
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;
     $param1->mota = $mform->get_data()->mota;
@@ -126,17 +121,7 @@ echo $OUTPUT->header();
     //Set default data from DB
     $toform;
     $toform->idhe = $hedt->id;
-    //
-    $index_mabac = 0;
-    //    $allbacdts = $DB->get_records('block_edu_bacdt', ['ma_bac' => $ma_bac]);
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
-    foreach ($allbacdts as $key => $ibacdt) {
-        if ($ibacdt->ma_bac == $hedt->ma_bac) {
-            $index_mabac = $key;
-        }
-      }
-    // echo $index_mabac;
-    $toform->mabac = $index_mabac - 1;
+    $toform->mabac = $hedt->ma_bac;
     $toform->mahe = $hedt->ma_he;
     $toform->tenhe = $hedt->ten;
     $toform->mota = $hedt->mota;

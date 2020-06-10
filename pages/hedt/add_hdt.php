@@ -81,15 +81,12 @@ echo $OUTPUT->header();
     // Thực hiện insert
     global $DB;
     $param1 = new stdClass();
-    $index_mabac = $mform->get_data()->mabac;
     // $param
-    $param1->ma_bac = $mform->get_data()->mabac;    
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
-    $param1->ma_bac = $allbacdts[$index_mabac + 1 ]->ma_bac;
+    $param1->ma_bac = $mform->get_data()->mabac;
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;
     $param1->mota = $mform->get_data()->mota;
-    // insert_hedt($param1);
+    insert_hedt($param1);
     // Hiển thị thêm thành công
     echo '<h2>Thêm mới thành công!</h2>';
     echo '<br>';
