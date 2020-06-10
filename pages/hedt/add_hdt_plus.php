@@ -81,28 +81,18 @@ echo $OUTPUT->header();
 } else if ($fromform = $mform->get_data()) {
     //In this case you process validated data. $mform->get_data() returns data posted in form.
     // Thực hiện insert
-    console.log(123);
-
+    global $DB;
     $param1 = new stdClass();
-    $index_mabac = $mform->get_data()->mabac;
-    $index_mahe = $mform->get_data()->maheplus;
     // $param
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
-    $param1->ma_bac = $allbacdts[$index_mabac + 1 ]->ma_bac;
-    $allhedts = $DB->get_records('block_edu_hedt', ['ma_bac' => $param1->ma_bac]);
-    $param1->ma_he = $allhedts[$index_mahe + 1 ]->ma_he;
+    $param1->ma_bac = $mform->get_data()->mabac;
+    $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;
     $param1->mota = $mform->get_data()->mota;
-    // insert_hedt($param1);
-    // Hiển thị thêm thành công    
-    echo '<h2>Thêm mới thành công!</h2>';    
+    insert_hedt($param1);
+    // Hiển thị thêm thành công
+    echo '<h2>Thêm mới thành công - plus!</h2>';    
     echo '<br>';
-    // In ra ma he
-    echo $mform->get_data()->maheplus;
-    echo '<br>';
-
-    // $str = $mform->get_data()->mota['text'];
-    // echo $str;
+    
     //link đến trang danh sách
     $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_hedt', 'block_educationpgrs');

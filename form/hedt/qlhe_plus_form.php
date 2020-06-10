@@ -33,15 +33,15 @@ require_once("../../js.php");
             $mabac[] =& $mform->createElement('select', 'mabac', 'Test Select:', $arr_mabac, array());
             $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
 
-            // maheplus
-            $maheplus=array();
+            // mahe
+            $mahe=array();
             $allhedts = $DB->get_records('block_edu_hedt', []);
             $arr_mahe = array();
             foreach ($allhedts as $ihedt) {
                 $arr_mahe += [$ihedt->ma_he => $ihedt->ma_he];
               }              
-            $maheplus[] =& $mform->createElement('select', 'maheplus', 'Testmmh Select:', $arr_mahe, array());
-            $mform->addGroup($maheplus, 'maheplus', 'Mã he plus đào tạo', array(' '), false);
+            $mahe[] =& $mform->createElement('select', 'mahe', 'Testmmh Select:', $arr_mahe, array());
+            $mform->addGroup($mahe, 'mahe', 'Mã hệ đào tạo', array(' '), false);
 
 
             // Tên hệ
