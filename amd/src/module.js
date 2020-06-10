@@ -29,8 +29,67 @@ define(['jquery'], function($) {
                 alert("Progress will insert three new BDT!");
                 // Call to file php in ajax directory
                 // Ajax call to get the results.
+            });
+
+            $("#id_mabac").change(function() {
+                // Get BDT
+                var bdt = $( "#id_mabac option:selected" ).text();
+                // Get HDT with BDT
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/get_hdt_from_bdt.php', {
+                    course: 1,
+                    bdt: bdt
+                }).done(function(data){
+                    var list_mahe = JSON.parse(data);
+                    var x = document.getElementById('id_maheplus');
+                    // Remove all options
+                    while(x.length > 0){
+                        x.remove(x.length-1);
+                    }
+                    var count = 1;
+                    list_mahe.forEach(mahe => {
+                        var option = document.createElement("option");
+                        option.text = mahe;
+                        option.value = mahe;
+                        // option.value = mahe;
+                        x.add(option);
+                    });
+                }).fail(function(){
+                    alert('Something wrong!');
+                });
+                // Call to file php in ajax directory
+                // Ajax call to get the results.
+            });
+
+            $("#btn_delete_muctieumonhocanbc").click(function() {
+                alert(12345);
+                var list_id = [];
+                var cusid_ele = document.getElementsByClassName('muctieu_monhoc_checkbox');
+                for (var i = 0; i < cusid_ele.length; ++i) {
+                    var item = cusid_ele[i];  
+                    
+                    if(item.value == '1')
+                    {
+                        list_id.push(item.name);
+                    }
+                }
+                console.log(list_id)
+                // get all elemeent by class
+                // Call to file php in ajax directory
+                // Ajax call to get the results.
                 
-              });
+                list_id.forEach(element => {
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/delete_muctieumonhoc.php', {
+                        course: 1,
+                        id: element
+                    }).done(function(data){
+                        alert(data);
+                    }).fail(function(){
+                        alert('Something wrong!');
+                    });
+                    
+                });
+            }); // end del
+
             $("#btn_delete_hedt").click(function() {
                 var list_id = [];
                 var cusid_ele = document.getElementsByClassName('hdtcheckbox');

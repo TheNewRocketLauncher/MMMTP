@@ -8,13 +8,23 @@ require_once("$CFG->libdir/formslib.php");
         public function definition()
         {
             global $CFG;
-            $mform = $this->_form;
-            $mform->addElement('select', 'colors', get_string('muctieu_muctieu_monhoc', 'block_educationpgrs'), array('G1', 'G2', 'G3'));
-            $mform->addElement('text', 'mota_muctieu_muctieu_monhoc', get_string('mota_muctieu_muctieu_monhoc', 'block_educationpgrs') );
-            $mform->addElement('select', 'chuan_daura_cdio_muctieu_monhoc', get_string('chuan_daura_cdio_muctieu_monhoc', 'block_educationpgrs'), array('Không có'));
-            $mform->addElement('button', 'add_muctieu_monhoc', get_string('add', 'block_educationpgrs'));
-
-
+            // Set table.
+            
+            $table = new html_table();
+            // $tmp1 = [1, 'Cấu trúc dữ liệu và giải thuật', '4', '7.0'];
+            // $tmp2 = ['CSC13003', 'Kiểm chứng phần mềm', '4', '7.5'];
+            // $tmp3 = ['MTH00050', 'Toán học tổ hợp', '4', '8.0'];
+            // $tmp4 = ['CSC10007', 'Hệ điều hành', '4', '7.0'];
+            // $tmp5 = ['CSC13112', 'Thiết kế giao diện', '4', '8.0'];
+            $table->head = array('STT', 'Mục tiêu', 'Mô tả', 'Chuẩn đầu ra');
+            // $table->data[] = $tmp1;
+            // $table->data[] = $tmp2;
+            // $table->data[] = $tmp3;
+            // $table->data[] = $tmp4;
+            // $table->data[] = $tmp5;
+            // Print table
+            echo html_writer::table($table);
+            
         }
         //Custom validation should be added here
         function validation($data, $files)

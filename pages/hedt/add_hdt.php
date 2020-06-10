@@ -4,7 +4,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/hedt_model.php');
-// require_once('../factory.php');
+// require_once('../../factory.php');
 
 // Create button with method post
 function button_method_post($btn_name, $btn_value) {
@@ -79,6 +79,7 @@ echo $OUTPUT->header();
 } else if ($fromform = $mform->get_data()) {
     //In this case you process validated data. $mform->get_data() returns data posted in form.
     // Thực hiện insert
+    global $DB;
     $param1 = new stdClass();
     $index_mabac = $mform->get_data()->mabac;
     // $param
@@ -88,10 +89,11 @@ echo $OUTPUT->header();
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;
     $param1->mota = $mform->get_data()->mota;
-    insert_hedt($param1);
+    // insert_hedt($param1);
     // Hiển thị thêm thành công
     echo '<h2>Thêm mới thành công!</h2>';
     echo '<br>';
+
     //link đến trang danh sách
     $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_hedt', 'block_educationpgrs');

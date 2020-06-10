@@ -49,7 +49,6 @@ $string['gpatranscript_detail'] = 'fixed 7.5 (126 Credits)';
 $string['educationprogram'] = 'Education Program';
 $string['educationprogramdetail'] = 'Education Program 01 (89%)';
 $string['manageeducationprograms'] = 'Manage Education Programs';
-$string['arr'] = ['1', '2'];
 // Label
 $string['label_bacdt'] = 'Quản lý bậc đào tạo';
 $string['label_hedt'] = 'Quản lý hệ đào tạo';
@@ -71,12 +70,14 @@ $string['head_decuong'] = 'Thêm đề cương môn học';
 
 //group
 $string['group_thong_tin_chung'] = 'Thông tin chung';
-$string['group_muctieu_monhoc'] = 'Mục tiêu môn hoc';
-$string['group_chuan_daura'] = 'Chuẩn đầu ra môn học';
-$string['group_giangday'] = 'Kế hoạch giảng dạy lý thuyết';
-$string['group_danhgia'] = 'Đánh giá';
-$string['group_tainguyen'] = 'Tài nguyên môn hoc';
-$string['group_mota_quydinh_chung'] = 'Các quy định chung';
+$string['group_muctieu_monhoc'] = 'Thêm mục tiêu môn hoc mới';
+$string['group_chuan_daura'] = 'Thêm chuẩn đầu ra môn học mới';
+$string['group_giangday_LT'] = 'Thêm kế hoạch giảng dạy lý thuyết mới';
+$string['group_giangday_TH'] = 'Thêm kế hoạch giảng dạy lý thuyết mới';
+$string['group_danhgia'] = 'Thêm đánh giá mới';
+$string['group_tainguyen'] = 'Thêm tài nguyên môn hoc mới';
+$string['group_mota_quydinh_chung'] = 'Thêm các quy định mới';
+$string['group_thong_tin_monhoc'] = 'Chi tiết môn học';
 
 //Global string
 $string['add'] = 'Thêm';
@@ -94,6 +95,15 @@ $string['tiet_thuchanh_thongtin_chung'] = 'Số tiết thực hành';
 $string['tiet_tuhoc_thongtin_chung'] = 'Số tiết tự học';
 $string['monhoc_tienquyet_thongtin_chung'] = 'Các môn học tiên quyết';
 
+//chi tiet mon hoc
+$string['ma_monhoc_chitiet'] = 'Mã học phần';
+$string['ten_monhoc_chitiet'] = 'Tên học phần';
+$string['so_tinchi'] = 'Số tín chỉ';
+$string['so_tiet_LT'] = 'Số tiết lý thuyết';
+$string['so_tiet_TH'] = 'Số tiết thực hành';
+$string['so_tiet_BT'] = 'Số tiêt bài tập';
+$string['loai_hocphan'] = 'Loại học phần';
+$string['ghichu'] = 'Ghi chú';
 
 
 //form muc tieu mon hoc
@@ -109,10 +119,11 @@ $string['Mucdo_ITU_chuan_daura'] = '*Mức độ (I/T/U)';
 
 //form ke hoach giang day ly thuyet
 $string['tuan_giangday'] = '*Tuần';
-$string['ngay_giangday'] = '*Ngày';
-$string['chude_giangday'] = '*Chủ đề';
-$string['tailieu_thamkhao_giangday'] = '*Tài liệu tham khảo';
-$string['baitap_giangday'] = '*Bài tập';
+$string['chude_giangday'] = '*Tên chủ đề';
+$string['hoatdong_giangday'] = '*Hoạt động dạy/Hoạt động học (gợi ý)';
+$string['hoatdong_danhgia'] = '*Hoạt động đánh giá';
+$string['danhsach_cdr'] = '*Chuẩn đầu ra';
+
 
 //form danh gia
 $string['ma_danhgia'] = '*Mã';

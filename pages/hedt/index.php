@@ -109,6 +109,7 @@ $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/add_hdt.php', ['coursei
 $ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
 echo  \html_writer::link($url, $ten_url);
 echo '<br>';
+// echo $OUTPUT->single_button($url, 'Go to add_bdt', 'get');
 echo '<br>';
 
 // Create table
