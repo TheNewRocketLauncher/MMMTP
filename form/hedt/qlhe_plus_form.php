@@ -23,17 +23,17 @@ require_once("../../js.php");
             // $mabac[] =& $mform->createElement('text', 'mabac', 'ÁDASD', 'size="70"');
             // $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
 
-            // Ma bac new
+            // Mã bậc            
             $mabac=array();
             $allbacdts = $DB->get_records('block_edu_bacdt', []);
             $arr_mabac = array();
             foreach ($allbacdts as $ibacdt) {
-                $arr_mabac[] =& $ibacdt->ma_bac;
-              }
+                $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
+              }              
             $mabac[] =& $mform->createElement('select', 'mabac', 'Test Select:', $arr_mabac, array());
             $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
 
-            // mahe
+            // Mã hệ
             $mahe=array();
             $allhedts = $DB->get_records('block_edu_hedt', []);
             $arr_mahe = array();

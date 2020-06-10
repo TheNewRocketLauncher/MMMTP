@@ -39,8 +39,8 @@ require_once("$CFG->libdir/formslib.php");
 
             // Mô tả
             $mota = array();
-            $mota[] =& $mform->createElement('textarea', 'mota', '', 'wrap="virtual" rows="7" cols="75"');
-            $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), true);
+            $mota[] =& $mform->createElement('textarea', 'mota', 'C', 'wrap="virtual" rows="7" cols="75"');
+            $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), false);
             
             
             
