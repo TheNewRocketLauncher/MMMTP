@@ -9,7 +9,7 @@ function userIsAdmin(){
 }
 // Return Json object
 function get_global($iduser){
-    $datatemp = $DB->ger_record('block_edu_global', ['iduser' => $iduser]);
+    $datatemp = $DB->ger_record('block_edu_global', ['id_user' => $iduser]);
     
     if(empty($datatemp)){
         return NULL;
@@ -18,7 +18,7 @@ function get_global($iduser){
 }
 
 function set_global($iduser, $arr){
-    $datatemp = $DB->ger_record('block_edu_global', ['iduser' => $iduser]);
+    $datatemp = $DB->ger_record('block_edu_global', ['id_user' => $iduser]);
     
     if(empty($datatemp)){
         $dataobject = new stdClass();

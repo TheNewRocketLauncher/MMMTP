@@ -3,7 +3,8 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/ctdt_model.php');
+require_once('../../model/khoikienthuc_model.php');
+require_once('../../js.php');
 // require_once('../factory.php');
 
 // Create button with method post
@@ -22,7 +23,7 @@ function button_method_get($btn_name, $btn_value) {
     return $btn;
 }
 
-
+global $USER;
 
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
@@ -48,6 +49,7 @@ $PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new 
 // Title.
 $PAGE->set_title(get_string('label_khoikienthuc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
 $PAGE->set_heading(get_string('label_khoikienthuc', 'block_educationpgrs'));
+$PAGE->requires->js_call_amd('block_educationpgrs/newkkt', 'init');
 echo $OUTPUT->header();
 
 
@@ -76,9 +78,19 @@ if ($mform->is_cancelled()) {
 }
 
 
+//Table
+$table = get_kkt_checkbox($courseid);
+ 
+echo html_writer::table($table);
 
+echo '  ';
+echo \html_writer::tag(
+    'button',
+    'Xóa kkt',
+    array('id' => 'btn_delete_kkt'));
 
-
+echo '<br>';
+///END Table
 
  // Footere
 echo $OUTPUT->footer();

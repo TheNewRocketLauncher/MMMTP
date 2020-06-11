@@ -4,6 +4,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/ctdt_model.php');
+require_once('../../js.php');
 // require_once('../factory.php');
 
 // Create button with method post
@@ -35,7 +36,7 @@ if ($courseid == SITEID) {
     $context = \context_course::instance($courseid); // Create instance base on $courseid
 }
 
-
+global $COURSE, $USER;
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -80,25 +81,27 @@ if ($mform->is_cancelled()) {
 
 } else {
 
-    $listctdt = get_ctdt_byID(1);
-    if(empty($listctdt)){
-        echo 'empty';
-    }
-    echo $listctdt->ma_bac;
-
-    $toform = array(
-        txt_bac => $listctdt->ma_bac
-    );
-
     $mform->set_data($toform);
     // displays the form
     $mform->display();
 }
 
 
-// $btnurl = new \moodle_url('/blocks/educationpgrs/pages/ctdt/newctdt.php', ['courseid' => $courseid]);
-// $btnlbl = get_string('themctdt_head', 'block_educationpgrs');
-// echo $OUTPUT->single_button($btnurl, $btnlbl, $get);
+////////////End form
+$table = get_ctdt_checkbox($courseid);
+ 
+echo html_writer::table($table);
+
+
+echo '  ';
+echo \html_writer::tag(
+    'button',
+    'Xóa ctđt',
+    array('id' => 'btn_delete_ctdt'));
+
+echo '<br>';
+
+
 
  // Footere
 echo $OUTPUT->footer();

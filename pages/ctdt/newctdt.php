@@ -24,7 +24,10 @@ function button_method_get($btn_name, $btn_value) {
 
 
 ///-------------------------------------------------------------------------------------------------------///
-global $COURSE;
+
+global $COURSE, $USER;
+
+
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 $tree = optional_param('tree', SITEID, PARAM_INT);
 $qtdt = optional_param('qtdt', SITEID, PARAM_INT);
@@ -69,24 +72,27 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
     if(validateData()){
         $param = new stdClass();
-        $ma_ctdt = $mform->get_submit_value('bacdt') . 
-                    $mform->get_submit_value('hedt') . 
-                    $mform->get_submit_value('khoatuyen') . 
-                    $mform->get_submit_value('nganhdt') . 
-                    $mform->get_submit_value('chuyenganh');
-        $param->ma_ctdt = $mform->get_submit_value('bacdt');
-        $param->ma_chuyennganh = $mform->get_submit_value('chuyenganh');
-        $param->ma_nganh = $mform->get_submit_value('nganhdt');
-        $param->ma_nienkhoa = $mform->get_submit_value('khoatuyen');
-        $param->ma_he = $mform->get_submit_value('hedt');
-        $param->ma_bac = $mform->get_submit_value('bacdt');
-        $param->thoigia_daotao = $mform->get_submit_value('tgdt');
-        $param->khoiluong_kienthuc = $mform->get_submit_value('klkt');
-        $param->doituong_tuyensinh = $mform->get_submit_value('dtts');
-        $param->quytrinh_daotao = $mform->get_submit_value('bacdt');
-        $param->dienkien_totnghiep = $mform->get_submit_value('bacdt');
-        //$param->ma_cay_khoikienthuc = $tree;
-        $param->mota = $mform->get_submit_value('bacdt');
+        $ma_ctdt = $fromform->bacdt . 
+                    $fromform->hedt . 
+                    $fromform->khoatuyen . 
+                    $fromform->nganhdt . 
+                    $fromform->chuyenganh;
+        $param->ma_ctdt = $ma_ctdt;
+
+        $param->ma_chuyennganh = $fromform->chuyenganh;
+        $param->ma_nganh = $fromform->nganhdt;
+        $param->ma_nienkhoa = $fromform->khoatuyen;
+        $param->ma_he = $fromform->hedt;
+        $param->ma_bac = $fromform->bacdt;
+        // $param->muctieu_daotao = $fromform->editor_muctieu_daotao['text'];
+        $param->thoigian_daotao = $fromform->tgdt;
+        $param->khoiluong_kienthuc = $fromform->klkt;
+        $param->doituong_tuyensinh = $fromform->dtts;
+        $param->quytrinh_daotao = $fromform->bacdt['text'];
+        $param->dienkien_totnghiep = $fromform->bacdt;
+        $param->ma_cay_khoikienthuc = $fromform->select_ktt;
+        $param->mota = null;
+        
         insert_ctdt($param);
     }
 

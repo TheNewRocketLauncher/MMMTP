@@ -27,6 +27,8 @@ function insert_ctdt($param) {
     
     if(userIsAdmin()){
         $DB->insert_record('block_edu_ctdt', $param);
+        // $param
+        // $DB->insert_record('block_edu_muctieu_ctdt', )
     } else{
 
     }
@@ -78,6 +80,47 @@ function delete_ctdt($id){
         return false;
     }
     return true;
+}
+
+//phongle
+function get_ctdt($courseid) {
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('STT', 'Mã CTĐT', 'Mã niên khóa','Mã ngành','Mã chuyên ngành','Thời gian đào tạo','Khối lượng kiến thức','Đối tượng tuyển sinh');
+    $allbacdts = $DB->get_records('block_edu_ctdt', []);
+    $stt = 1;    
+    foreach ($allbacdts as $ibacdt) {
+    //   $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/qlbac.php', ['courseid' => $courseid, 'id' => $ibacdt->id_bac]);
+    //   $ten_url = \html_writer::link($url, $ibacdt->ten);
+        $table->data[] = [(string)$stt , (string)$ibacdt->ma_ctdt ,(string)$ibacdt->ma_nienkhoa ,(string)$ibacdt->ma_nganh ,(string)$ibacdt->ma_chuyennganh ,(string)$ibacdt->thoigia_daotao ,(string)$ibacdt->khoiluong_kienthuc ,(string)$ibacdt->doituong_tuyensinh];
+        $stt = $stt+1;
+    }
+    return $table;
+
+}
+
+
+function get_ctdt_checkbox($courseid) {
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('','STT', 'Mã CTĐT', 'Mã niên khóa','Mã ngành','Mã chuyên ngành','Thời gian đào tạo','Khối lượng kiến thức','Đối tượng tuyển sinh');
+    $allbacdts = $DB->get_records('block_edu_ctdt', []);
+    $stt = 1;    
+    setcookie("arr", [0,1], time() + (86400 * 30), "/");
+   
+    foreach ($allbacdts as $ibacdt) {
+       // Create checkbox
+       // $check_id = 'bdt' . $inienkhoa->id;
+   
+       $checkbox = html_writer::tag('input', ' ', array('class' => 'ctdtcheckbox','type' => "checkbox", 'name' => $ibacdt->id_ctdt, 'id' => 'bdt' . $ibacdt->id_ctdt, 'value' => '0', 'onclick' => "changecheck($ibacdt->id_ctdt)")); 
+   
+
+       
+       $table->data[] = [$checkbox, (string)$stt , (string)$ibacdt->ma_ctdt ,(string)$ibacdt->ma_nienkhoa ,(string)$ibacdt->ma_nganh ,(string)$ibacdt->ma_chuyennganh ,(string)$ibacdt->thoigia_daotao ,(string)$ibacdt->khoiluong_kienthuc ,(string)$ibacdt->doituong_tuyensinh];
+
+       $stt = $stt+1;
+    }
+    return $table;
 }
 
 function update_ctdt($param){

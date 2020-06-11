@@ -4,7 +4,7 @@
 require_once(__DIR__ . '/../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 // require_once('../../educationpgrs/factory.php');
-require_once('/../factory.php');
+//require_once('/../factory.php');
 
 // Create button with method post
 function button_method_post($btn_name, $btn_value) {
@@ -50,8 +50,6 @@ $PAGE->set_heading(get_string('label_ctdt', 'block_educationpgrs'));
 echo $OUTPUT->header();
 
 
-
-listPages();
 
 
  // Footere
