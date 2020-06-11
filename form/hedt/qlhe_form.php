@@ -7,15 +7,30 @@ require_once("$CFG->libdir/formslib.php");
         
         public function definition()
         {
-            global $CFG;
+            global $CFG, $DB;
             $mform = $this->_form;
             // Header
             $mform->addElement('header', 'general', 'Quản lý thông tin');
 
-            // Tên bậc
-            $tenbac=array();
-            $tenbac[] =& $mform->createElement('text', 'tenbac', 'A', 'size="70"');
-            $mform->addGroup($tenbac, 'tenbac', 'Tên bậc đào tạo', array(' '), false);
+            // id
+            $idhe=array();
+            $idhe[] =& $mform->createElement('text', 'idhe', 'ÁDASD', 'size="70"');
+            $mform->addGroup($idhe, 'idhe', 'ID', array(' '), false);
+
+            // Mã bậc
+            $mabac=array();
+            $allbacdts = $DB->get_records('block_edu_bacdt', []);
+            $arr_mabac = array();
+            foreach ($allbacdts as $ibacdt) {
+                $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
+              }              
+            $mabac[] =& $mform->createElement('select', 'mabac', 'Test Select:', $arr_mabac, array());
+            $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
+
+            // Mã hệ
+            $mahe=array();
+            $mahe[] =& $mform->createElement('text', 'mahe', 'ÁDASD', 'size="70"');
+            $mform->addGroup($mahe, 'mahe', 'Mã hệ đào tạo', array(' '), false);
 
             // Tên hệ
             $tenhe=array();
@@ -24,8 +39,8 @@ require_once("$CFG->libdir/formslib.php");
 
             // Mô tả
             $mota = array();
-            $mota[] =& $mform->createElement('textarea', 'mota', '', 'wrap="virtual" rows="7" cols="75"');
-            $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), true);
+            $mota[] =& $mform->createElement('textarea', 'mota', 'C', 'wrap="virtual" rows="7" cols="75"');
+            $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), false);
             
             
             
@@ -41,7 +56,7 @@ require_once("$CFG->libdir/formslib.php");
             // $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
             //Button
             $buttonarray=array();
-            $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Cập nhật');
+            $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Thực hiện');
 
             $buttonarray[] = $mform->createElement('cancel', null , 'Hủy');
             $mform->addGroup($buttonarray, 'buttonar', '', ' ', false);

@@ -70,12 +70,23 @@ $string['head_decuong'] = 'Thêm đề cương môn học';
 
 //group
 $string['group_thong_tin_chung'] = 'Thông tin chung';
-$string['group_muctieu_monhoc'] = 'Mục tiêu môn hoc';
-$string['group_chuan_daura'] = 'Chuẩn đầu ra môn học';
-$string['group_giangday'] = 'Kế hoạch giảng dạy lý thuyết';
-$string['group_danhgia'] = 'Đánh giá';
-$string['group_tainguyen'] = 'Tài nguyên môn hoc';
-$string['group_mota_quydinh_chung'] = 'Các quy định chung';
+$string['group_muctieu_monhoc'] = 'Thêm mục tiêu môn hoc mới';
+$string['group_chuan_daura'] = 'Thêm chuẩn đầu ra môn học mới';
+$string['group_giangday_LT'] = 'Thêm kế hoạch giảng dạy lý thuyết mới';
+$string['group_giangday_TH'] = 'Thêm kế hoạch giảng dạy lý thuyết mới';
+$string['group_danhgia'] = 'Thêm đánh giá mới';
+$string['group_tainguyen'] = 'Thêm tài nguyên môn hoc mới';
+$string['group_mota_quydinh_chung'] = 'Thêm các quy định mới';
+$string['group_thong_tin_monhoc'] = 'Chi tiết môn học';
+$string['group_monhoc'] = 'Thêm mới môn học';
+
+$string['update_muctieu_monhoc'] = 'Cập nhật mục tiêu môn học';
+$string['update_tainguyen_monhoc'] = 'Cập nhật tài nguyên môn học';
+$string['update_kehoach_giangday_lt_monhoc'] = 'Cập nhật kế hoạch giảng dạy lý thuyết môn học';
+$string['update_kehoach_giangday_th_monhoc'] = 'Cập nhật kế hoạch giảng dạy thực hành môn học';
+$string['update_danhgia_monhoc'] = 'Cập nhật đánh giá môn học';
+$string['update_tainguyen_monhoc'] = 'Cập nhật tài nguyên môn học';
+$string['update_quydinh_chung_monhoc'] = 'Cập nhật quy định chung';
 
 //Global string
 $string['add'] = 'Thêm';
@@ -93,6 +104,15 @@ $string['tiet_thuchanh_thongtin_chung'] = 'Số tiết thực hành';
 $string['tiet_tuhoc_thongtin_chung'] = 'Số tiết tự học';
 $string['monhoc_tienquyet_thongtin_chung'] = 'Các môn học tiên quyết';
 
+//chi tiet mon hoc
+$string['ma_monhoc_chitiet'] = 'Mã học phần';
+$string['ten_monhoc_chitiet'] = 'Tên học phần';
+$string['so_tinchi'] = 'Số tín chỉ';
+$string['so_tiet_LT'] = 'Số tiết lý thuyết';
+$string['so_tiet_TH'] = 'Số tiết thực hành';
+$string['so_tiet_BT'] = 'Số tiêt bài tập';
+$string['loai_hocphan'] = 'Loại học phần';
+$string['ghichu'] = 'Ghi chú';
 
 
 //form muc tieu mon hoc
@@ -103,15 +123,16 @@ $string['chuan_daura_cdio_muctieu_monhoc'] = '*Chuẩn đầu ra CDIO chương t
 //form chuan dau ra mon hoc
 $string['chuan_daura'] = '*Chuẩn đầu ra';
 $string['mota_chuan_daura'] = '*Mô tả';
-$string['Mucdo_ITU_chuan_daura'] = '*Mức độ (I/T/U)';
+$string['mucdo_itu_chuan_daura'] = '*Mức độ (I/T/U)';
 
 
 //form ke hoach giang day ly thuyet
 $string['tuan_giangday'] = '*Tuần';
-$string['ngay_giangday'] = '*Ngày';
-$string['chude_giangday'] = '*Chủ đề';
-$string['tailieu_thamkhao_giangday'] = '*Tài liệu tham khảo';
-$string['baitap_giangday'] = '*Bài tập';
+$string['chude_giangday'] = '*Tên chủ đề';
+$string['hoatdong_giangday'] = '*Hoạt động dạy/Hoạt động học (gợi ý)';
+$string['hoatdong_danhgia'] = '*Hoạt động đánh giá';
+$string['danhsach_cdr'] = '*Chuẩn đầu ra';
+
 
 //form danh gia
 $string['ma_danhgia'] = '*Mã';
@@ -177,9 +198,10 @@ $string['themctdt_btn_review'] = 'Xem trước';
 $string['themctdt_btn_complete'] = 'Hoàn tất';
 
 //nien khoa
-$string['themnienkhoa_idhe'] = 'Id hệ';
+$string['themnienkhoa_mahe'] = 'Mã hệ';
+$string['themnienkhoa_mabac'] = 'Mã bậc';
 $string['themnienkhoa_manienkhoa'] = 'Mã niên khóa';
-$string['themnienkhoa_ten'] = 'Tên niên khóa';
+$string['themnienkhoa_tennienkhoa'] = 'Tên niên khóa';
 $string['themnienkhoa_mota'] = 'Mô tả';
 $string['nienkhoa'] = 'Niên khóa';
 $string['label_taonienkhoa'] = 'Tạo niên khóa';

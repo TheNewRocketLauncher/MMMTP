@@ -58,6 +58,8 @@ $string['label_chuyennganh'] = 'Quản lý chuyên ngành đào tạo';
 $string['label_ctdt'] = 'Quản lý chương trình đào tạo';
 $string['label_monhoc'] = 'Quản lý môn học';
 $string['label_decuong'] = 'Thêm đề cương môn học';
+$string['label_khoikienthuc'] = 'Quản lý khối kiến thức';
+$string['label_khoahoc'] = 'Quản lý khoá học';
 // Header
 $string['head_bacdt'] = 'Danh mục bậc đào tạo';
 $string['head_hedt'] = 'Danh mục hệ đào tạo';
@@ -67,15 +69,28 @@ $string['head_chuyenganh'] = 'Danh mục chuyên ngành đào tạo';
 $string['head_ctdt'] = 'Danh mục chương trình đào tạo';
 $string['head_monhoc'] = 'Danh mục môn học';
 $string['head_decuong'] = 'Thêm đề cương môn học';
+$string['head_khoahoc'] = 'Quản lý khoá học';
+$string['head_mokhoahoc'] = 'Mở khoá học';
 
 //group
 $string['group_thong_tin_chung'] = 'Thông tin chung';
-$string['group_muctieu_monhoc'] = 'Mục tiêu môn hoc';
-$string['group_chuan_daura'] = 'Chuẩn đầu ra môn học';
-$string['group_giangday'] = 'Kế hoạch giảng dạy lý thuyết';
-$string['group_danhgia'] = 'Đánh giá';
-$string['group_tainguyen'] = 'Tài nguyên môn hoc';
-$string['group_mota_quydinh_chung'] = 'Các quy định chung';
+$string['group_muctieu_monhoc'] = 'Thêm mục tiêu môn hoc mới';
+$string['group_chuan_daura'] = 'Thêm chuẩn đầu ra môn học mới';
+$string['group_giangday_LT'] = 'Thêm kế hoạch giảng dạy lý thuyết mới';
+$string['group_giangday_TH'] = 'Thêm kế hoạch giảng dạy lý thuyết mới';
+$string['group_danhgia'] = 'Thêm đánh giá mới';
+$string['group_tainguyen'] = 'Thêm tài nguyên môn hoc mới';
+$string['group_mota_quydinh_chung'] = 'Thêm các quy định mới';
+$string['group_thong_tin_monhoc'] = 'Chi tiết môn học';
+$string['group_monhoc'] = 'Thêm mới môn học';
+
+$string['update_muctieu_monhoc'] = 'Cập nhật mục tiêu môn học';
+$string['update_tainguyen_monhoc'] = 'Cập nhật tài nguyên môn học';
+$string['update_kehoach_giangday_lt_monhoc'] = 'Cập nhật kế hoạch giảng dạy lý thuyết môn học';
+$string['update_kehoach_giangday_th_monhoc'] = 'Cập nhật kế hoạch giảng dạy thực hành môn học';
+$string['update_danhgia_monhoc'] = 'Cập nhật đánh giá môn học';
+$string['update_tainguyen_monhoc'] = 'Cập nhật tài nguyên môn học';
+$string['update_quydinh_chung_monhoc'] = 'Cập nhật quy định chung';
 
 //Global string
 $string['add'] = 'Thêm';
@@ -93,6 +108,15 @@ $string['tiet_thuchanh_thongtin_chung'] = 'Số tiết thực hành';
 $string['tiet_tuhoc_thongtin_chung'] = 'Số tiết tự học';
 $string['monhoc_tienquyet_thongtin_chung'] = 'Các môn học tiên quyết';
 
+//chi tiet mon hoc
+$string['ma_monhoc_chitiet'] = 'Mã học phần';
+$string['ten_monhoc_chitiet'] = 'Tên học phần';
+$string['so_tinchi'] = 'Số tín chỉ';
+$string['so_tiet_LT'] = 'Số tiết lý thuyết';
+$string['so_tiet_TH'] = 'Số tiết thực hành';
+$string['so_tiet_BT'] = 'Số tiêt bài tập';
+$string['loai_hocphan'] = 'Loại học phần';
+$string['ghichu'] = 'Ghi chú';
 
 
 //form muc tieu mon hoc
@@ -103,15 +127,16 @@ $string['chuan_daura_cdio_muctieu_monhoc'] = '*Chuẩn đầu ra CDIO chương t
 //form chuan dau ra mon hoc
 $string['chuan_daura'] = '*Chuẩn đầu ra';
 $string['mota_chuan_daura'] = '*Mô tả';
-$string['Mucdo_ITU_chuan_daura'] = '*Mức độ (I/T/U)';
+$string['mucdo_itu_chuan_daura'] = '*Mức độ (I/T/U)';
 
 
 //form ke hoach giang day ly thuyet
 $string['tuan_giangday'] = '*Tuần';
-$string['ngay_giangday'] = '*Ngày';
-$string['chude_giangday'] = '*Chủ đề';
-$string['tailieu_thamkhao_giangday'] = '*Tài liệu tham khảo';
-$string['baitap_giangday'] = '*Bài tập';
+$string['chude_giangday'] = '*Tên chủ đề';
+$string['hoatdong_giangday'] = '*Hoạt động dạy/Hoạt động học (gợi ý)';
+$string['hoatdong_danhgia'] = '*Hoạt động đánh giá';
+$string['danhsach_cdr'] = '*Chuẩn đầu ra';
+
 
 //form danh gia
 $string['ma_danhgia'] = '*Mã';
@@ -136,30 +161,31 @@ $string['export'] = 'Export pdf';
 //Phần thông tin chung
 $string['themctdt_thongtintongquat'] = 'Thông tin tổng quát';
 $string['themctdt_tenchuogntrinh'] = 'Tên chương trình';
-$string['themctdt_trinhdodt'] = 'Trình độ đào tạo';
-$string['themctdt_nganhdt'] = 'Ngành đào tạo';
-$string['themctdt_manganh'] = 'Mã ngành';
+$string['themctdt_bacdt'] = 'Bậc đào tạo';
 $string['themctdt_hedt'] = 'Hệ đào tạo';
 $string['themctdt_khoatuyen'] = 'Khoá tuyển';
+$string['themctdt_nganhdt'] = 'Ngành đào tạo';
+$string['themctdt_chuyennganh'] = 'Chuyên ngành';
+$string['themctdt_manganh'] = 'Mã chuyên ngành';
 $string['themctdt_lable'] = 'Thêm chương trình đào tạo';
 $string['themctdt_title'] = 'Thêm CTĐT mới';
 $string['themctdt_head'] = 'Thêm chương trình đào tạo';
 $string['themctdt_review'] = 'Xem trước';
 //Phần text cho chữ
-$string['themctdt_lbl_mtdt'] = 'Mục tiêu đào tạo';
+$string['themctdt_lbl_mtdt'] = '1. Mục tiêu đào tạo';
 $string['themctdt_mtc'] = '1.1 Mục tiêu chung';
 $string['themctdt_mtctcdr'] = '1.2 Mục tiêu cụ thể - chuẩn đầu ra của chương trình đào tạo';
 $string['themctdt_mtct'] = '1.2.1 Mục tiêu cụ thể';
 $string['themctdt_cdr'] = '1.2.2 Chuẩn đầu ra của chương trình giáo dục';
 $string['themctdt_chnn'] = '1.3 Cơ hội nghề nghiệp';
-$string['themctdt_lbl_tgdt'] = 'Thời gian đào tạo ';
-$string['themctdt_lbl_klkt'] = 'Khối lượng kiến thức toàn khoá';
-$string['themctdt_lbl_dtts'] = 'Đối tượng tuyển sinh';
-$string['themctdt_lbl_qtdt'] = 'Quy trình đào tạo, điều kiện tốt nghiệp';
+$string['themctdt_lbl_tgdt'] = '2. Thời gian đào tạo ';
+$string['themctdt_lbl_klkt'] = '3. Khối lượng kiến thức toàn khoá';
+$string['themctdt_lbl_dtts'] = '4. Đối tượng tuyển sinh';
+$string['themctdt_lbl_qtdt'] = '5. Quy trình đào tạo, điều kiện tốt nghiệp';
 $string['themctdt_qtdt'] = '5.1 Quy trình đạo tạo';
 $string['themctdt_dktn'] = '5.2 Điều kiện tốt nghiệp';
-$string['themctdt_lbl_ctct'] = 'Cấu trúc chương trình';
-$string['themctdt_lbl_ndct'] = 'Nội dung chương trình';
+$string['themctdt_lbl_ctct'] = '6. Cấu trúc chương trình';
+$string['themctdt_lbl_ndct'] = '7. Nội dung chương trình';
 $string['themctdt_lbl_importfile'] = 'Import File';
 $string['themctdt_importfilehere'] = 'Kéo thả file vào đây';
 $string['themctdt_apdungcho'] = 'Áp dụng cho';
@@ -185,4 +211,34 @@ $string['themnienkhoa_mota'] = 'Mô tả';
 $string['nienkhoa'] = 'Niên khóa';
 $string['label_taonienkhoa'] = 'Tạo niên khóa';
 
+////Khối kiến thức
+//Thêm khối kiến thúc
+$string['themkkt_lbl_bac'] = 'Bậc đào tạo';
+$string['themkkt_lbl_he'] = 'Hệ đào tạo';
+$string['themkkt_lbl_khoa'] = 'Niên khoá';
+$string['themkkt_lbl_nganh'] = 'Ngành';
+$string['themkkt_lbl_chuyenganh'] = 'Chuyên ngành';
+$string['themkkt_lbl_tenkhoi'] = 'Tên khối';
+$string['themkkt_lbl_makhoi'] = 'Mã khối';
+$string['themkkt_lbl_loaikhoi'] = 'Loại khối kiến thức';
+$string['themkkt_lbl_loaidieukien'] = 'Điều kiện';
+$string['themkkt_lbl_xettren'] = 'Xét trên';
+$string['themkkt_lbl_thuockhoi'] = 'Thuộc khối kiến thức';
+$string['themkkt_lbl_mota'] = 'Mô tả';
+$string['themkkt_btn_addnode'] = 'Thêm node';
+$string['themkkt_btn_addnodechild'] = 'Thêm node con';
+$string['themkkt_btn_deletenode'] = 'Xoá node';
+$string['themkkt_btn_deletesubject'] = 'Xoá môn';
+$string['themkkt_btn_addsubject'] = 'Thêm môn học';
+$string['themkkt_btn_themkhoicon'] = 'Thêm khối con';
+$string['themkkt_btn_xoamonhoc'] = 'Xoá môn học';
+$string['themkkt_btn_xoakhoicon'] = 'Xoá khối con';
+$string['themkkt_btn_complete'] = 'Hoàn tất';
+$string['themkkt_btn_cancel'] = 'Huỷ bỏ';
+$string['themkkt_btn_themkhoimoi'] = 'Thêm khối mới';
+
+//Khoá học
+$string['ten_khoahoc'] = 'Tên khoá học';
+$string['giaogien_phutrach'] = 'Giáo viên phụ trách';
+$string['mota_khoahoc'] = 'Mô tả';
 ?>
