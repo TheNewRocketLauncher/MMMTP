@@ -15,33 +15,25 @@ require_once("$CFG->libdir/formslib.php");
             $eGroup=array();
             $eGroup[] =& $mform->createElement('text', 'id', '', 'size=50');
             $mform->addGroup($eGroup, 'thong_tin_chung_group', 'Id', array(' '), false);
-
-
-
-
+               // Mã bậc            
             $mabac=array();
             $allbacdts = $DB->get_records('block_edu_bacdt', []);
             $arr_mabac = array();
             foreach ($allbacdts as $ibacdt) {
-                $arr_mabac[] =& $ibacdt->ma_bac;
-              }
-            $mabac[] =& $mform->createElement('select', 'ma_bac', 'Test Select:', $arr_mabac, array(''));
-            $mform->addGroup($mabac, 'ma_bac', 'Mã bậc đào tạo', array(' '), false);
+                $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
+                }              
+            $mabac[] =& $mform->createElement('select', 'mabac', 'Test Select:', $arr_mabac, array());
+            $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
 
-
-
-            
+            // Mã hệ
             $mahe=array();
             $allhedts = $DB->get_records('block_edu_hedt', []);
             $arr_mahe = array();
             foreach ($allhedts as $ihedt) {
-                $arr_mahe[] =& $ihedt->ma_he;
-              }
-            $mahe[] =& $mform->createElement('select', 'ma_he', 'Test Select:', $arr_mahe, array(''));
-            $mform->addGroup($mahe, 'ma_he', 'Mã hệ đào tạo', array(' '), false);
-
-
-
+                $arr_mahe += [$ihedt->ma_he => $ihedt->ma_he];
+                }              
+            $mahe[] =& $mform->createElement('select', 'mahe', 'Testmmh Select:', $arr_mahe, array());
+            $mform->addGroup($mahe, 'mahe', 'Mã hệ đào tạo', array(' '), false);
 
 
 
@@ -72,6 +64,11 @@ require_once("$CFG->libdir/formslib.php");
         function validation($data, $files)
         {
             return array();
+        }
+        function get_editor_options() {
+            $editoroptions = [
+            ];
+            return $editoroptions;
         }
     }
 ?>

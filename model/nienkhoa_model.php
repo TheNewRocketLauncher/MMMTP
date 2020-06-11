@@ -28,18 +28,12 @@ function get_nienkhoa_checkbox($courseid) {
     $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_nienkhoa.php', ['courseid' => $courseid, 'id' => $inienkhoa->id]);
     $ten_url = \html_writer::link($url, $inienkhoa->ten_nienkhoa);
 
-    $table->data[] = [$checkbox, (string)$stt,(string)$inienkhoa->id_nienkhoa,(string)$inienkhoa->ma_bac,(string)$inienkhoa->ma_he,(string)$inienkhoa->ma_nienkhoa, $ten_url,(string)$inienkhoa->mota];
+    $table->data[] = [$checkbox, (string)$stt,(string)$inienkhoa->id,(string)$inienkhoa->ma_bac,(string)$inienkhoa->ma_he,(string)$inienkhoa->ma_nienkhoa, $ten_url,(string)$inienkhoa->mota];
     $stt = $stt+1;
  }
  return $table;
 }
 function update_nienkhoa($param) {
- /*
-  $param = new stdClass();
-  $param->ma_bac = 'DH';
-  $param->ten = 'Đại học';
-  $param->mota = 'Bậc Đại học HCMUS'
- */
 global $DB, $USER, $CFG, $COURSE;
 $DB->update_record('block_edu_nienkhoa', $param, $bulk = false);
 }
@@ -50,25 +44,8 @@ $DB->update_record('block_edu_nienkhoa', $param, $bulk = false);
 
 
  function insert_nienkhoa($param) {
-     
-    //  $param = new stdClass();
-    //  $param->id_he = '3';
-    //  $param->ma_nienkhoa='AB';
-    //  $param->ten='phong dep trai3';
-    //  $param->mota = 'hello';
+
      
     global $DB, $USER, $CFG, $COURSE;
     $DB->insert_record('block_edu_nienkhoa', $param);
- }
- function get_nienkhoa() {
-    global $DB, $USER, $CFG, $COURSE;
-    $table = new html_table();
-    $table->head = array('STT', 'Niên khóa', 'Mô tả');
-    $allbacdts = $DB->get_records('block_edu_nienkhoa', []);
-    $stt = 1;
-    foreach ($allbacdts as $inienkhoa) {
-        $table->data[] = [(string)$stt,(string)$inienkhoa->ten_nienkhoa,(string)$inienkhoa->mota];
-        $stt = $stt+1;
-    }
-    return $table;
  }
