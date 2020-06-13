@@ -93,15 +93,15 @@ if ($mform->is_cancelled()) {
     if($mform->get_submit_value('select_loaikhoi') == 0){
         $param_khoi->co_dieukien = 0;
         $param_khoi->id_loai_kkt = 212;
-        $param_khoi->ma_dieukien = 'NULL';
+        $param_khoi->ma_dieukien = "0";
     } else if($mform->get_submit_value('select_loaikhoi') == 1){
         $param_khoi->co_dieukien = 1;
         $param_khoi->id_loai_kkt = 1;
-        $param_khoi->ma_dieukien = 'SFjned';
+        $param_khoi->ma_dieukien = "daniiwdn";
     } else{
         $param_khoi->co_dieukien = 1;
         $param_khoi->id_loai_kkt = 1;
-        $param_khoi->ma_dieukien = 'SFjned';
+        $param_khoi->ma_dieukien = "daniiwdn";
     }
     $param_khoi->ten_khoi = $mform->get_submit_value('txt_tenkkt');
     $param_khoi->mota = $mform->get_submit_value('txt_mota');

@@ -64,9 +64,8 @@ if ($mform->is_cancelled()) {
     
 } else if ($mform->no_submit_button_pressed()) { 
     if ($mform->_form->get_submit_value('btnchoosetree')) {
-        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/newkkt_form.php");
-        //get_submit_value này lấy được bất kì thông tin nào đang có trên form lmao :D 
-        //echo $mform->get_submit_value();
+        // get_submit_value này lấy được bất kì thông tin nào đang có trên form lmao :D 
+        // echo $mform->get_submit_value();
     }
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -85,15 +84,18 @@ if ($mform->is_cancelled()) {
         $param->ma_he = $fromform->hedt;
         $param->ma_bac = $fromform->bacdt;
         // $param->muctieu_daotao = $fromform->editor_muctieu_daotao['text'];
+        $param->muctieu_daotao = "a";
         $param->thoigian_daotao = $fromform->tgdt;
         $param->khoiluong_kienthuc = $fromform->klkt;
         $param->doituong_tuyensinh = $fromform->dtts;
-        $param->quytrinh_daotao = $fromform->bacdt['text'];
+        // $param->quytrinh_daotao = $fromform->qtdt['text'];
+        $param->quytrinh_daotao = "a";
         $param->dienkien_totnghiep = $fromform->bacdt;
         $param->ma_cay_khoikienthuc = $fromform->select_ktt;
-        $param->mota = null;
-        
+        // $param->ma_cay_khoikienthuc = "dda";
+        $param->mota = "ad";
         insert_ctdt($param);
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/ctdt/index.php");
     }
 
     $mform->display();
@@ -105,23 +107,24 @@ if ($mform->is_cancelled()) {
 }
 
 function validateData(){
-    // if(validata_bacdt(get_submit_value('tct')) && 
+    // if( 
+    //     $mform->get_submit_value('bacdt') != NULL && 
+    //     $mform->get_submit_value('hedt') != NULL && 
+    //     $mform->get_submit_value('khoatuyen') != NULL && 
+    //     $mform->get_submit_value('nganhdt') != NULL && 
+    //     $mform->get_submit_value('chuyenganh') != NULL && 
 
-        // get_submit_value('bacdt') != NULL && 
-        // get_submit_value('hedt') != NULL && 
-        // get_submit_value('khoatuyen') != NULL && 
-        // get_submit_value('nganhdt') != NULL && 
-        // get_submit_value('chuyenganh') != NULL && 
-
-        // get_submit_value('tdgt') != NULL && 
-        // get_submit_value('klkt') != NULL && 
-        // get_submit_value('dtts') != NULL && 
-        // get_submit_value('qtdt') != NULL && 
-        // get_submit_value('chuyenganh') != NULL && 
-        // get_submit_value('chuyenganh') != NULL && 
-        // get_submit_value('chuyenganh') != NULL
+    //     $mform->get_submit_value('tdgt') != NULL && 
+    //     $mform->get_submit_value('klkt') != NULL && 
+    //     $mform->get_submit_value('dtts') != NULL && 
+    //     $mform->get_submit_value('qtdt') != NULL && 
+    //     $mform->get_submit_value('chuyenganh') != NULL && 
+    //     $mform->get_submit_value('chuyenganh') != NULL && 
+    //     $mform->get_submit_value('chuyenganh') != NULL
     // ){
-
+    //     echo "null found";
+    //     return false;
+    // }
     return true;
 }
 

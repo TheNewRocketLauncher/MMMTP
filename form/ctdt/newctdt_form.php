@@ -150,11 +150,12 @@ require_once("$CFG->libdir/formslib.php");
             $mform->addElement('filepicker', 'userfile', get_string('file'), null, array('maxbytes' => $maxbytes, 'accepted_types' => '*'));
 
             $eGroup=array();
-            $eGroup[] = $mform->createElement('submit', 'btnreview', get_string('themctdt_review', 'block_educationpgrs'));
-            $eGroup[] = $mform->createElement('submit', 'btnreview', get_string('themkkt_btn_complete', 'block_educationpgrs'));
+            $eGroup[] = $mform->createElement('submit', 'btn_review', get_string('themctdt_review', 'block_educationpgrs'));
+            $eGroup[] = $mform->createElement('submit', 'btn_complete', get_string('themkkt_btn_complete', 'block_educationpgrs'));
             $mform->addGroup($eGroup, 'ndctbtn', '', '', false);
 
-            
+            $mform->addElement('hidden', 'is_submited', false);
+            $mform->disable_form_change_checker();
         }
 
         //Custom validation should be added here
