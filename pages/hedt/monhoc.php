@@ -65,8 +65,8 @@ echo $OUTPUT->header();
 
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
- require_once('../../form/decuong_monhoc/thong_tin_chung.php');
- $mform = new thong_tin_chung_form();
+ require_once('../../form/decuongmonhoc/thongtinchung.php');
+ $mform = new thongtinchung_form();
 
 
  //Form processing and displaying is done here

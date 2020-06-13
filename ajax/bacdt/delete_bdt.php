@@ -1,10 +1,10 @@
 <?php
 
 // Standard config file and local library.
-require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/../../../../config.php');
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
-function delete_chuyennganhdt($id) {
+function delete_hedt($id) {
      /*
       $param = new stdClass();
       $param->ma_bac = 'DH';
@@ -12,12 +12,12 @@ function delete_chuyennganhdt($id) {
       $param->mota = 'Bậc Đại học HCMUS'
      */
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_chuyennganhdt', array('id' => $id));
+    $DB->delete_records('block_edu_bacdt', array('id' => $id));
 }
     // Xóa bậc đào tạo có id truyền vào
-    delete_chuyennganhdt($id);
+    delete_hedt($id);
     // return
-    $output = "Xóa chuyên ngành có ID = " . $id . " thành công!";
+    $output = "Deleted HDT has ID = " . $id . " successfully!";
     echo $output;
     exit;
  

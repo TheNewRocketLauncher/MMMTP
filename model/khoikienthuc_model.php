@@ -25,7 +25,7 @@ function insert_kkt($param_khoi, $arr_mon) {
         // if(arr_mon != null){
         //     foreach($arr_mon as $item){
         //         $param_mon = new stdClass();
-        //         $param_mon->ma_monhoc = $item->ma_monhoc;
+        //         $param_mon->mamonhoc = $item->mamonhoc;
         //         $param_mon->ma_khoi = $item->ma_khoi;
     
         //         $DB->insert_record('block_edu_monthuockhoi', $param_mon);

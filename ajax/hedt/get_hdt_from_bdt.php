@@ -1,7 +1,7 @@
 <?php
 
 // Standard config file and local library.
-require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/../../../../config.php');
 $bdt = required_param('bdt', PARAM_ALPHA);
 $courseid = required_param('course', PARAM_INT);
 function get_hdt_from_bdt($ma_bac) {

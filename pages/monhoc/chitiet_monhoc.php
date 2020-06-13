@@ -7,7 +7,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
-// require_once('../../controller/them_decuong_monhoc.controller.php');
+// require_once('../../controller/them_decuongmonhoc.controller.php');
 
 // require_once('../factory.php');
 
@@ -74,19 +74,19 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
 $PAGE->navbar->add(get_string('label_monhoc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php'));
-$PAGE->navbar->add($chitietmh->ten_monhoc_vi, new moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php?id='.$chitietmh->id));
+$PAGE->navbar->add($chitietmh->tenmonhoc_vi, new moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php?id='.$chitietmh->id));
 // Title.
 $PAGE->set_title('Chi tiết môn học');
-$PAGE->set_heading('[' . $chitietmh->ma_monhoc . ']' . $chitietmh->ten_monhoc_vi);
+$PAGE->set_heading('[' . $chitietmh->mamonhoc . ']' . $chitietmh->tenmonhoc_vi);
 echo $OUTPUT->header();
 
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 
-require_once('../../form/decuong_monhoc/chitiet_monhoc_form.php');
+require_once('../../form/decuongmonhoc/chitiet_monhoc_form.php');
 
 
-$url = new \moodle_url('them_decuong_monhoc.php', ['id' => $id]);
+$url = new \moodle_url('them_decuongmonhoc.php', ['id' => $id]);
 echo \html_writer::link($url, 'Thêm đề cương môn học');
 
 
@@ -140,14 +140,14 @@ if ($mform->is_cancelled()) {
     //Set default data from DB
     $toform;
     $toform->id_monhoc = $chitietmh->id;
-    $toform->ma_monhoc = $chitietmh->ma_monhoc;
-    $toform->ten_monhoc_vi = $chitietmh->ten_monhoc_vi;
-    $toform->ten_monhoc_en = $chitietmh->ten_monhoc_en;
-    $toform->so_tinchi = $chitietmh->so_tinchi;
-    $toform->so_tiet_LT = $chitietmh->sotiet_lythuyet;
-    $toform->so_tiet_TH = $chitietmh->sotiet_thuchanh;
-    $toform->so_tiet_BT = $chitietmh->sotiet_baitap;
-    $toform->loai_hocphan = $chitietmh->loai_hocphan;
+    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->tenmonhoc_vi = $chitietmh->tenmonhoc_vi;
+    $toform->tenmonhoc_en = $chitietmh->tenmonhoc_en;
+    $toform->sotinchi = $chitietmh->sotinchi;
+    $toform->sotiet_LT = $chitietmh->sotietlythuyet;
+    $toform->sotiet_TH = $chitietmh->sotietthuchanh;
+    $toform->sotiet_BT = $chitietmh->sotiet_baitap;
+    $toform->loaihocphan = $chitietmh->loaihocphan;
     $toform->ghichu = $chitietmh->ghichu;
     
     $mform->set_data($toform);

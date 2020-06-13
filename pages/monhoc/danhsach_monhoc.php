@@ -73,7 +73,7 @@ $table = get_monhoc_table();
 echo html_writer::table($table);
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-// require_once('../../form/decuong_monhoc/danhsach_monhoc_form.php');
+// require_once('../../form/decuongmonhoc/danhsach_monhoc_form.php');
 // $mform = new danhsach_monhoc_form();
 
 

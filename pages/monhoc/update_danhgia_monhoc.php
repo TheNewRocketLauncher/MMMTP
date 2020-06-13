@@ -7,7 +7,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
-// require_once('../../controller/them_decuong_monhoc.controller.php');
+// require_once('../../controller/them_decuongmonhoc.controller.php');
 
 // require_once('../factory.php');
 
@@ -80,12 +80,12 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 $id = optional_param('id', 0, PARAM_INT);
-require_once('../../form/decuong_monhoc/them_decuong_monhoc_form.php');
+require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
 
 
-$chitietmh = get_danhgia_monhoc_by_ma_monhoc_1($id);
+$chitietmh = get_danhgiamonhoc_by_mamonhoc_1($id);
 
-$mform = new update_danhgia_decuong_monhoc_form();
+$mform = new update_danhgia_decuongmonhoc_form();
 
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
@@ -97,14 +97,14 @@ if ($mform->is_cancelled()) {
     $param1 = new stdClass();
     
     $param1->id = $fromform->id;
-    $param1->ma_monhoc = $fromform->ma_monhoc;
-    $param1->ma_danhgia = $fromform->ma_danhgia;
-    $param1->ten_danhgia = $fromform->ten_danhgia;
-    $param1->mota_danhgia = $fromform->mota_danhgia;
-    $param1->chuan_daura_danhgia = $fromform->cac_chuan_daura_danhgia;
+    $param1->mamonhoc = $fromform->mamonhoc;
+    $param1->madanhgia = $fromform->madanhgia;
+    $param1->tendanhgia = $fromform->tendanhgia;
+    $param1->motadanhgia = $fromform->motadanhgia;
+    $param1->chuandaura_danhgia = $fromform->cacchuandaura_danhgia;
     $param1->tile_danhgia = $fromform->tile_danhgia;
 
-    update_danhgia_monhoc_table($param1);
+    update_danhgiamonhoc_table($param1);
     
     echo '<h2>Cập nhật thành công!</h2>';
     echo '<br>';
@@ -114,11 +114,11 @@ if ($mform->is_cancelled()) {
     //Set default data from DB
     $toform;
     $toform->id = $chitietmh->id;
-    $toform->ma_monhoc = $chitietmh->ma_monhoc;
-    $toform->ma_danhgia = $chitietmh->ma_danhgia;
-    $toform->ten_danhgia = $chitietmh->ten_danhgia;
-    $toform->mota_danhgia = $chitietmh->mota_danhgia;
-    $toform->cac_chuan_daura_danhgia = $chitietmh->chuan_daura_danhgia;
+    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->madanhgia = $chitietmh->madanhgia;
+    $toform->tendanhgia = $chitietmh->tendanhgia;
+    $toform->motadanhgia = $chitietmh->motadanhgia;
+    $toform->cacchuandaura_danhgia = $chitietmh->chuandaura_danhgia;
     $toform->tile_danhgia = $chitietmh->tile_danhgia;
     
     

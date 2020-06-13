@@ -7,7 +7,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
-// require_once('../../controller/them_decuong_monhoc.controller.php');
+// require_once('../../controller/them_decuongmonhoc.controller.php');
 
 // require_once('../factory.php');
 
@@ -80,12 +80,12 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 $id = optional_param('id', 0, PARAM_INT);
-require_once('../../form/decuong_monhoc/them_decuong_monhoc_form.php');
+require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
 
 
-$chitietmh = get_chuan_daura_monmhoc_by_ma_monhoc_1($id);
+$chitietmh = get_chuandaura_monmhoc_by_mamonhoc_1($id);
 
-$mform = new update_chuan_daura_decuong_monhoc_form();
+$mform = new update_chuandaura_decuongmonhoc_form();
 
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
@@ -97,14 +97,14 @@ if ($mform->is_cancelled()) {
     $param1 = new stdClass();
     
     $param1->id = $fromform->id;
-    $param1->ma_monhoc = $fromform->ma_monhoc;
-    $param1->ma_cdr = $fromform->chuan_daura;
-    $param1->mota = $fromform->mota_chuan_daura;
+    $param1->mamonhoc = $fromform->mamonhoc;
+    $param1->ma_cdr = $fromform->chuandaura;
+    $param1->mota = $fromform->mota_chuandaura;
     $param1->mucdo_introduce = 1;
     $param1->mucdo_teach = 1;
-    $param1->mucdo_utilize = $fromform->mucdo_itu_chuan_daura;
+    $param1->mucdo_utilize = $fromform->mucdo_itu_chuandaura;
 
-    update_chuan_daura_monhoc_table($param1);
+    update_chuandaura_monhoc_table($param1);
 
     echo '<h2>Cập nhật thành công!</h2>';
     echo '<br>';
@@ -114,10 +114,10 @@ if ($mform->is_cancelled()) {
     //Set default data from DB
     $toform;
     $toform->id = $chitietmh->id;
-    $toform->ma_monhoc = $chitietmh->ma_monhoc;
-    $toform->chuan_daura = $chitietmh->ma_cdr;
-    $toform->mota_chuan_daura = $chitietmh->mota;
-    $toform->mucdo_itu_chuan_daura = $chitietmh->mucdo_utilize;
+    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->chuandaura = $chitietmh->ma_cdr;
+    $toform->mota_chuandaura = $chitietmh->mota;
+    $toform->mucdo_itu_chuandaura = $chitietmh->mucdo_utilize;
     
     $mform->set_data($toform);
     

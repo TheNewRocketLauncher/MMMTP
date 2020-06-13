@@ -12,7 +12,7 @@ function delete_tainguyenmonhoc($id) {
       $param->mota = 'Bậc Đại học HCMUS'
      */
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_tainguyen_monhoc', array('id' => $id));
+    $DB->delete_records('block_edu_tainguyenmonhoc', array('id' => $id));
 }
     // Xóa bậc đào tạo có id truyền vào
     delete_tainguyenmonhoc($id);

@@ -66,11 +66,11 @@
         }        
     }
 
-    function changecheck_muctieu_monhoc(check_id)
+    function changecheck_muctieumonhoc(check_id)
     {            
         var check_idplus = check_id;
-        var id = 'muctieu_monhoc'+check_id;
-        var id2 = 'muctieu_monhoc'+check_idplus;
+        var id = 'muctieumonhoc'+check_id;
+        var id2 = 'muctieumonhoc'+check_idplus;
         if (document.getElementById(id2).checked == false)
         {
             // document.getElementById(id2).checked = true;
@@ -108,11 +108,11 @@
         }        
     }
 
-    function changecheck_kehoach_giangday_LT(check_id)
+    function changecheck_kehoachgiangday_LT(check_id)
     {            
         var check_idplus = check_id;
-        var id = 'kehoach_giangday_LT'+check_id;
-        var id2 = 'kehoach_giangday_LT'+check_idplus;
+        var id = 'kehoachgiangday_LT'+check_id;
+        var id2 = 'kehoachgiangday_LT'+check_idplus;
         if (document.getElementById(id2).checked == false)
         {
             // document.getElementById(id2).checked = true;
@@ -129,11 +129,11 @@
         }        
     }
 
-    function changecheck_danhgia_monhoc(check_id)
+    function changecheck_danhgiamonhoc(check_id)
     {            
         var check_idplus = check_id;
-        var id = 'danhgia_monhoc'+check_id;
-        var id2 = 'danhgia_monhoc'+check_idplus;
+        var id = 'danhgiamonhoc'+check_id;
+        var id2 = 'danhgiamonhoc'+check_idplus;
         if (document.getElementById(id2).checked == false)
         {
             // document.getElementById(id2).checked = true;
@@ -150,11 +150,11 @@
         }        
     }
 
-    function changecheck_tainguyen_monhoc(check_id)
+    function changecheck_tainguyenmonhoc(check_id)
     {            
         var check_idplus = check_id;
-        var id = 'tainguyen_monhoc'+check_id;
-        var id2 = 'tainguyen_monhoc'+check_idplus;
+        var id = 'tainguyenmonhoc'+check_id;
+        var id2 = 'tainguyenmonhoc'+check_idplus;
         if (document.getElementById(id2).checked == false)
         {
             // document.getElementById(id2).checked = true;
@@ -171,11 +171,11 @@
         }        
     }
 
-    function changecheck_quydinh_chung_monhoc(check_id)
+    function changecheck_quydinhchung_monhoc(check_id)
     {            
         var check_idplus = check_id;
-        var id = 'quydinh_chung_monhoc'+check_id;
-        var id2 = 'quydinh_chung_monhoc'+check_idplus;
+        var id = 'quydinhchung_monhoc'+check_id;
+        var id2 = 'quydinhchung_monhoc'+check_idplus;
         if (document.getElementById(id2).checked == false)
         {
             // document.getElementById(id2).checked = true;

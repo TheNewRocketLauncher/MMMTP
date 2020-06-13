@@ -68,7 +68,7 @@ $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 echo $OUTPUT->header();
 
 
-//get ma_monhoc truoc
+//get mamonhoc truoc
 
 $btn_mo_khoahoc = html_writer::tag('button','Mở khóa học', array('onClick' => "window.location.href='mo_khoahoc.php'"));
 echo $btn_mo_khoahoc;

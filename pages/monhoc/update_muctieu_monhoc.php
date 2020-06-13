@@ -7,7 +7,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
-// require_once('../../controller/them_decuong_monhoc.controller.php');
+// require_once('../../controller/them_decuongmonhoc.controller.php');
 
 // require_once('../factory.php');
 
@@ -80,12 +80,12 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 $id = optional_param('id', 0, PARAM_INT);
-require_once('../../form/decuong_monhoc/them_decuong_monhoc_form.php');
+require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
 
 
-$chitietmh = get_muctieu_monmhoc_by_ma_monhoc_1($id);
+$chitietmh = get_muctieu_monmhoc_by_mamonhoc_1($id);
 
-$mform = new update_muctieu_monhoc_decuong_monhoc_form();
+$mform = new update_muctieumonhoc_decuongmonhoc_form();
 
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
@@ -97,17 +97,17 @@ if ($mform->is_cancelled()) {
     $param1 = new stdClass();
     
     $param1->id = $mform->get_data()->id;
-    $param1->ma_monhoc = $mform->get_data()->ma_monhoc;
-    $param1->muctieu = $mform->get_data()->muctieu_muctieu_monhoc;
-    $param1->mota = $mform->get_data()->mota_muctieu_muctieu_monhoc;
-    $param1->danhsach_cdr = $mform->get_data()->chuan_daura_cdio_muctieu_monhoc;
+    $param1->mamonhoc = $mform->get_data()->mamonhoc;
+    $param1->muctieu = $mform->get_data()->muctieu_muctieumonhoc;
+    $param1->mota = $mform->get_data()->mota_muctieu_muctieumonhoc;
+    $param1->danhsach_cdr = $mform->get_data()->chuandaura_cdio_muctieumonhoc;
 
-    update_muctieu_monhoc_table($param1);
+    update_muctieumonhoc_table($param1);
 
     echo '<h2>Cập nhật thành công!</h2>';
     echo '<br>';
 
-    // $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuong_monhoc.php', ['id'=>$param1->id]);
+    // $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['id'=>$param1->id]);
     // $linktext = get_string('label_monhoc', 'block_educationpgrs');
     // echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
@@ -116,10 +116,10 @@ if ($mform->is_cancelled()) {
     //Set default data from DB
     $toform;
     $toform->id = $chitietmh->id;
-    $toform->ma_monhoc = $chitietmh->ma_monhoc;
-    $toform->muctieu_muctieu_monhoc = $chitietmh->muctieu;
-    $toform->mota_muctieu_muctieu_monhoc = $chitietmh->mota;
-    $toform->chuan_daura_cdio_muctieu_monhoc = $chitietmh->danhsach_cdr;
+    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->muctieu_muctieumonhoc = $chitietmh->muctieu;
+    $toform->mota_muctieu_muctieumonhoc = $chitietmh->mota;
+    $toform->chuandaura_cdio_muctieumonhoc = $chitietmh->danhsach_cdr;
     
     $mform->set_data($toform);
     

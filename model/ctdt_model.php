@@ -90,8 +90,6 @@ function get_ctdt($courseid) {
     $allbacdts = $DB->get_records('block_edu_ctdt', []);
     $stt = 1;    
     foreach ($allbacdts as $ibacdt) {
-    //   $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/qlbac.php', ['courseid' => $courseid, 'id' => $ibacdt->id_bac]);
-    //   $ten_url = \html_writer::link($url, $ibacdt->ten);
         $table->data[] = [(string)$stt , (string)$ibacdt->ma_ctdt ,(string)$ibacdt->ma_nienkhoa ,(string)$ibacdt->ma_nganh ,(string)$ibacdt->ma_chuyennganh ,(string)$ibacdt->thoigia_daotao ,(string)$ibacdt->khoiluong_kienthuc ,(string)$ibacdt->doituong_tuyensinh];
         $stt = $stt+1;
     }

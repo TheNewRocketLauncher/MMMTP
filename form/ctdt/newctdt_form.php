@@ -14,8 +14,6 @@ require_once("$CFG->libdir/formslib.php");
             $mform->addElement('header', 'general0', get_string('themctdt_thongtintongquat', 'block_educationpgrs'));
             $mform->setExpanded('general0', false);
             ///----------------------------------------------------------------------------------------------------------------------///         
-            //$mform->addElement('html', '<h1 class="ten_mh" style="text-align: center; padding-bottom: 50px;">' . get_string('themctdt_thongtintongquat', 'block_educationpgrs') . '</h1>');
-
             $eGroup=array();
             $eGroup[] =& $mform->createElement('text', 'tct', '', 'size="50"');
             $mform->addGroup($eGroup, 'tctg', get_string('themctdt_tenchuogntrinh', 'block_educationpgrs'), array(' '), false);       
@@ -45,54 +43,39 @@ require_once("$CFG->libdir/formslib.php");
             ///----------------------------------------------------------------------------------------------------------------------///        
             $mform->addElement('header', 'general1', get_string('themctdt_lbl_mtdt', 'block_educationpgrs'));
             ///----------------------------------------------------------------------------------------------------------------------///            
-            
             $eGroup=array();
             $eGroup[] =& $mform->createElement('editor', 'editor_muctieu_daotao', 'dd', array('context' => $context, 'width' => '1050px') );
             $mform->setType('mtc', PARAM_RAW);
             $mform->addGroup($eGroup, 'mtdt1', '', array(' '), false);
 
-            /////////////////// 2 THỜI GIÁN ĐÀO TẠO
+            /////////////////// 2 THỜI GIAN ĐÀO TẠO
             ///----------------------------------------------------------------------------------------------------------------------///
             $mform->addElement('header', 'general2', get_string('themctdt_lbl_tgdt', 'block_educationpgrs'));
             ///----------------------------------------------------------------------------------------------------------------------///            
-            
             $eGroup=array();
             $eGroup[] =& $mform->createElement('text', 'tgdt', '', 'size="50"');
             $mform->addGroup($eGroup, 'gtgdt', get_string('themctdt_lbl_tgdt', 'block_educationpgrs'), array(' '), false);
-
 
             /////////////////// 3 KHỐI LƯỢNG KIẾN THỨC TOÀN KHOÁ
             ///----------------------------------------------------------------------------------------------------------------------///
             $mform->addElement('header', 'general3', get_string('themctdt_lbl_klkt', 'block_educationpgrs'));
             ///----------------------------------------------------------------------------------------------------------------------///            
-            
             $eGroup=array();
             $eGroup[] =& $mform->createElement('text', 'klkt', '', 'size="50"');
-            $mform->addGroup($eGroup, 'g', get_string('themctdt_lbl_klkt', 'block_educationpgrs'), array(' '), false);
-
+            $mform->addGroup($eGroup, 'gklkt', get_string('themctdt_lbl_klkt', 'block_educationpgrs'), array(' '), false);
 
             /////////////////// 4 ĐỐI TƯỢNG TUYỂN SINH
             ///----------------------------------------------------------------------------------------------------------------------///
             $mform->addElement('header', 'general4', get_string('themctdt_lbl_dtts', 'block_educationpgrs'));
             ///----------------------------------------------------------------------------------------------------------------------///            
-            
             $eGroup=array();
             $eGroup[] =& $mform->createElement('text', 'dtts', '', 'size="50"');
             $mform->addGroup($eGroup, 'gdtts', get_string('themctdt_lbl_dtts', 'block_educationpgrs'), array(' '), false);
-
 
             /////////////////// 5 QUY TRÌNH ĐÀO TẠO
             ///----------------------------------------------------------------------------------------------------------------------///
             $mform->addElement('header', 'general5', get_string('themctdt_lbl_qtdt', 'block_educationpgrs'));
             ///----------------------------------------------------------------------------------------------------------------------///            
-            
-            // $eGroup=array();
-            // $eGroup[] =& $mform->createElement('textarea', '1.2', '', 'wrap="virtual" rows="10" cols="105"');
-            // $mform->addGroup($eGroup, 'qtdt1', get_string('themctdt_qtdt', 'block_educationpgrs'), array(' '), false);
-            // $eGroup=array();
-            // $eGroup[] =& $mform->createElement('textarea', '1.2', '', 'wrap="virtual" rows="10" cols="105"');
-            // $mform->addGroup($eGroup, 'qtdt2', get_string('themctdt_dktn', 'block_educationpgrs'), array(' '), false);
-            
             $eGroup=array();
             $eGroup[] =& $mform->createElement('editor', 'qtdt', 'dd', array('context' => $context, 'width' => '1050px') );
             $mform->setType('qtdt', PARAM_RAW);
@@ -105,7 +88,7 @@ require_once("$CFG->libdir/formslib.php");
             ///----------------------------------------------------------------------------------------------------------------------///            
             
             
-            //Button
+            // Button
             $mform->registerNoSubmitButton('btnupdatetodown');
             $mform->registerNoSubmitButton('btnupdatefromdown');
             $eGroup=array();
@@ -128,18 +111,7 @@ require_once("$CFG->libdir/formslib.php");
 
             $eGroup=array();
             $eGroup[] = $mform->createElement('submit', 'btnupdatefromup', get_string('themctdt_btn_updatefromup', 'block_educationpgrs'));
-            $mform->addGroup($eGroup, 'ndctbtn', '', '', false);
-
-        
-            // $arr_kkt = array();
-            // $allkkt = $DB->get_records('block_edu_khoikienthuc', []);
-            // foreach ($allkkt as $imonhoc) {
-            //     $arr_kkt += array($imonhoc->ma_khoi => $imonhoc->ma_khoi);
-            // }
-            // $mform->addElement('select', 'select_ktt', 'hello', $arr_kkt);
-
-            
-
+            $mform->addGroup($eGroup, 'ndctbtn', '', '', false);          
 
             /////////////////// IMPORT FILE
             ///----------------------------------------------------------------------------------------------------------------------///
@@ -158,7 +130,6 @@ require_once("$CFG->libdir/formslib.php");
             $mform->disable_form_change_checker();
         }
 
-        //Custom validation should be added here
         function validation($data, $files)
         {
             return array();
@@ -168,11 +139,4 @@ require_once("$CFG->libdir/formslib.php");
             $mform = & $this->_form;
             return $mform->getSubmitValue($elementname);
         }
-
-        // function get_value_editor($elementname) {
-        //     $mform = & $this->_form;
-        //     return $mform->getValues($elementname);
-        // }
-
     }
-?>

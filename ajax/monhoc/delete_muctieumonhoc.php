@@ -4,7 +4,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
-function delete_muctieu_monhoc($id) {
+function delete_muctieumonhoc($id) {
      /*
       $param = new stdClass();
       $param->ma_bac = 'DH';
@@ -12,10 +12,10 @@ function delete_muctieu_monhoc($id) {
       $param->mota = 'Bậc Đại học HCMUS'
      */
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_muctieu_monhoc', array('id' => $id));
+    $DB->delete_records('block_edu_muctieumonhoc', array('id' => $id));
 }
     // Xóa bậc đào tạo có id truyền vào
-    delete_muctieu_monhoc($id);
+    delete_muctieumonhoc($id);
     // return
     $output = "Deleted MTMH has ID = " . $id . " successfully!";
     echo $output;

@@ -63,9 +63,9 @@ define(['jquery'], function($) {
             $("#btn_delete_muctieumonhoc").click(function() {
                 // alert(12345);
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('muctieu_monhoc_checkbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('muctieumonhoc_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {
@@ -92,9 +92,9 @@ define(['jquery'], function($) {
             $("#btn_delete_chuandauramonhoc").click(function() {
                 // alert(12345);
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('chuandaura_monhoc_checkbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('chuandaura_monhoc_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {
@@ -121,9 +121,9 @@ define(['jquery'], function($) {
             $("#btn_delete_khgdltmonhoc").click(function() {
                 // alert(12345);
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('kehoach_giangday_LT_checkbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('kehoachgiangday_LT_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {
@@ -150,9 +150,9 @@ define(['jquery'], function($) {
             $("#btn_delete_danhgiamonhoc").click(function() {
                 // alert(12345);
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('danhgia_monhoc_checkbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('danhgiamonhoc_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {
@@ -179,9 +179,9 @@ define(['jquery'], function($) {
             $("#btn_delete_tainguyenmonhoc").click(function() {
                 // alert(12345);
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('tainguyen_monhoc_checkbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('tainguyenmonhoc_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {
@@ -208,9 +208,9 @@ define(['jquery'], function($) {
             $("#btn_delete_quydinhchungmonhoc").click(function() {
                 // alert(12345);
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('quydinh_chung_monhoc_checkbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('quydinhchung_monhoc_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {
@@ -236,9 +236,9 @@ define(['jquery'], function($) {
 
             $("#btn_delete_hedt").click(function() {
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('hdtcheckbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('hdtcheckbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {
@@ -268,9 +268,9 @@ define(['jquery'], function($) {
             }); // end del
             $("#btn_delete_bacdt").click(function() {
                 var list_id = [];
-                var cusid_ele = document.getElementsByClassName('bdtcheckbox');
-                for (var i = 0; i < cusid_ele.length; ++i) {
-                    var item = cusid_ele[i];  
+                var allElement = document.getElementsByClassName('bdtcheckbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];  
                     
                     if(item.value == '1')
                     {

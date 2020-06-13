@@ -91,8 +91,8 @@ if ($mform->is_cancelled()) {
         // $param->quytrinh_daotao = $fromform->qtdt['text'];
         $param->quytrinh_daotao = "a";
         $param->dienkien_totnghiep = $fromform->bacdt;
-        $param->ma_cay_khoikienthuc = $fromform->select_ktt;
-        // $param->ma_cay_khoikienthuc = "dda";
+        // $param->ma_cay_khoikienthuc = $fromform->select_ktt;
+        $param->ma_cay_khoikienthuc = "dda";
         $param->mota = "ad";
         insert_ctdt($param);
         redirect("$CFG->wwwroot/blocks/educationpgrs/pages/ctdt/index.php");

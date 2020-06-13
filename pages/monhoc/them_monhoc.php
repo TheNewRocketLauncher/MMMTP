@@ -7,7 +7,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
-// require_once('../../controller/them_decuong_monhoc.controller.php');
+// require_once('../../controller/them_decuongmonhoc.controller.php');
 
 // require_once('../factory.php');
 
@@ -82,8 +82,7 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 
-require_once('../../form/decuong_monhoc/them_monhoc_form.php');
-
+require_once('../../form/decuongmonhoc/them_monhoc_form.php');
 
 $mform = new them_monhoc_form();
 
@@ -96,15 +95,15 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
 
     $param1 = new stdClass();
-    $param1->ma_monhoc = $mform->get_data()->ma_monhoc;
-    $param1->ten_monhoc_vi = $mform->get_data()->ten_monhoc_vi;
-    $param1->ten_monhoc_en = $mform->get_data()->ten_monhoc_en;
-    $param1->so_tinchi = $mform->get_data()->so_tinchi;
-    $param1->sotiet_lythuyet = $mform->get_data()->so_tiet_LT;
-    $param1->sotiet_thuchanh = $mform->get_data()->so_tiet_TH;
-    $param1->sotiet_baitap = $mform->get_data()->so_tiet_BT;
+    $param1->mamonhoc = $mform->get_data()->mamonhoc;
+    $param1->tenmonhoc_vi = $mform->get_data()->tenmonhoc_vi;
+    $param1->tenmonhoc_en = $mform->get_data()->tenmonhoc_en;
+    $param1->sotinchi = $mform->get_data()->sotinchi;
+    $param1->sotietlythuyet = $mform->get_data()->sotiet_LT;
+    $param1->sotietthuchanh = $mform->get_data()->sotiet_TH;
+    $param1->sotiet_baitap = $mform->get_data()->sotiet_BT;
     // $param1->mota = $mform->get_data()->mota;
-    $param1->loai_hocphan = $mform->get_data()->loai_hocphan;
+    $param1->loaihocphan = $mform->get_data()->loaihocphan;
     $param1->ghichu = $mform->get_data()->ghichu;
 
     insert_monhoc_table($param1);

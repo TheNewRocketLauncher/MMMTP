@@ -75,7 +75,7 @@ if ($mform->is_cancelled()) {
     // if($mform->get_submit_value('btn_cancle')){
         
     // } else if ($mform->get_submit_value('btn_addmonhoc')) {
-    //     $newmonhoc = $mform->get_submit_value('select_ma_monhoc');
+    //     $newmonhoc = $mform->get_submit_value('select_mamonhoc');
     //     if(!areadyAddMonhoc($newmonhoc)){
 
     //     }
@@ -143,11 +143,11 @@ function get_monthuockhoi_table(){
 
 }
 
-function addMonTable($ma_monhoc){
+function addMonTable($mamonhoc){
 
 }
 
-function removeMonTable($ma_monhoc){
+function removeMonTable($mamonhoc){
 
 }
 
