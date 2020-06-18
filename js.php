@@ -231,6 +231,38 @@
 
         
     }
+    
+    function changecheck_monhoc(check_id)
+    {            
+        var check_idplus = check_id;
+        var id = 'monhoc'+check_id;
+        var id2 = 'monhoc'+check_idplus;
+        if (document.getElementById(id2).checked == false)
+        {
+            // document.getElementById(id2).checked = true;
+            document.getElementById(id2).value = '0';
+        }
+        else
+        {
+            // document.getElementById(id2).checked = false;
+            document.getElementById(id2).value = '1';
+
+        }
+        
+    }
+	function changecheck_listmonthuockhoi(check_id)
+    {
+        var id = 'kktlistmon' + check_id;
+        if (document.getElementById(id).checked == false)
+        {
+            document.getElementById(id).value = '0';
+        }
+        else
+        {
+            document.getElementById(id).value = '1';
+        }
+    }
+
    
     
 </script>

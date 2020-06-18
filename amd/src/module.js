@@ -346,6 +346,49 @@ define(['jquery'], function ($) {
                     });
                 });
             });
+
+            $("#btn_delete_monhoc").click(function () {
+                var list_id = [];
+                var allElement = document.getElementsByClassName("monhoc_checkbox");
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];
+                    if (item.value == "1") {
+                        list_id.push(item.name);
+                    }
+                }
+                list_id.forEach((element) => {
+                    $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/monhoc/delete_monhoc.php", {
+                        course: 1,
+                        id: element,
+                    }).done(function (data) {
+                        location.reload(true);
+                    }).fail(function () {
+                        alert("Something wrong!");
+                    });
+                });
+            });
+            
+            $("#btn_remove_subject_from_list_mon").click(function () {
+                var list_id = [];
+                var allElement = document.getElementsByClassName("kktlistmon");
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];
+                    if (item.value == "1") {
+                        list_id.push(item.name);
+                    }
+                }
+                list_id.forEach((element) => {
+                    $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/kkt/delete_monthuockhoi_global.php", {
+                        mamonhoc: element
+                    }).done(function (data) {
+                        //location.reload(true);
+                    }).fail(function () {
+                        alert("Something wrong!");
+                    });
+                });
+            });
+            
+            
         }
     };
 });

@@ -18,20 +18,23 @@ function get_monhoc_table()
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('STT', 'Mã môn học', 'Tên môn hoc', 'Số tín chỉ', 'Actions');
-   $allmonhocs = $DB->get_records('block_edu_monhoc', []);
+   $table->head = array(' ', 'STT', 'Mã môn học', 'Tên môn hoc', 'Số tín chỉ', 'Actions');
+   $alldatas = $DB->get_records('block_edu_monhoc', []);
    $stt = 1;
-   foreach ($allmonhocs as $imonhoc) {
+   foreach ($alldatas as $idata) {
       // url
-      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php', ['id' => $imonhoc->id]);
-      $ten_url = \html_writer::link($url, $imonhoc->tenmonhoc_vi);
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php', ['id' => $idata->id]);
+      $ten_url = \html_writer::link($url, $idata->tenmonhoc_vi);
 
       // url1
-      $url1 = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $imonhoc->id]);
+      $url1 = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $idata->id]);
       $ten_url1 = \html_writer::link($url1, 'update');
 
+      // checkbox
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_monhoc($idata->id)"));
+
       // add table
-      $table->data[] = [(string) $stt, (string) $imonhoc->mamonhoc, $ten_url, (string) $imonhoc->sotinchi, $ten_url1];
+      $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url, (string) $idata->sotinchi, $ten_url1];
       $stt = $stt + 1;
    }
    return $table;

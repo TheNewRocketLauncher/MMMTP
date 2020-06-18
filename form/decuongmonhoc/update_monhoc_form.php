@@ -51,6 +51,11 @@ class update_monhoc_form extends moodleform
         $mform->addGroup($eGroup, 'ghichu', get_string('ghichu', 'block_educationpgrs'), array(' '),  false);
 
         $eGroup = array();
+        $eGroup[] = &$mform->createElement('text', 'mota', '', 'size=50');
+        $mform->addGroup($eGroup, 'ghichu', 'Mô tả', array(' '),  false);
+
+
+        $eGroup = array();
         $eGroup[] = &$mform->createElement('submit', 'btn_submit_update_monhoc', 'Cập nhật');
         $mform->addGroup($eGroup, 'thongtinchung_group16', '', array(' '),  false);
     }

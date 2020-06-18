@@ -5,12 +5,6 @@ require_once(__DIR__ . '/../../../../config.php');
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
 function delete_hedt($id) {
-     /*
-      $param = new stdClass();
-      $param->ma_bac = 'DH';
-      $param->ten = 'Đại học';
-      $param->mota = 'Bậc Đại học HCMUS'
-     */
     global $DB, $USER, $CFG, $COURSE;
     $DB->delete_records('block_edu_bacdt', array('id' => $id));
 }

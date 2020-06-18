@@ -7,7 +7,6 @@ $courseid = required_param('course', PARAM_INT);
 function delete_nienkhoa($id) {
     global $DB, $USER, $CFG, $COURSE;
     $DB->delete_records('block_edu_nienkhoa', array('id' => $id));
-
 }
 delete_nienkhoa($id);
     exit;

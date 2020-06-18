@@ -4,8 +4,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
-function delete_nganhdt($id) {
-    
+function delete_nganhdt($id) {    
     global $DB, $USER, $CFG, $COURSE;
     $DB->delete_records('block_edu_nganhdt', array('id' => $id));
 }

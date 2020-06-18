@@ -97,12 +97,12 @@ class newkkt_form extends moodleform
         $mform->registerNoSubmitButton('btn_addmonhoc');
         $mform->registerNoSubmitButton('btn_addkhoicon');
 
-        $mform->addElement('checkbox', 'checkbox_cokhoicon', 'Có khối con');
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('select', 'select_ktt', 'Chọn Khối con', $this->get_listkkt());
-        $eGroup[] = &$mform->createElement('submit', 'btn_addkhoicon', get_string('themkkt_btn_themkhoicon', 'block_educationpgrs'));
-        $mform->addGroup($eGroup, 'gadd_khoicon', 'Chọn môn học', array(' '), false);
-        $mform->hideIf('gadd_khoicon', 'checkbox_cokhoicon', 'notchecked');
+        // $mform->addElement('checkbox', 'checkbox_cokhoicon', 'Có khối con');
+        // $eGroup = array();
+        // $eGroup[] = &$mform->createElement('select', 'select_makhoicon', 'Chọn khối con', $this->get_listkkt());
+        // $eGroup[] = &$mform->createElement('submit', 'btn_addkhoicon', get_string('themkkt_btn_themkhoicon', 'block_educationpgrs'));
+        // $mform->addGroup($eGroup, 'gadd_khoicon', 'Chọn khối con', array(' '), false);
+        // $mform->hideIf('gadd_khoicon', 'checkbox_cokhoicon', 'notchecked');
 
         $mform->addElement('checkbox', 'checkbox_comonhoc', 'Có môn học');
         $eGroup = array();

@@ -76,7 +76,7 @@ class block_educationpgrs extends block_list
             $this->content->items[] = \html_writer::link($url, $linktext);
             
             //Quản lý niên khoá
-            //edit file index.php tương ứng trong thư mục page. trỏ đến đường dẫn chứa file đó
+            // Edit file index.php tương ứng trong thư mục page, link đến đường dẫn
             $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
@@ -96,7 +96,7 @@ class block_educationpgrs extends block_list
             $linktext = get_string('label_monhoc', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //edit file index.php tương ứng trong thư mục page. trỏ đến đường dẫn chứa file đó
+            // Edit file index.php tương ứng trong thư mục page, link đến đường dẫn
             $url = new \moodle_url('/blocks/educationpgrs/pages/khoahoc/danhsach_khoahoc.php', ['courseid' => $courseid]);
             $linktext = get_string('label_khoahoc', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);

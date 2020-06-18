@@ -85,6 +85,7 @@ $string['group_tainguyen'] = 'Thêm tài nguyên môn hoc mới';
 $string['group_mota_quydinhchung'] = 'Thêm các quy định mới';
 $string['group_thong_tin_monhoc'] = 'Chi tiết môn học';
 $string['group_monhoc'] = 'Thêm mới môn học';
+$string['group_mota_decuong'] = 'Mô tả môn học (COURSE DESCRIPTION)';
 
 // Update monhoc
 $string['update_muctieumonhoc'] = 'Cập nhật mục tiêu môn học';

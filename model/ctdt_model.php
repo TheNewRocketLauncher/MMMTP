@@ -6,9 +6,11 @@ function insert_ctdt($param)
 {
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
-        $DB->insert_record('block_edu_ctdt', $param);
+        $id = $DB->insert_record('block_edu_ctdt', $param);
     } else {
+    	$id = NULL;
     }
+	return $id;
 }
 
 function get_list_ctdt()
