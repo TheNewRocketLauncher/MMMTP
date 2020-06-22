@@ -58,7 +58,7 @@ class chitiet_monhoc_form extends moodleform
 
         $eGroup = array();
         $eGroup[] = &$mform->createElement('text', 'mota', '', 'size=50');
-        $mform->addGroup($eGroup, 'ghichu', 'M� t?', array(' '),  false);
+        $mform->addGroup($eGroup, 'ghichu', 'Mô tả', array(' '),  false);
         $mform->disabledIf('mota', '');
     }
 

@@ -26,9 +26,9 @@ define(['jquery'], function ($) {
                 alert("Progress will insert three new BDT!");
             });
 
-            $("#id_mabac").change(function () {
+            $("#id_select_mabac").change(function () {
                 // Get BDT
-                var bdt = $("#id_mabac option:selected").text();
+                var bdt = $("#id_select_mabac option:selected").text();
                 // Get HDT with BDT
                 $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/hedt/get_hdt_from_bdt.php', {
                     course: 1,
@@ -388,7 +388,105 @@ define(['jquery'], function ($) {
                 });
             });
             
-            
+            $("#id_select_bacdt").change(function () {
+                // Get BDT
+                var bdt = $("#id_select_bacdt option:selected").text();
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/hedt/get_hdt_from_bdt.php', {
+                    course: 1,
+                    bdt: bdt
+                }).done(function (data) {
+                    var list_mahe = JSON.parse(data);
+                    var x = document.getElementById('id_select_hedt');
+                    // Remove all options
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    var count = 1;
+                    list_mahe.forEach(ma_he => {
+                        var option = document.createElement("option");
+                        option.text = ma_he;
+                        option.value = ma_he;
+                        x.add(option);
+                    });
+                }).fail(function () {
+                    alert('Something wrong!');
+                });
+            });
+
+            $("#id_select_hedt").change(function () {
+                // Get BDT
+                var ma_he = $("#id_select_hedt option:selected").text();
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/nienkhoa/get_nienkhoa_from_hedt.php', {
+                    course: 1,
+                    ma_he: ma_he
+                }).done(function (data) {
+                    var list_mahe = JSON.parse(data);
+                    var x = document.getElementById('id_select_nienkhoa');
+                    // Remove all options
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    var count = 1;
+                    list_mahe.forEach(ma_nienkhoa => {
+                        var option = document.createElement("option");
+                        option.text = ma_nienkhoa;
+                        option.value = ma_nienkhoa;
+                        x.add(option);
+                    });
+                }).fail(function () {
+                    alert('Something wrong!');
+                });
+            });
+
+            $("#id_select_nienkhoa").change(function () {
+                // Get BDT
+                var ma_nienkhoa = $("#id_select_nienkhoa option:selected").text();
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/nganhdt/get_nganh_from_nienkhoa.php', {
+                    course: 1,
+                    ma_nienkhoa: ma_nienkhoa
+                }).done(function (data) {
+                    var list_mahe = JSON.parse(data);
+                    var x = document.getElementById('id_select_nganh');
+                    // Remove all options
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    var count = 1;
+                    list_mahe.forEach(ma_nganh => {
+                        var option = document.createElement("option");
+                        option.text = ma_nganh;
+                        option.value = ma_nganh;
+                        x.add(option);
+                    });
+                }).fail(function () {
+                    alert('Something wrong!');
+                });
+            });
+
+            $("#id_select_nganh").change(function () {
+                // Get BDT
+                var ma_nganh = $("#id_select_nganh option:selected").text();
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/chuyennganhdt/get_chuyennganh_from_nganh.php', {
+                    course: 1,
+                    ma_nganh: ma_nganh
+                }).done(function (data) {
+                    var list_mahe = JSON.parse(data);
+                    var x = document.getElementById('id_select_chuyennganh');
+                    // Remove all options
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    var count = 1;
+                    list_mahe.forEach(ma_chuyennganh => {
+                        var option = document.createElement("option");
+                        option.text = ma_chuyennganh;
+                        option.value = ma_chuyennganh;
+                        x.add(option);
+                    });
+                }).fail(function () {
+                    alert('Something wrong!');
+                });
+            });
         }
     };
 });

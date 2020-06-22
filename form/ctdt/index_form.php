@@ -9,8 +9,9 @@ class index_form extends moodleform
     {
         global $CFG;
         $mform = $this->_form;
-        $mform->registerNoSubmitButton('newctdt');
-        $mform->addElement('submit', 'newctdt', get_string('themctdt_head', 'block_educationpgrs'));
+
+        // $mform->registerNoSubmitButton('newctdt');
+        // $mform->addElement('submit', 'newctdt', get_string('themctdt_head', 'block_educationpgrs'));
     }
 
     function validation($data, $files)
@@ -22,11 +23,5 @@ class index_form extends moodleform
     {
         $mform = $this->_form;
         return $mform->getSubmitValue($elementname);
-    }
-
-    function hello()
-    {
-        $mform = &$this->_form;
-        $mform->addElement('submit', 'newct', get_string('themctdt_btn_updatefromup', 'block_educationpgrs'));
     }
 }

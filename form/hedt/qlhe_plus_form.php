@@ -24,7 +24,7 @@ class qlhe_plus_form extends moodleform
         foreach ($allbacdts as $ibacdt) {
             $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
         }
-        $mabac[] = &$mform->createElement('select', 'mabac', 'test select:', $arr_mabac, array());
+        $mabac[] = &$mform->createElement('select', 'select_mabac', 'test select:', $arr_mabac, array());
         $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
 
         // Ma he

@@ -164,7 +164,7 @@ $string['export'] = 'Export pdf';
 /* Form Thêm chương trình đào tạo */
 // Phần thông tin chung
 $string['themctdt_thongtintongquat'] = 'Thông tin tổng quát';
-$string['themctdt_tenchuogntrinh'] = 'Tên chương trình';
+$string['themctdt_tenchuongtrinh'] = 'Tên chương trình';
 $string['themctdt_bacdt'] = 'Bậc đào tạo';
 $string['themctdt_hedt'] = 'Hệ đào tạo';
 $string['themctdt_khoatuyen'] = 'Khoá tuyển';

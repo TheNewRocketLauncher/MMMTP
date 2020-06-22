@@ -52,19 +52,7 @@ echo \html_writer::tag(
 );
 echo '<br>';
 
-// Form
-$mform = new simplehtml_form();
 
-// Form processing and displaying is done here
-if ($mform->is_cancelled()) {
-    // Handle form cancel operation
-} else if ($fromform = $mform->get_data()) {
-    // Process validated data
-} else {
-    // Set default data
-    $mform->set_data($toform);
-    $mform->display();
-}
 
 // Footer
 echo $OUTPUT->footer();

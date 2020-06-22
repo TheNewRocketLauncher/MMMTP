@@ -16,31 +16,6 @@ class newkkt_form extends moodleform
         $mform->setExpanded('general0', true);
         ///----------------------------------------------------------------------------------------------------------------------///         
 
-        $allbacdts = $DB->get_records('block_edu_bacdt', []);
-        $arr_mabac = array();
-        foreach ($allbacdts as $i) {
-            $arr_mabac[] = &$i->ma_bac;
-        }
-        $allhedts = $DB->get_records('block_edu_hedt', []);
-        $arr_mahe = array();
-        foreach ($allhedts as $i) {
-            $arr_mahe[] = &$i->ma_he;
-        }
-        $allnkdts = $DB->get_records('block_edu_nienkhoa', []);
-        $arr_manienkhoa = array();
-        foreach ($allnkdts as $i) {
-            $arr_manienkhoa[] = &$i->ma_nienkhoa;
-        }
-        $allndts = $DB->get_records('block_edu_nganhdt', []);
-        $arr_nganh = array();
-        foreach ($allndts as $i) {
-            $arr_nganh[] = &$i->ma_nganh;
-        }
-        $allcndts = $DB->get_records('block_edu_chuyennganhdt', []);
-        $arr_chuyenganh = array();
-        foreach ($allcndts as $i) {
-            $arr_chuyenganh[] = &$i->ma_chuyenganh;
-        }
         $arr_loaikhoi = array(
             0 => 'Bắt buộc',
             1 => 'Tự chọn'

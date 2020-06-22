@@ -6,7 +6,11 @@ TODO Provide more detailed description here.
 
 ## License ##
 
-2020 Sy Pham <1612572@student.hcmus.edu.vn>
+2020 Pham Dinh Sy <1612572@student.hcmus.edu.vn>
+2020 Nguyen Tan Son <1612563@student.hcmus.edu.vn>
+2020 Huynh Do Tan Phat <161248@student.hcmus.edu.vn>
+2020 Nguyen Phong <1612499@student.hcmus.edu.vn>
+2020 Le Trung Phong <1612500@student.hcmus.edu.vn>
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software

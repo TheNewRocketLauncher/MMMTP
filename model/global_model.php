@@ -1,5 +1,7 @@
 <?php
 require_once(__DIR__ . '/../../../config.php');
+require_once(__DIR__ . '/monhoc_model.php');
+
 
 function userIsAdmin()
 {
@@ -71,3 +73,4 @@ function global_decode($text){
     );
     return str_replace(array_values($specChars), array_keys($specChars), $text);    
 }
+

@@ -281,7 +281,6 @@
         <FIELD NAME="khoiluong_kienthuc" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="doituong_tuyensinh" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="quytrinh_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="dienkien_totnghiep" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ma_cay_khoikienthuc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>

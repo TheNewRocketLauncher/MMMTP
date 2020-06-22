@@ -25,6 +25,7 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/ctdt/index.php'));
 
 // Title.
@@ -45,10 +46,6 @@ $mform = new index_form();
 if ($mform->is_cancelled()) {
     // Handle form cancel operation
 } else if ($mform->no_submit_button_pressed()) {
-    if ($mform->get_submit_value('newctdt')) {
-        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/ctdt/newctdt.php");
-    }
-    $mform->display();
 } else if ($fromform = $mform->get_data()) {
 } else if ($mform->is_submitted()) {
     // Button submit
@@ -56,6 +53,13 @@ if ($mform->is_cancelled()) {
     $mform->set_data($toform);
     $mform->display();
 }
+
+// Thêm mới
+$url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/newctdt.php', ['courseid' => $courseid]);
+$ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
+echo  \html_writer::link($url, $ten_url);
+echo '<br><br>';
+
 
 ////////////End form
 $table = get_ctdt_checkbox($courseid);
