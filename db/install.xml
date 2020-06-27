@@ -124,9 +124,8 @@
         <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="tenmonhoc_vi" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="tenmonhoc_en" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="lopmo" TYPE="int" NOTNULL="true" SEQUENCE="false"/>  
+        <FIELD NAME="lopmo" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>  
         <FIELD NAME="loaihocphan" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        
         <FIELD NAME="sotinchi" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="sotietlythuyet" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="sotietthuchanh" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
