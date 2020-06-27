@@ -124,6 +124,7 @@
         <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="tenmonhoc_vi" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="tenmonhoc_en" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="lopmo" TYPE="tinyint"NOTNULL="true" SEQUENCE="false"/>  
         <FIELD NAME="loaihocphan" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         
         <FIELD NAME="sotinchi" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
@@ -151,8 +152,9 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="muctieu" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
@@ -164,11 +166,12 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_cdr" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mucdo_introduce" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mucdo_teach" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mucdo_utilize" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mucdo_introduce" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mucdo_teach" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mucdo_utilize" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -190,7 +193,8 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_khgd" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ten_chude" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="hoatdong_gopy" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
@@ -206,7 +210,8 @@
         <FIELD NAME="tuan" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ma_khgd" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ten_chude" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="hoatdong_gopy" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
@@ -220,7 +225,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="madanhgia" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="tendanhgia" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="chuandaura_danhgia" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="motadanhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
@@ -234,7 +240,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_tainguyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="loaitainguyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="link_tainguyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="mota_tainguyen" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
@@ -247,7 +254,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_quydinhchung" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="mota_quydinhchung" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
@@ -282,7 +290,7 @@
         <FIELD NAME="doituong_tuyensinh" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="quytrinh_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ma_cay_khoikienthuc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -369,13 +377,33 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="block_edu_khoahoc" COMMENT="block_edu_khoahoc table retrofitted from MySQL">
+    <TABLE NAME="block_edu_lop_mo" COMMENT="block_edu_cay_khoikienthuc table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="full_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="short_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="start_date" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="end_date" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="assign_to" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="block_edu_decuong" COMMENT="block_edu_decuong table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_monhoc" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten_khoahoc" TYPE="text"  NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="giaovien_phutrach" TYPE="text"  NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>       
+        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

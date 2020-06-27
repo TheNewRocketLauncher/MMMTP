@@ -263,6 +263,26 @@
         }
     }
 
+    function changecheck_decuongmonhoc(check_id)
+    {            
+        var check_idplus = check_id;
+        var id = 'decuongmonhoc'+check_id;
+        var id2 = 'decuongmonhoc'+check_idplus;
+        if (document.getElementById(id2).checked == false)
+        {
+            // document.getElementById(id2).checked = true;
+            // alert('unchecked');
+            document.getElementById(id2).value = '0';
+        }
+        else
+        {
+            // document.getElementById(id2).checked = false;
+            // alert('checked');
+
+            document.getElementById(id2).value = '1';
+
+        }        
+    }
    
     
 </script>

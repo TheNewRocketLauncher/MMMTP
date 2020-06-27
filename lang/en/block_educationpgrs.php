@@ -60,7 +60,8 @@ $string['label_ctdt'] = 'Quản lý chương trình đào tạo';
 $string['label_monhoc'] = 'Quản lý môn học';
 $string['label_decuong'] = 'Thêm đề cương môn học';
 $string['label_khoikienthuc'] = 'Quản lý khối kiến thức';
-$string['label_khoahoc'] = 'Quản lý khoá học';
+$string['label_lopmo'] = 'Danh sách lớp mờ';
+$string['label_quanly_decuong'] = 'Quản lý đề cương môn học';
 
 // Header
 $string['head_bacdt'] = 'Danh mục bậc đào tạo';
@@ -71,8 +72,10 @@ $string['head_chuyenganh'] = 'Danh mục chuyên ngành đào tạo';
 $string['head_ctdt'] = 'Danh mục chương trình đào tạo';
 $string['head_monhoc'] = 'Danh mục môn học';
 $string['head_decuong'] = 'Thêm đề cương môn học';
-$string['head_khoahoc'] = 'Quản lý khoá học';
-$string['head_mokhoahoc'] = 'Mở khoá học';
+$string['head_lopmo'] = 'Quản lý lớp mở';
+$string['head_molopmo'] = 'Mở khoá học';
+$string['head_caykkt'] = 'Quản lý cây khối kiến thức';
+
 
 // Group
 $string['group_thongtinchung'] = 'Thông tin chung';
@@ -164,7 +167,7 @@ $string['export'] = 'Export pdf';
 /* Form Thêm chương trình đào tạo */
 // Phần thông tin chung
 $string['themctdt_thongtintongquat'] = 'Thông tin tổng quát';
-$string['themctdt_tenchuongtrinh'] = 'Tên chương trình';
+$string['themctdt_tenchuogntrinh'] = 'Tên chương trình';
 $string['themctdt_bacdt'] = 'Bậc đào tạo';
 $string['themctdt_hedt'] = 'Hệ đào tạo';
 $string['themctdt_khoatuyen'] = 'Khoá tuyển';
@@ -245,7 +248,13 @@ $string['themkkt_btn_cancel'] = 'Huỷ bỏ';
 $string['themkkt_btn_themkhoimoi'] = 'Thêm khối mới';
 
 // Khoá học
-$string['ten_khoahoc'] = 'Tên khoá học';
+$string['ten_lopmo'] = 'Tên khoá học';
 $string['giaogien_phutrach'] = 'Giáo viên phụ trách';
-$string['mota_khoahoc'] = 'Mô tả';
+$string['mota_lopmo'] = 'Mô tả';
+
+
+
+//Cây khối kiến thức
+
+
 ?>

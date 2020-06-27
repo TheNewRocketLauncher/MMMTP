@@ -18,7 +18,7 @@
  * Block educationpgrs is defined here.
  *
  * @package     block_educationpgrs
- * @copyright   2020 Pham Dinh Sy <1612572@student.hcmus.edu.vn> 2020 Nguyen Tan Son <1612563@student.hcmus.edu.vn> 2020 Huynh Do Tan Phat <161248@student.hcmus.edu.vn> 2020 Nguyen Phong <1612499@student.hcmus.edu.vn> 2020 Le Trung Phong <1612500@student.hcmus.edu.vn>
+ * @copyright   2020 Sy Pham <1612572@student.hcmus.edu.vn>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -109,6 +109,12 @@ class block_educationpgrs extends block_list
             //Quản lý chương trình đào tạo
             $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_ctdt', 'block_educationpgrs');
+            $this->content->items[] = \html_writer::link($url, $linktext);
+
+
+            //Quản lý đề cương môn học
+            $url = new \moodle_url('/blocks/educationpgrs/pages/decuong/index.php');
+            $linktext = get_string('label_quanly_decuong', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
         }     
         return $this->content;

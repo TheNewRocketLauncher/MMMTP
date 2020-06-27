@@ -3,7 +3,7 @@ require_once(__DIR__ . '/../../../../config.php');
 // require_once($CFG->libdir.'/pdflib.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/bacdt_model.php');
-require_once("$CFG->libdir/tcpdf/tcpdf.php");
+require_once('../../exporter/tcpdf.php');
 require_once('../../js.php');
 
 global $COURSE, $GLOBALS;

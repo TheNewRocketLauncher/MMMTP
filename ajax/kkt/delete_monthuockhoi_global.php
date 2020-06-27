@@ -30,7 +30,7 @@ function delete_monthuockhoi_global($mamonhoc) {
     }
 }
 
-// Xoá bấc đào tạo có id truyền vào
+// X�a b?c d�o t?o c� id truy?n v�o
 delete_monthuockhoi_global($mamonhoc);
 // return
 echo $mamonhoc;

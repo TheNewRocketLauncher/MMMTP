@@ -2,6 +2,37 @@
 require_once(__DIR__ . '/../../../config.php');
 require_once('../../js.php');
 
+function vn_to_str($str)
+{
+   $unicode = array(
+      'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ|Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+      'd' => 'đ|Đ',
+      'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+      'i' => 'í|ì|ỉ|ĩ|ị|Í|Ì|Ỉ|Ĩ|Ị',
+      'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+      'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+      'y' => 'ý|ỳ|ỷ|ỹ|ỵ|Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+   );
+   foreach ($unicode as $nonUnicode => $uni) {
+      $str = preg_replace("/($uni)/i", $nonUnicode, $str);
+   }
+   $str = str_replace(' ', '_', $str);
+   return strtolower($str);
+}
+
+function findContent($str, $key)
+{
+   $result = false;
+   $_str = vn_to_str($str);
+   $_key = vn_to_str($key);
+   if (strstr($_str, $_key)) {
+      $result = true;
+   } else {
+      $result = false;
+   }
+   return $result;
+}
+
 function insert_monhoc_table($param)
 {
    global $DB, $USER, $CFG, $COURSE;
@@ -14,36 +45,65 @@ function update_monhoc_table($param)
    $DB->update_record('block_edu_monhoc', $param);
 }
 
-function get_monhoc_table()
+function get_monhoc_table($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array(' ', 'STT', 'Mã môn học', 'Tên môn hoc', 'Số tín chỉ', 'Actions');
+   $table->head = array(' ', 'STT', 'Mã môn học', 'Tên môn hoc', 'Mở hay chưa mở' ,'Số tín chỉ', 'Actions');
    $alldatas = $DB->get_records('block_edu_monhoc', []);
-   $stt = 1;
+   $stt = 1 + $page * 5;
    foreach ($alldatas as $idata) {
-      // url
-      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php', ['id' => $idata->id]);
-      $ten_url = \html_writer::link($url, $idata->tenmonhoc_vi);
+      if (findContent($idata->tenmonhoc_vi, $key_search) || $key_search == '') {
+            
+         // url
+         $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php', ['id' => $idata->id]);
+         $ten_url = \html_writer::link($url, $idata->tenmonhoc_vi);
 
-      // url1
-      $url1 = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $idata->id]);
-      $ten_url1 = \html_writer::link($url1, 'update');
+         // url1
+         $url1 = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $idata->id]);
+         $ten_url1 = \html_writer::link($url1, 'update');
 
-      // checkbox
-      $checkbox = html_writer::tag('input', ' ', array('class' => 'monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_monhoc($idata->id)"));
+         if ($page < 0) { // Get all data without page
+			$lopmo;
+      
+		      if ($imonhoc->lopmo == 1){
+		         $lopmo= "Đã mở" ; 
+		      }
+		      else{
+		         $lopmo= "Chưa mở";
+		      }
+            // checkbox
+            $checkbox = html_writer::tag('input', ' ', array('class' => 'monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_monhoc($idata->id)"));
 
-      // add table
-      $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url, (string) $idata->sotinchi, $ten_url1];
-      $stt = $stt + 1;
+            // add table
+            $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url, $lopmo, (string) $idata->sotinchi, $ten_url1];
+            $stt = $stt + 1;
+         } else if ($pos_in_table >= $page * 5 && $pos_in_table < $page * 5 + 5) {
+			$lopmo;
+      
+		      if ($imonhoc->lopmo == 1){
+		         $lopmo= "Đã mở" ; 
+		      }
+		      else{
+		         $lopmo= "Chưa mở";
+		      }
+            // checkbox
+            $checkbox = html_writer::tag('input', ' ', array('class' => 'monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_monhoc($idata->id)"));
+
+            // add table
+            $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url,$lopmo, (string) $idata->sotinchi, $ten_url1];
+            $stt = $stt + 1;
+         }
+         $pos_in_table = $pos_in_table + 1;
+      }
    }
    return $table;
 }
 
-function get_monhoc_by_id_monhoc($id_monhoc)
+function get_monhoc_by_mamonhoc($mamonhoc)
 {
    global $DB, $USER, $CFG, $COURSE;
-   return $DB->get_record('block_edu_monhoc', array('id' => $id_monhoc));
+   return $DB->get_record('block_edu_monhoc', array('mamonhoc' => $mamonhoc));
 }
 
 
@@ -56,6 +116,22 @@ function get_muctieu_monmhoc_by_mamonhoc($mamonhoc)
    $stt = 1;
    foreach ($alldatas as $idata) {
       $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_muctieumonhoc.php', ['id' => $idata->id]);
+      $ten_url = \html_writer::link($url, $idata->muctieu);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'muctieumonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'muctieumonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_muctieumonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->mota, (string) $idata->danhsach_cdr];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+function get_muctieu_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Mục tiêu', 'Mô tả', 'Chuẩn đầu ra');
+   $alldatas = $DB->get_records('block_edu_muctieumonhoc', array('ma_decuong' => $ma_decuong));
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_muctieu_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
       $ten_url = \html_writer::link($url, $idata->muctieu);
       $checkbox = html_writer::tag('input', ' ', array('class' => 'muctieumonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'muctieumonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_muctieumonhoc($idata->id)"));
       $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->mota, (string) $idata->danhsach_cdr];
@@ -91,6 +167,22 @@ function get_chuandaura_monmhoc_by_mamonhoc($mamonhoc)
    }
    return $table;
 }
+function get_chuandaura_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Chuẩn đầu ra', 'Mô tả(Mức chi tiết-hành động)', 'Mức độ(I/T/U)');
+   $alldatas = $DB->get_records('block_edu_chuandaura', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_chuan_daura.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->ma_cdr);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'chuandaura_monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'chuandaura_monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_chuandaura_monhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->mota, (string) $idata->mucdo_utilize];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
 
 function get_chuandaura_monmhoc_by_mamonhoc_1($id_monhoc)
 {
@@ -113,6 +205,22 @@ function get_kehoachgiangday_LT_by_mamonhoc($mamonhoc)
    $stt = 1;
    foreach ($alldatas as $idata) {
       $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_kehoachgiangday_lt.php', ['id' => $idata->id]);
+      $ten_url = \html_writer::link($url, $idata->ten_chude);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'kehoachgiangday_LT_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'kehoachgiangday_LT' . $idata->id, 'value' => '0', 'onclick' => "changecheck_kehoachgiangday_LT($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->danhsach_cdr, (string) $idata->hoatdong_gopy, (string) $idata->hoatdong_danhgia];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+function get_kehoachgiangday_LT_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Chủ đề', 'Chuẩn đầu ra', 'Hoạt động giảng dạy/Hoạt động học (gợi ý)', 'Hoạt động đánh giá');
+   $alldatas = $DB->get_records('block_edu_kh_giangday_lt', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_kehoach_giangday_lt.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
       $ten_url = \html_writer::link($url, $idata->ten_chude);
       $checkbox = html_writer::tag('input', ' ', array('class' => 'kehoachgiangday_LT_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'kehoachgiangday_LT' . $idata->id, 'value' => '0', 'onclick' => "changecheck_kehoachgiangday_LT($idata->id)"));
       $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->danhsach_cdr, (string) $idata->hoatdong_gopy, (string) $idata->hoatdong_danhgia];
@@ -164,6 +272,22 @@ function get_danhgiamonhoc_by_mamonhoc($mamonhoc)
    }
    return $table;
 }
+function get_danhgiamonhoc_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Mã', 'Tên', 'Mô tả (gợi ý)', 'Các chuẩn', 'Tỷ lệ (%)');
+   $alldatas = $DB->get_records('block_edu_danhgiamonhoc', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_danhgia_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->madanhgia);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'danhgiamonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'danhgiamonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_danhgiamonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string)$idata->tendanhgia, (string) $idata->motadanhgia, (string) $idata->chuandaura_danhgia, (string) $idata->tile_danhgia];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
 
 function get_danhgiamonhoc_by_mamonhoc_1($id_monhoc)
 {
@@ -191,6 +315,33 @@ function get_tainguyenmonhoc_by_mamonhoc($mamonhoc)
    }
    return $table;
 }
+function get_tainguyenmonhoc_by_mamonhoc_1($id_monhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   return $DB->get_record('block_edu_tainguyenmonhoc', array('id' => $id_monhoc));
+}
+function get_tainguyenmonhoc_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT',  'Mô tả (gợi ý)','Loại tài nguyên', 'Link đính kèm');
+   $alldatas = $DB->get_records('block_edu_tainguyenmonhoc', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_tainguyen_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->mota_tainguyen);
+
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'tainguyenmonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'tainguyenmonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_tainguyenmonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt,  $ten_url, (string) $idata->loaitainguyen, (string) $idata->link_tainguyen];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+function update_tainguyenmonhoc_table($param)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $DB->update_record('block_edu_tainguyenmonhoc', $param);
+}
 
 function get_quydinhchung_by_mamonhoc($mamonhoc)
 {
@@ -205,6 +356,41 @@ function get_quydinhchung_by_mamonhoc($mamonhoc)
       $stt = $stt + 1;
    }
    return $table;
+}
+function get_quydinhchung_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Nội dung');
+   $alldatas = $DB->get_records('block_edu_quydinhchung', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_quydinh_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->mota_quydinhchung);
+
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'quydinhchung_monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'quydinhchung_monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_quydinhchung_monhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+function get_quydinhchung_by_mamonhoc_1($id_monhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   return $DB->get_record('block_edu_quydinhchung', array('id' => $id_monhoc));
+}
+function update_quydinh_monhoc_table($param)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $DB->update_record('block_edu_quydinhchung', $param);
+}
+
+
+function insert_decuong($param)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $DB->insert_record('block_edu_decuong', $param);
 }
 
 function insert_muctieumonhoc_table($param)

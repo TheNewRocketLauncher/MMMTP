@@ -11,8 +11,14 @@ require_once('../../js.php');
 
 global $COURSE, $USER;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
-$id = optional_param('id', 0, PARAM_INT);
-$chitietmh = get_monhoc_by_id_monhoc($id);
+
+$ma_decuong = optional_param('ma_decuong', '', PARAM_ALPHANUMEXT);
+$ma_ctdt = optional_param('ma_ctdt', '', PARAM_ALPHANUMEXT);
+$mamonhoc = optional_param('mamonhoc', '', PARAM_ALPHANUMEXT);
+
+// $id = optional_param('id', 0, PARAM_INT);
+// $chitietmh = get_monhoc_by_id_monhoc($id);
+
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -29,7 +35,7 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
-$PAGE->navbar->add(get_string('label_monhoc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php'));
+$PAGE->navbar->add(get_string('label_quanly_decuong', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/decuong/index.php'));
 $PAGE->navbar->add('Thêm đề cương môn học');
 
 // Title.
@@ -42,12 +48,44 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
+$chitietmh->mamonhoc = 'csc500';
 $a = $chitietmh->mamonhoc;
+
+
+///==========================================================================
+//TUY CHON
+
+    // $mforms = new tuychon_decuongmonhoc_form();
+
+    // $madc = $mforms->madc;
+    // echo '<br>';
+
+    // if ($mforms->is_cancelled()) {
+    // } else if ($mforms->no_submit_button_pressed()) {
+    //     // Button no_submit
+    // } else if ($fromform = $mforms->get_data()) {
+    //     $param2 = new stdClass();
+    //     $param2->mamonhoc = $mforms->get_submit_value('tuychon_mon');
+    //     $param2->ma_decuong = $mforms->get_submit_value('madc');
+    //     $param2->ma_ctdt = $mforms->get_submit_value('tuychon_ctdt');
+    //     $param2->mota = $mforms->get_submit_value('mota_decuong');
+        
+    //     $mforms->madc_copy = $param2->ma_decuong;
+    //     insert_decuong($param2);
+    // 	$mforms->display();
+        
+    // } else {    
+    //     //Set default data from DB
+    //     $mforms->display();
+        
+// }
+
 
 ///===========================================================================
 //THONG TIN CHUNG
 $mform1 = new thongtinchung_decuongmonhoc_form();
-$ttc_body;
+
+// $ttc_body;
 // Process form
 if ($mform1->is_cancelled()) {
     // Handle form cancel operation
@@ -76,15 +114,17 @@ if ($mform1->is_cancelled()) {
     // Button submit
 } else {
     //Set default data from DB
+
+    $chitietmonhoc = get_monhoc_by_mamonhoc($mamonhoc);
+
     $toform;
-    $toform->id = $chitietmh->id;
-    $toform->masomonhoc_thongtinchung = $chitietmh->mamonhoc;
-    $toform->tenmonhoc1_thongtinchung = $chitietmh->tenmonhoc_vi;
-    $toform->tenmonhoc2_thongtinchung = $chitietmh->tenmonhoc_en;
-    $toform->loaihocphan = $chitietmh->loaihocphan;
-    $toform->sotinchi_thongtinchung = $chitietmh->sotinchi;
-    $toform->tietlythuyet_thongtinchung = $chitietmh->sotietlythuyet;
-    $toform->tietthuchanh_thongtinchung = $chitietmh->sotietthuchanh;
+    $toform->masomonhoc_thongtinchung = $chitietmonhoc->mamonhoc;
+    $toform->tenmonhoc1_thongtinchung = $chitietmonhoc->tenmonhoc_vi;
+    $toform->tenmonhoc2_thongtinchung = $chitietmonhoc->tenmonhoc_en;
+    $toform->loaihocphan = $chitietmonhoc->loaihocphan;
+    $toform->sotinchi_thongtinchung = $chitietmonhoc->sotinchi;
+    $toform->tietlythuyet_thongtinchung = $chitietmonhoc->sotietlythuyet;
+    $toform->tietthuchanh_thongtinchung = $chitietmonhoc->sotietthuchanh;
 
     $mform1->set_data($toform);
     $mform1->display();
@@ -93,7 +133,6 @@ if ($mform1->is_cancelled()) {
 ///===========================================================================
 //MO TA MON HOC
 $mform0 = new mota_decuongmonhoc_form();
-
 
 if ($mform0->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
@@ -107,20 +146,20 @@ if ($mform0->is_cancelled()) {
     $param1 = new stdClass();
     // $param
     $param1->id = $mform->get_data()->idhe; // The data object must have the property "id" set.
-    //
+    
     $index_mabac = $mform->get_data()->mabac;    
-    // $param1->ma_bac = $mform->get_data()->mabac;
+    
     $allbacdts = $DB->get_records('block_edu_bacdt', []);
     $param1->ma_bac = $allbacdts[$index_mabac + 1 ]->ma_bac;
-    // echo $allbacdts[$index_mabac +1]->ma_bac;    
+    
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;
     $param1->mota = $mform->get_data()->mota;
     update_hedt($param1);
-    // Hiển thị thêm thành công
+    
     echo '<h2>Cập nhật thành công!</h2>';
     echo '<br>';
-    //edit file index.php tương ứng trong thư mục page. trỏ đến đường dẫn chứa file đó
+    
     $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_hedt', 'block_educationpgrs');
     echo \html_writer::link($url, $linktext);
@@ -132,9 +171,10 @@ if ($mform0->is_cancelled()) {
 } else {
     //Set default data from DB
     $toform;
-    $toform->id = $chitietmh->id;
-    $toform->mota = $chitietmh->mota;
-    // $toform->mota_decuong = $chitietmh->mota;
+    $toform->mamonhoc = $chitietmonhoc->mamonhoc;
+    $toform->ma_decuong = $chitietmonhoc->ma_decuong;
+    $toform->ma_ctdt = $chitietmonhoc->ma_ctdt;
+    $toform->mota = $chitietmonhoc->mota;
     
     $mform0->set_data($toform);
 
@@ -144,7 +184,7 @@ if ($mform0->is_cancelled()) {
 
 ///===========================================================================
 //MUC TIEU MON HOC
-$table2 = get_muctieu_monmhoc_by_mamonhoc($a);
+$table2 = get_muctieu_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc);
 echo '<br>';
 $mform2 = new muctieumonhoc_decuongmonhoc_form();
 if ($mform2->is_cancelled()) {
@@ -153,11 +193,15 @@ if ($mform2->is_cancelled()) {
 } else if ($fromform = $mform2->get_data()) {
     $param2 = new stdClass();
     $param2->mamonhoc = $fromform->mamonhoc;
+    $param2->ma_decuong = $fromform->ma_decuong;
     $param2->muctieu = $fromform->muctieu_muctieumonhoc;
     $param2->mota = $fromform->mota_muctieu_muctieumonhoc;
     $param2->danhsach_cdr = $fromform->chuandaura_cdio_muctieumonhoc;
     insert_muctieumonhoc_table($param2);
-    $table2 = get_muctieu_monmhoc_by_mamonhoc($param2->mamonhoc);
+
+    $table2 = get_muctieu_monmhoc_by_madc($param2->ma_decuong, $ma_ctdt, $mamonhoc);
+
+
 	$mform2->display();
     echo html_writer::table($table2);
     echo \html_writer::tag(
@@ -167,13 +211,20 @@ if ($mform2->is_cancelled()) {
     );
     echo '<br>';
     
-} else {
+}else if ($mform2->is_submitted()) {
+    echo 'xin chao viet nam';
+} else {    
     //Set default data from DB
     $toform;
-    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->mamonhoc = $mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
+    
     $mform2->set_data($toform);
+
 	$mform2->display();
     echo html_writer::table($table2);
+
     echo \html_writer::tag(
         'button',
         'Xóa Muc Tieu',
@@ -185,7 +236,7 @@ if ($mform2->is_cancelled()) {
 
 ///================================================================================
 //CHUAN DAU RA MON HOC
-$table3 = get_chuandaura_monmhoc_by_mamonhoc($a);
+$table3 = get_chuandaura_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc);
 echo '<br>';
 $mform3 = new chuandaura_decuongmonhoc_form();
 
@@ -196,13 +247,15 @@ if ($mform3->is_cancelled()) {
 } else if ($fromform = $mform3->get_data()) {
     $param2 = new stdClass();
     $param2->mamonhoc = $fromform->mamonhoc;
+    $param2->ma_decuong = $fromform->ma_decuong;
     $param2->ma_cdr = $fromform->chuandaura;
     $param2->mota = $fromform->mota_chuandaura;
     $param2->mucdo_utilize = $fromform->mucdo_itu_chuandaura;
     $param2->mucdo_teach = 1;
     $param2->mucdo_introduce = 1;
+
     insert_chuandaura_table($param2);
-    $table3 = get_chuandaura_monmhoc_by_mamonhoc($param2->mamonhoc);
+    $table3 = get_chuandaura_monmhoc_by_madc($param2->ma_decuong, $ma_ctdt, $mamonhoc);
 	$mform3->display();
     echo html_writer::table($table3);
     echo \html_writer::tag(
@@ -214,9 +267,13 @@ if ($mform3->is_cancelled()) {
     
 } else {
     $toform;
-    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->mamonhoc = $mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
+
     $mform3->set_data($toform);
-	$mform3->display();
+    $mform3->display();
+    
     echo html_writer::table($table3);
     echo \html_writer::tag(
         'button',
@@ -229,7 +286,7 @@ if ($mform3->is_cancelled()) {
 
 //=================================================================================
 //KE HOACH GIANG DAY LY THUYET
-$table4 = get_kehoachgiangday_LT_by_mamonhoc($a);
+$table4 = get_kehoachgiangday_LT_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc);
 echo '<br>';
 $mform4 = new giangday_LT_decuongmonhoc_form();
 if ($mform4->is_cancelled()) {
@@ -238,12 +295,17 @@ if ($mform4->is_cancelled()) {
 } else if ($fromform = $mform4->get_data()) {
     $param2 = new stdClass();
     $param2->mamonhoc = $fromform->mamonhoc;
+    $param2->ma_decuong = $fromform->ma_decuong;
+
     $param2->ten_chude = $fromform->chudegiangday;
     $param2->danhsach_cdr = $fromform->danhsach_cdr;
     $param2->hoatdong_gopy = $fromform->hoatdong_giangday;
     $param2->hoatdong_danhgia = $fromform->hoatdong_danhgia;
+
+    echo 'xin chao'.$param2->mamonhoc;
     insert_kehoachgiangday_LT_table($param2);
-    $table4 = get_kehoachgiangday_LT_by_mamonhoc($param2->mamonhoc);
+
+    $table4 = get_kehoachgiangday_LT_by_ma_decuong($param2->ma_decuong, $ma_ctdt, $mamonhoc);
 	$mform4->display();
     echo html_writer::table($table4);
     echo \html_writer::tag(
@@ -255,9 +317,13 @@ if ($mform4->is_cancelled()) {
     
 } else {
     $toform;
-    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->mamonhoc = $mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
+
     $mform4->set_data($toform);
-	$mform4->display();
+    $mform4->display();
+    
     echo html_writer::table($table4);
     echo \html_writer::tag(
         'button',
@@ -271,7 +337,7 @@ echo '<br>';
 
 //=================================================================================
 //DANH GIA MON HOC
-$table5 = get_danhgiamonhoc_by_mamonhoc($a);
+$table5 = get_danhgiamonhoc_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc);
 echo '<br>';
 $mform5 = new danhgia_decuongmonhoc_form();
 if ($mform5->is_cancelled()) {
@@ -279,14 +345,18 @@ if ($mform5->is_cancelled()) {
     // Button no_submit
 } else if ($fromform = $mform5->get_data()) {
     $param2 = new stdClass();
+
     $param2->mamonhoc = $fromform->mamonhoc;
+    $param2->ma_decuong = $fromform->ma_decuong;
     $param2->madanhgia = $fromform->madanhgia;
     $param2->tendanhgia = $fromform->tendanhgia;
     $param2->motadanhgia = $fromform->motadanhgia;
     $param2->chuandaura_danhgia = $fromform->cacchuandaura_danhgia;
     $param2->tile_danhgia = $fromform->tile_danhgia;
+
     insert_danhgiamonhoc_table($param2);
-    $table5 = get_danhgiamonhoc_by_mamonhoc($fromform->mamonhoc);
+
+    $table5 = get_danhgiamonhoc_by_ma_decuong($fromform->ma_decuong, $ma_ctdt, $mamonhoc);
 	$mform5->display();
     echo html_writer::table($table5);
     echo \html_writer::tag(
@@ -298,7 +368,10 @@ if ($mform5->is_cancelled()) {
     
 } else {
     $toform;
-    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->mamonhoc = $mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
+
     $mform5->set_data($toform);
 	$mform5->display();
     echo html_writer::table($table5);
@@ -316,7 +389,7 @@ echo '<br>';
 //TAI NGUYEN MON HOC
 $mform6 = new tainguyenmonhoc_decuongmonhoc_form();
 echo '<br>';
-$table6 = get_tainguyenmonhoc_by_mamonhoc($a);
+$table6 = get_tainguyenmonhoc_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc);
 echo '<br>';
 
 // Process form
@@ -325,12 +398,16 @@ if ($mform6->is_cancelled()) {
     // Button no_submit
 } else if ($fromform = $mform6->get_data()) {
     $param2 = new stdClass();
+
     $param2->mamonhoc = $fromform->mamonhoc;
-    $param2->loaitainguyen = $fromform->loaitainguyen;
+    $param2->ma_decuong = $fromform->ma_decuong;
+    $param2->loaitainguyen = $mform6->get_submit_value('loaitainguyen');
     $param2->mota_tainguyen = $fromform->mota_tainguyen;
     $param2->link_tainguyen = $fromform->link_tainguyen;
+    
+
     insert_tainguyenmonhoc_table($param2);
-    $table6 = get_tainguyenmonhoc_by_mamonhoc($fromform->mamonhoc);
+    $table6 = get_tainguyenmonhoc_by_ma_decuong($fromform->ma_decuong, $ma_ctdt, $mamonhoc);
 	$mform6->display();
     echo html_writer::table($table6);
     echo \html_writer::tag(
@@ -342,7 +419,10 @@ if ($mform6->is_cancelled()) {
     
 } else {
     $toform;
-    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->mamonhoc = $mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
+
     $mform6->set_data($toform);
 	$mform6->display();
     echo html_writer::table($table6);
@@ -359,7 +439,8 @@ if ($mform6->is_cancelled()) {
 //QUY DINH CHUNG
 $mform7 = new quydinhchung_decuongmonhoc_form();
 echo '<br>';
-$table7 = get_quydinhchung_by_mamonhoc($a);
+
+$table7 = get_quydinhchung_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc);
 
 // Process form
 if ($mform7->is_cancelled()) {
@@ -368,10 +449,13 @@ if ($mform7->is_cancelled()) {
 } else if ($fromform = $mform7->get_data()) {
     $param2 = new stdClass();
     $param2->mamonhoc = $fromform->mamonhoc;
+    $param2->ma_decuong = $fromform->ma_decuong;
     $param2->mota_quydinhchung = $fromform->mota_quydinhchung;
+
     insert_quydinhchung_monhoc_table($param2);
-    $table7 = get_quydinhchung_by_mamonhoc($fromform->mamonhoc);
-	$mform7->display();
+    $table7 = get_quydinhchung_by_ma_decuong($fromform->ma_decuong, $ma_ctdt, $mamonhoc);
+    $mform7->display();
+    
     echo html_writer::table($table7);
     echo \html_writer::tag(
         'button',
@@ -382,7 +466,10 @@ if ($mform7->is_cancelled()) {
     
 } else {
     $toform;
-    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->mamonhoc = $mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
+
     $mform7->set_data($toform);
 	$mform7->display();
     echo html_writer::table($table7);

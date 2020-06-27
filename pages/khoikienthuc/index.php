@@ -42,16 +42,13 @@ echo $OUTPUT->header();
 require_once('../../form/khoikienthuc/index_form.php');
 $mform = new index_form();
 
-// Thêm mới
-$url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/newkkt.php', ['courseid' => $courseid]);
-$ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
-echo  \html_writer::link($url, $ten_url);
-echo '<br><br>';
-
 // Form processing
 if ($mform->is_cancelled()) {
     
 } else if ($mform->no_submit_button_pressed()) {
+    if ($mform->get_submit_value('newkkt')) {
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/newkkt.php");
+    }
 } else if ($fromform = $mform->get_data()) {
 } else if ($mform->is_submitted()) {
 } else {

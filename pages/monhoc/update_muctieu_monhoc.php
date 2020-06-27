@@ -34,6 +34,10 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 $id = optional_param('id', 0, PARAM_INT);
+$ma_decuong = optional_param('ma_decuong', '', PARAM_ALPHANUMEXT);
+$ma_ctdt = optional_param('ma_ctdt', '', PARAM_ALPHANUMEXT);
+$mamonhoc = optional_param('mamonhoc', '', PARAM_ALPHANUMEXT);
+
 require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
 $chitietmh = get_muctieu_monmhoc_by_mamonhoc_1($id);
 $mform = new update_muctieumonhoc_decuongmonhoc_form();
@@ -53,13 +57,20 @@ if ($mform->is_cancelled()) {
     update_muctieumonhoc_table($param1);
     echo '<h2>Cập nhật thành công!</h2>';
     echo '<br>';
+    // Link đến trang danh sách
+    $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc, 'ma_decuong'=>$ma_decuong]);
+    echo \html_writer::link($url, 'Trở về trang trước');
+    
 } else if ($mform->is_submitted()) {
     // Button submit
 } else {
     //Set default data from DB
     $toform;
     $toform->id = $chitietmh->id;
-    $toform->mamonhoc = $chitietmh->mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
+    $toform->mamonhoc = $mamonhoc;
+
     $toform->muctieu_muctieumonhoc = $chitietmh->muctieu;
     $toform->mota_muctieu_muctieumonhoc = $chitietmh->mota;
     $toform->chuandaura_cdio_muctieumonhoc = $chitietmh->danhsach_cdr;
