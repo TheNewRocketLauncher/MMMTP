@@ -283,6 +283,19 @@
 
         }        
     }
+	// Caykkt
+	function changecheck_checkbox_addcaykkt(check_id)
+    {
+        var id = 'addcaykkt' + check_id;
+        if (document.getElementById(id).checked == false)
+        {
+            document.getElementById(id).value = '0';
+        }
+        else
+        {
+            document.getElementById(id).value = '1';
+        }
+    }
    
     
 </script>

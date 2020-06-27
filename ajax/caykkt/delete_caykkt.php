@@ -2,7 +2,7 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
-require_once('../../model/cay_kkt_model.php');
+require_once('../../model/caykkt_model.php');
 
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);

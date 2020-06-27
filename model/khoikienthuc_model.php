@@ -5,13 +5,11 @@ require_once('../../model/global_model.php');
 
 function insert_kkt($param_khoi, $arr_mon)
 {
-    echo 'param_khoi';
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
         $DB->insert_record('block_edu_khoikienthuc', $param_khoi);
     }
 
-    echo 'arr_mon';
     if($arr_mon != null){
         foreach($arr_mon as $item){
             $param_mon = new stdClass();
@@ -60,14 +58,13 @@ function get_kkt_byID($id)
 
 function get_kkt_byMaKhoi($ma_khoi)
 {
-   global $DB, $USER, $CFG, $COURSE;
-   if (userIsAdmin()) {
-
-   $kkt = $DB->get_record('block_edu_khoikienthuc', ['ma_khoi' => $ma_khoi]);
-   }else{
-       $kkt = NULL;
-}
-   return $kkt;
+    global $DB, $USER, $CFG, $COURSE;
+    if (userIsAdmin()) {
+        $kkt = $DB->get_record('block_edu_khoikienthuc', ['ma_khoi' => $ma_khoi]);
+    } else{
+        $kkt = NULL;
+    }
+    return $kkt;
 }
 
 function get_kkt_byMa($ma_ctdt)
@@ -127,28 +124,6 @@ function update_kkt($param)
     return true;
 }
 
-function get_kkt_checkbox($courseid)
-{
-    global $DB, $USER, $CFG, $COURSE;
-    $table = new html_table();
-    $table->head = array('', 'STT', 'Mã khối', 'ID loại KKT', 'Tên khối', 'Mô tả');
-    $allbacdts = $DB->get_records('block_edu_khoikienthuc', []);
-    $stt = 1;
-    foreach ($allbacdts as $ibacdt) {
-        $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $ibacdt->id, 'id' => 'bdt' . $ibacdt->id, 'value' => '0', 'onclick' => "changecheck($ibacdt->id)"));
-        if ($ibacdt->id_loai_ktt == 0 ){
-            $loaiktt = "Bắt buộc";
-        }
-        else{
-            $loaiktt = "Tự chọn";
-        }
-        $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_khoikienthuc.php', ['courseid' => $courseid, 'id' => $ibacdt->id]);
-        $ten_url = \html_writer::link($url, $ibacdt->ma_khoi);
-        $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaiktt, (string) $ibacdt->ten_khoi, (string) $ibacdt->mota];
-        $stt = $stt + 1;
-    }
-    return $table;
-}
 
 function get_caykkt_by_kkt($ma_khoi)
 {
@@ -188,30 +163,30 @@ function mon_thuoc_khoi($ma_khoi){
 
 function get_monhoc_by_kkt($ma_khoi)
 {
-   global $DB, $USER, $CFG, $COURSE;
-   $table = new html_table();
-   $table->head = array('STT', 'Mã môn học', 'Tên môn hoc', 'Số tín chỉ', 'Actions');
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('STT', 'Mã môn học', 'Tên môn hoc', 'Số tín chỉ', 'Actions');
 
 
-   $monthuockhois = mon_thuoc_khoi($ma_khoi);
-   echo $monthuockhois->mamonhoc;
-   $allmonhocs = $DB->get_records('block_edu_monhoc',  ['mamonhoc' => $monthuockhois->mamonhoc]);
+    $monthuockhois = mon_thuoc_khoi($ma_khoi);
+    echo $monthuockhois->mamonhoc;
+    $allmonhocs = $DB->get_records('block_edu_monhoc',  ['mamonhoc' => $monthuockhois->mamonhoc]);
 
 
-   $stt = 1;
-   foreach ($allmonhocs as $imonhoc) {
-    $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php', ['id' => $imonhoc->id]);
-    $ten_url = \html_writer::link($url, $imonhoc->tenmonhoc_vi);
+    $stt = 1;
+    foreach ($allmonhocs as $imonhoc) {
+        $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php', ['id' => $imonhoc->id]);
+        $ten_url = \html_writer::link($url, $imonhoc->tenmonhoc_vi);
 
-    // url1
-    $url1 = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $imonhoc->id]);
-    $ten_url1 = \html_writer::link($url1, 'update');
+        // url1
+        $url1 = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $imonhoc->id]);
+        $ten_url1 = \html_writer::link($url1, 'update');
 
-    // add table
-    $table->data[] = [(string) $stt, (string) $imonhoc->mamonhoc, $ten_url, (string) $imonhoc->sotinchi, $ten_url1];
-    $stt = $stt + 1; 
-   }   
-   return $table;
+        // add table
+        $table->data[] = [(string) $stt, (string) $imonhoc->mamonhoc, $ten_url, (string) $imonhoc->sotinchi, $ten_url1];
+        $stt = $stt + 1; 
+    }   
+    return $table;
 }
 
 function get_dieukien_kkt($id = NULL, $ma_dieukien = NULL, $ma_loaidieukien = NULL, $xet_tren = NULL, $giatri_dieukien = NULL, $ten_dieukien = NULL)

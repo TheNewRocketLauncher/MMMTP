@@ -9,8 +9,8 @@ class index_form extends moodleform
         global $CFG;
         $mform = $this->_form;
 
-        $mform->registerNoSubmitButton('newkkt');
-        $mform->addElement('submit', 'newkkt', get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
+        // $mform->registerNoSubmitButton('newkkt');
+        // $mform->addElement('submit', 'newkkt', get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
     }
 
     function validation($data, $files)

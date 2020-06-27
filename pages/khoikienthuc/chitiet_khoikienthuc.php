@@ -5,8 +5,6 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
 
-
-
 global $DB, $USER, $CFG, $COURSE;
 
 $id = 1;
@@ -27,18 +25,14 @@ if ($courseid == SITEID) {
     $context = \context_course::instance($courseid); // Create instance base on $courseid
 }
 
-
-
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_khoikienthuc.php', ['courseid' => $courseid, 'id' => $id]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/block_edu.php'));
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php'));
-// $PAGE->navbar->add("Chi tiết khối kiến thức", new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_khoikienthuc.php'));
-// Title.
 
 $kkt = get_kkt_byID($id);
 $navbar_name = 'Khối kiến thức';
@@ -50,8 +44,6 @@ if ($founded_id == true) {
     // Do anything here
 }
 $PAGE->navbar->add($navbar_name);
-
-
 
 $PAGE->set_title("Chi tiết khối kiến thức" );
 $PAGE->set_heading("Chi tiết khối kiến thức");

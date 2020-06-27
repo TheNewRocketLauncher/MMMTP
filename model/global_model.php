@@ -11,7 +11,7 @@ function get_global($id_user)
     global $CFG, $DB;
     $datatemp = $DB->get_record('block_edu_global', ['id_user' => $id_user]);
     if (empty($datatemp)) {
-        return NULL;
+        return array();
     }
     return json_decode($datatemp->string, true);
 }

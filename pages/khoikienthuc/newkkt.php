@@ -25,7 +25,7 @@ $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/newkkt.p
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
-$PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/block_edu.php'));
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php'));
 $PAGE->navbar->add(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/newkkt.php'));
 // Title.
@@ -43,7 +43,6 @@ $globla_string = get_global($USER->id);
 $listmon = $globla_string['newkkt']['listmonhoc'];
 $listkhoi = $globla_string['newkkt']['listkhoicon'];
 
-defineListArray();
 $mform = new newkkt_form();
 
 //Form processing and displaying is done here
@@ -52,18 +51,10 @@ if ($mform->is_cancelled()) {
 } else if ($mform->no_submit_button_pressed()) {
     if($mform->get_submit_value('btn_cancle')){
         redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
-    } else if ($mform->get_submit_value('btn_addmonhoc')) {
-        $newmonhoc = $mform->get_submit_value('select_mamonhoc');
-        if(!alreadyAddMonhoc($newmonhoc)){
-            $globla_string = get_global($USER->id);
-            $globla_string['newkkt']['listmonhoc']['values'] += [$globla_string['newkkt']['listmonhoc']['index'] => $newmonhoc];
-            $globla_string['newkkt']['listmonhoc']['index'] += 1;
-            set_global($USER->id, $globla_string);
-        } else{
-            echo 'Môn học đã được thêm vào';
-        }
-        $listmon = $globla_string['newkkt']['listmonhoc'];
-        // $mform->set_data(['btn_addmonhoc' => false]);
+    } else if ($mform->get_submit_value('btn_reviewListMonhoc')) {
+        $arrmamon = $mform->get_submit_value('area_mamonhoc');
+        $mform->display();
+        printMonTable($arrmamon);
     } else if ($mform->get_submit_value('btn_addkhoicon')) {
         $newkhoicon = $mform->get_submit_value('select_makhoicon');
         if(!alreadyAddKhoiCon($newkhoicon)){
@@ -71,8 +62,6 @@ if ($mform->is_cancelled()) {
         }
         $listkhoi = $globla_string['newkkt']['listkhoicon'];
     }
-    $mform->set_data($datatest);
-    $mform->display();
 } else if ($fromform = $mform->get_data()) {
 
     $param_khoi = new stdClass();
@@ -129,29 +118,26 @@ if ($mform->is_cancelled()) {
     
     //Lấy danh sách môn thuộc khối nếu có
     if($fromform->checkbox_comonhoc == true){
-        if($listmon['index'] != 0){
-            $arr_mon = $listmon['values'];
-        } else{
-            $arr_mon = NULL;
-        }
+        $arr_mon = $fromform->area_mamonhoc;
     } else{
         $arr_mon = NULL;
     }
 
-    insert_kkt($param_khoi, $arr_mon);
-    echo 'Thêm mới thành công';
-
-    $resetarr = array();
-    $globla_string['newkkt'] = $resetarr;
-    set_global($USER->id, $globla_string);
-    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
+    if(insert_kkt($param_khoi, $arr_mon)){
+        echo 'Thêm mới thành công';
+    
+        $resetarr = array();
+        $globla_string['newkkt'] = $resetarr;
+        set_global($USER->id, $globla_string);
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
+    } else{
+        
+    }
 } else {
     $mform->set_data($datatest);
     $mform->display();
 }
 
-//Table monhoc
-printMonTable($listmon['values']);
  // Footere
 echo $OUTPUT->footer();
 
@@ -173,7 +159,7 @@ function get_monthuockhoi_table(){
 function printMonTable($arrmamon){
     global $DB, $USER;
     $table = new html_table();
-    $table->head = array('', 'STT', 'Mã môn học', 'Tên môn học', 'Số TC', 'LT', 'TH', 'BT');
+    $table->head = array('STT', 'Mã môn học', 'Tên môn học', 'Số TC', 'LT', 'TH', 'BT');
 
     $allmonhocs = array();
     foreach($arrmamon as $key => $item){
@@ -182,10 +168,6 @@ function printMonTable($arrmamon){
     }
     $stt = 1;
     foreach ($allmonhocs as $imonhoc) {
-        $checkbox = html_writer::tag('input', ' ', array('class' => 'kktlistmon', 
-                            'type' => "checkbox", 'name' => $imonhoc['mamonhoc'], 
-                            'id' => 'kktlistmon' . $imonhoc['id'], 'value' => '0', 
-                            'onclick' => "changecheck_listmonthuockhoi($imonhoc[id])"));
         $table->data[] = [$checkbox, (string) $stt, (string) $imonhoc['mamonhoc'], (string) $imonhoc['tenmonhoc_vi'], (string) $imonhoc['sotinchi'], (string) $imonhoc['sotietlythuyet'], (string) $imonhoc['sotietthuchanh'], (string) $imonhoc['sotiet_baitap']];
         $stt = $stt + 1;
     }

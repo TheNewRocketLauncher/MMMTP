@@ -16,31 +16,6 @@ class newkkt_form extends moodleform
         $mform->setExpanded('general0', true);
         ///----------------------------------------------------------------------------------------------------------------------///         
 
-        $allbacdts = $DB->get_records('block_edu_bacdt', []);
-        $arr_mabac = array();
-        foreach ($allbacdts as $i) {
-            $arr_mabac[] = &$i->ma_bac;
-        }
-        $allhedts = $DB->get_records('block_edu_hedt', []);
-        $arr_mahe = array();
-        foreach ($allhedts as $i) {
-            $arr_mahe[] = &$i->ma_he;
-        }
-        $allnkdts = $DB->get_records('block_edu_nienkhoa', []);
-        $arr_manienkhoa = array();
-        foreach ($allnkdts as $i) {
-            $arr_manienkhoa[] = &$i->ma_nienkhoa;
-        }
-        $allndts = $DB->get_records('block_edu_nganhdt', []);
-        $arr_nganh = array();
-        foreach ($allndts as $i) {
-            $arr_nganh[] = &$i->ma_nganh;
-        }
-        $allcndts = $DB->get_records('block_edu_chuyennganhdt', []);
-        $arr_chuyenganh = array();
-        foreach ($allcndts as $i) {
-            $arr_chuyenganh[] = &$i->ma_chuyenganh;
-        }
         $arr_loaikhoi = array(
             0 => 'Bắt buộc',
             1 => 'Tự chọn'
@@ -64,13 +39,9 @@ class newkkt_form extends moodleform
             1 => 'Tối đa'
         );
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'txt_tenkkt', '', 'size="50"');
-        $mform->addGroup($eGroup, 'gtxt_tenkkt', get_string('themkkt_lbl_tenkhoi', 'block_educationpgrs'), array(' '), false);
+        $mform->addElement('text', 'txt_tenkkt', get_string('themkkt_lbl_tenkhoi', 'block_educationpgrs'), 'size="200"');
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'txt_makhoi', '', 'size="50"');
-        $mform->addGroup($eGroup, 'gtxt_makhoi', get_string('themkkt_lbl_makhoi', 'block_educationpgrs'), array(' '), false);
+        $mform->addElement('text', 'txt_makhoi', get_string('themkkt_lbl_makhoi', 'block_educationpgrs'), 'size="200"');
 
         $eGroup = array();
         $eGroup[] = &$mform->createElement('select', 'select_loaikhoi', 'hello', $arr_loaikhoi);
@@ -84,17 +55,8 @@ class newkkt_form extends moodleform
 
         $mform->hideIf('gtxt_loaidieukien', 'select_loaikhoi', 'eq', 0);
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'txt_mota', '', 'size="50"');
-        $mform->addGroup($eGroup, 'gtxt_mota', get_string('themkkt_lbl_mota', 'block_educationpgrs'), array(' '), false);
+        $mform->addElement('text', 'txt_mota', get_string('themkkt_lbl_mota', 'block_educationpgrs'), 'size="200"');
 
-        $mform->registerNoSubmitButton('btn_cancle');
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('submit', 'btn_newkkt', get_string('themkkt_btn_complete', 'block_educationpgrs'));
-        $eGroup[] = &$mform->createElement('submit', 'btn_cancle', get_string('themkkt_btn_cancel', 'block_educationpgrs'));
-        $mform->addGroup($eGroup, 'gbtn', '', array(' '), false);
-
-        $mform->registerNoSubmitButton('btn_addmonhoc');
         $mform->registerNoSubmitButton('btn_addkhoicon');
 
         // $mform->addElement('checkbox', 'checkbox_cokhoicon', 'Có khối con');
@@ -105,16 +67,41 @@ class newkkt_form extends moodleform
         // $mform->hideIf('gadd_khoicon', 'checkbox_cokhoicon', 'notchecked');
 
         $mform->addElement('checkbox', 'checkbox_comonhoc', 'Có môn học');
+        // $eGroup = array();
+        // $eGroup[] =& $mform->createElement('select', 'select_mamonhoc', 'hello', $this->get_listmonhoc());
+        // $eGroup[] =& $mform->createElement('submit', 'btn_reviewListMonhoc', get_string('themkkt_btn_addsubject', 'block_educationpgrs'));
+        // $mform->addGroup($eGroup, 'gadd_monhoc', 'Chọn môn học', array(' '), false);
+        // $mform->hideIf('gadd_monhoc', 'checkbox_comonhoc', 'notchecked');
+
+        // $eGroup = array();
+        // $select_mamonhoc = $mform->addElement('select', 'select_mamonhoc', 'Chọn môn học', $this->get_listmonhoc());
+        // $select_mamonhoc->setMultiple(true);
+        // $mform->hideIf('select_mamonhoc', 'checkbox_comonhoc', 'notchecked');
+
+        $options = array(
+            'multiple' => true,
+            'noselectionstring' => 'Empty',
+        );
+        $mform->addElement('autocomplete', 'area_mamonhoc', 'Môn thuộc khối', $this->get_listmonhoc(), $options);
+        $mform->addElement('submit', 'btn_reviewListMonhoc', 'Xem trước môn học');
+        $mform->registerNoSubmitButton('btn_reviewListMonhoc');
+        $mform->hideIf('area_mamonhoc', 'checkbox_comonhoc', 'notchecked');
+        $mform->hideIf('btn_reviewListMonhoc', 'checkbox_comonhoc', 'notchecked');
+
+        $mform->registerNoSubmitButton('btn_cancle');
         $eGroup = array();
-        $eGroup[] = &$mform->createElement('select', 'select_mamonhoc', 'hello', $this->get_listmonhoc());
-        $eGroup[] = &$mform->createElement('submit', 'btn_addmonhoc', get_string('themkkt_btn_addsubject', 'block_educationpgrs'));
-        $mform->addGroup($eGroup, 'gadd_monhoc', 'Chọn môn học', array(' '), false);
-        $mform->hideIf('gadd_monhoc', 'checkbox_comonhoc', 'notchecked');
+        $eGroup[] = &$mform->createElement('submit', 'btn_newkkt', get_string('themkkt_btn_complete', 'block_educationpgrs'));
+        $eGroup[] = &$mform->createElement('submit', 'btn_cancle', get_string('themkkt_btn_cancel', 'block_educationpgrs'));
+        $mform->addGroup($eGroup, 'gbtn', '', array(' '), false);
     }
 
     function validation($data, $files)
     {
-        return array();
+        // $mform = &$this->_form;
+        // if(get_kkt_byMa($mform->getSubmitValue($txt_makhoi)) !== null){
+
+        // }
+        // return array();
     }
 
     function get_submit_value($elementname)
@@ -122,14 +109,7 @@ class newkkt_form extends moodleform
         $mform = &$this->_form;
         return $mform->getSubmitValue($elementname);
     }
-
-    function definition_after_data()
-    {
-        $mform = $this->_form;
-        $defaulttext = 'dmawndwa';
-        $mform->setDefaults('txt_tenkkt', array('text' => $defaulttext));
-    }
-
+    
     function get_listmonhoc()
     {
         global $CFG, $DB;

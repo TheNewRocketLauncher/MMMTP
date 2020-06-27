@@ -57,7 +57,31 @@ if ($mform->is_cancelled()) {
     $mform->display();
 }
 
-////////////End form
+// Action
+$action_form =
+    html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))
+    . html_writer::tag(
+        'button',
+        'Xóa CTĐT',
+        array('id' => 'btn_delete_ctdt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #z; color:#fff;')
+    )
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Clone CTĐT',
+        array('id' => 'btn_clone_ctdt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+    )
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Thêm mới',
+        array('id' => 'btn_add_ctdt', 'onClick' => "window.location.href='newctdt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+    )
+    . '<br>'
+    . html_writer::end_tag('div');
+echo $action_form;
+
+//Danh sách CTĐT
 $table = get_ctdt_checkbox($courseid);
 echo html_writer::table($table);
 echo ' ';

@@ -96,8 +96,11 @@ class block_educationpgrs extends block_list
             $linktext = get_string('label_monhoc', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
             
-            // Edit file index.php tương ứng trong thư mục page, link đến đường dẫn
-            $url = new \moodle_url('/blocks/educationpgrs/pages/khoahoc/danhsach_khoahoc.php', ['courseid' => $courseid]);
+            
+            //Quản lý đề cương môn học
+            $url = new \moodle_url('/blocks/educationpgrs/pages/decuong/index.php');
+            $linktext = get_string('label_quanly_decuong', 'block_educationpgrs');
+            $this->content->items[] = \html_writer::link($url, $linktext);            $url = new \moodle_url('/blocks/educationpgrs/pages/khoahoc/danhsach_khoahoc.php', ['courseid' => $courseid]);
             $linktext = get_string('label_khoahoc', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
             
@@ -106,16 +109,16 @@ class block_educationpgrs extends block_list
             $linktext = get_string('label_khoikienthuc', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
             
+            //Quản lý cây khối kiến thức kiến thức
+            $url = new \moodle_url('/blocks/educationpgrs/pages/caykkt/index.php', ['courseid' => $courseid]);
+            $linktext = get_string('label_caykhoikienthuc', 'block_educationpgrs');
+            $this->content->items[] = \html_writer::link($url, $linktext);
+
             //Quản lý chương trình đào tạo
             $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_ctdt', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
 
-
-            //Quản lý đề cương môn học
-            $url = new \moodle_url('/blocks/educationpgrs/pages/decuong/index.php');
-            $linktext = get_string('label_quanly_decuong', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
         }     
         return $this->content;
     }

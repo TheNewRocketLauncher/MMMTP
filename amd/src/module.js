@@ -687,7 +687,160 @@ define(['jquery'], function ($) {
 			            alert("Something wrong!");
 			          });
 			      });
+				
+				/// CayKKT
+            $("#btn_addcaykkt_delete_khoi").click(function () {
+                var list_id = [];
+                var allElement = document.getElementsByClassName('add_caykkt_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];
+                    if (item.value == '1') {
+                        list_id.push(item.name);
+                    }
+                }
+                if(list_id.length > 1){
+                    alert('Vui lòng ch?n m?t kh?i');
+                } else{
+                    var ma_khoi = $("#id_select_ma_khoi option:selected").text();
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/caykkt/newcaykkt_addfuntion.php', {
+                        id: list_id[0],
+                        type: 3,
+                        paramfirst: ma_khoi
+                    }).done(function () {
+                        location.reload(true);
+                    }).fail(function () {
+                        alert('Something wrong!');
+                    });
+                }
+            });
 
+            $("#btn_addcaykkt_add_khoi").click(function () {
+                var ma_khoi = $("#id_select_ma_khoi option:selected").text();
+                if(ma_khoi != '0'){
+                    var list_id = [];
+                    var allElement = document.getElementsByClassName('add_caykkt_checkbox');
+                    for (var i = 0; i < allElement.length; ++i) {
+                        var item = allElement[i];
+                        if (item.value == '1') {
+                            list_id.push(item.name);
+                        }
+                    }
+                    if(list_id.length > 1){
+                        alert('Vui lòng ch?n m?t kh?i');
+                    } else{
+                        $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/caykkt/newcaykkt_addfuntion.php', {
+                            id: allElement && allElement[0] || "nocheck",
+                            type: 1,
+                            paramfirst: ma_khoi
+                        }).done(function (data) {
+                            location.reload(true);
+                        }).fail(function () {
+                            alert('Something wrong!');
+                        });
+                    }
+                } else{
+                    alert('Không có kh?i nào du?c ch?n');
+                }
+            });
+
+            $("#btn_addcaykkt_addkhoi_asChild").click(function () {
+                var list_id = [];
+                var allElement = document.getElementsByClassName('add_caykkt_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];
+                    if (item.value == '1') {
+                        list_id.push(item.name);
+                    }
+                }
+                if(list_id.length > 1){
+                    alert('Vui lòng ch?n m?t kh?i');
+                } else{
+                    var ma_khoi = $("#id_select_ma_khoi option:selected").text();
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/caykkt/newcaykkt_addfuntion.php', {
+                        id: allElement[0],
+                        type: 2,
+                        paramfirst: ma_khoi
+                    }).done(function () {
+                        location.reload(true);
+                    }).fail(function () {
+                        alert('Something wrong!');
+                    });
+                }
+            });
+            
+            $("#btn_addcaykkt_moveUp").click(function () {
+                var list_id = [];
+                var allElement = document.getElementsByClassName('add_caykkt_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];
+                    if (item.value == '1') {
+                        list_id.push(item.name);
+                    }
+                }
+                if(list_id.length > 1){
+                    alert('Vui lòng ch?n m?t kh?i');
+                } else{
+                    var ma_khoi = $("#id_select_ma_khoi option:selected").text();
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/chuyennganhdt/get_chuyennganh_from_nganh.php', {
+                        id: allElement[0],
+                        type: 4,
+                        paramfirst: ma_khoi
+                    }).done(function (data) {
+                        var list_mahe = JSON.parse(data);
+                        var x = document.getElementById('id_select_chuyennganh');
+                        // Remove all options
+                        while (x.length > 0) {
+                            x.remove(x.length - 1);
+                        }
+                        var count = 1;
+                        list_mahe.forEach(ma_chuyennganh => {
+                            var option = document.createElement("option");
+                            option.text = ma_chuyennganh;
+                            option.value = ma_chuyennganh;
+                            x.add(option);
+                        });
+                    }).fail(function () {
+                        alert('Something wrong!');
+                    });
+                }
+            });
+            
+            $("#btn_addcaykkt_moveDown").click(function () {
+                var list_id = [];
+                var allElement = document.getElementsByClassName('add_caykkt_checkbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];
+                    if (item.value == '1') {
+                        list_id.push(item.name);
+                    }
+                }
+                if(list_id.length > 1){
+                    alert('Vui lòng ch?n m?t kh?i');
+                } else{
+                    var ma_khoi = $("#id_select_ma_khoi option:selected").text();
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/chuyennganhdt/get_chuyennganh_from_nganh.php', {
+                        id: allElement[0],
+                        type: 5,
+                        paramfirst: ma_khoi
+                    }).done(function (data) {
+                        var list_mahe = JSON.parse(data);
+                        var x = document.getElementById('id_select_chuyennganh');
+                        // Remove all optionsbtn_addcaykkt_add_khoi
+                        while (x.length > 0) {
+                            x.remove(x.length - 1);
+                        }
+                        var count = 1;
+                        list_mahe.forEach(ma_chuyennganh => {
+                            var option = document.createElement("option");
+                            option.text = ma_chuyennganh;
+                            option.value = ma_chuyennganh;
+                            x.add(option);
+                        });
+                    }).fail(function () {
+                        alert('Something wrong!');
+                    });
+                }
+            });
         }
     };
 });
