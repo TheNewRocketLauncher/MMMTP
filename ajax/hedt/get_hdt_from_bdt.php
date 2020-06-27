@@ -2,32 +2,21 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
-$ma_ctdt = required_param('ma_ctdt', PARAM_ALPHA);
-
-
-function getMonhocByMaCTDT($ma_ctdt) {
+$bdt = required_param('bdt', PARAM_ALPHA);
+$courseid = required_param('course', PARAM_INT);
+function get_hdt_from_bdt($ma_bac) {
     global $DB, $USER, $CFG, $COURSE;
-    $arr = array();
-    $ma_cay_khoikienthuc = $DB->get_record('block_edu_ctdt', array('ma_ctdt' => $ma_ctdt))->ma_cay_khoikienthuc;
-    
-    $list_makhoi = $DB->get_records('block_edu_cay_khoikienthuc', array('ma_cay_khoikienthuc' => $ma_cay_khoikienthuc));
-    
-    foreach($list_makhoi as $item){
-
-       $list_mon_thuockhoi =  $DB->get_records('block_edu_monthuockhoi', array('ma_khoi' => $item->ma_khoi));
-
-       foreach($list_mon_thuockhoi as $j){
-
-        $arr += $j;
-       }
-    }
-
-    return $arr;
+    $hdt = $DB->get_records('block_edu_hedt', array('ma_bac' => $ma_bac));
+    return $hdt;
 }
-
-
-    $allMons = getMonhocByMaCTDT($ma_ctdt);
-    
-    echo json_encode($allMons);
+    // Lấy ra các hệ ĐT
+    $allhedts = get_hdt_from_bdt($bdt);
+    // Tạo mảng chứa danh sách mã hệ
+    $arr_mahe = array();
+    foreach ($allhedts as $ihedt) {
+        $arr_mahe[] =& $ihedt->ma_he;
+      }
+    // Trả về kết quả với json_encode
+    echo json_encode($arr_mahe);
     exit;
  

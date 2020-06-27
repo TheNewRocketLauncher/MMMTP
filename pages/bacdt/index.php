@@ -3,11 +3,14 @@ require_once(__DIR__ . '/../../../../config.php');
 // require_once($CFG->libdir.'/pdflib.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/bacdt_model.php');
-require_once('../../exporter/tcpdf.php');
+require_once("$CFG->libdir/tcpdf/tcpdf.php");
 require_once('../../js.php');
 
 global $COURSE, $GLOBALS;
-$courseid = optional_param('courseid', SITEID, PARAM_INT);
+var_dump($_REQUEST);
+$courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
+$page = optional_param('page', 0, PARAM_INT);
+$search = trim(optional_param('search', '', PARAM_NOTAGS));
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -19,7 +22,7 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', []));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
@@ -32,7 +35,63 @@ $PAGE->set_heading(get_string('head_bacdt', 'block_educationpgrs'));
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
-echo $head = $OUTPUT->header();
+echo $OUTPUT->header();
+
+// Create table
+$table = get_bacdt_checkbox($search, $page);
+
+// Search
+require_once('../../form/bacdt/qlbac_form.php');
+$form_search = new bacdt_seach();
+
+// Process form
+if ($form_search->is_cancelled()) {
+    // Process button cancel
+} else if ($form_search->no_submit_button_pressed()) {
+    // $form_search->display();
+} else if ($fromform = $form_search->get_data()) {
+    // Redirect page
+    $search = $form_search->get_data()->bacdt_seach;
+    $ref = $CFG->wwwroot . '/blocks/educationpgrs/pages/bacdt/index.php?search=' . $search . '&amp;page=' . $page;
+    echo "<script type='text/javascript'>location.href='$ref'</script>";
+    // redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/bacdt/index.php?search='.$search.'&amp;page='.$page);
+} else if ($form_search->is_submitted()) {
+    // Process button submitted
+    $form_search->display();
+} else {
+    /* Default when page loaded*/
+    $toform;
+    $toform->bacdt_seach = $search;
+    $form_search->set_data($toform);
+    // Displays form
+    $form_search->display();
+}
+
+// Action
+$action_form =
+    html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Xóa BDT',
+        array('id' => 'btn_delete_bacdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
+    )
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Clone BDT',
+        array('id' => 'btn_clone_bacdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
+    )
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Thêm mới',
+        array('id' => 'btn_add_bacdt', 'onClick' => "window.location.href='add_bdt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
+        // array('id' => 'btn_add_bacdt', 'onClick' => "window.location.href='add_bdt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+    )
+    . '<br>'
+    . html_writer::end_tag('div');
+echo $action_form;
 
 // Insert data if table is empty
 if (!$DB->count_records('block_edu_bacdt', [])) {
@@ -60,24 +119,18 @@ if (!$DB->count_records('block_edu_bacdt', [])) {
 }
 
 // Add new BDT
-$url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/add_bdt.php', ['courseid' => $courseid]);
+$url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/add_bdt.php', []);
 $ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
-echo  \html_writer::link($url, $ten_url);
-echo '<br>';
+// echo  \html_writer::link($url, $ten_url);
+// echo '<br>';
 echo '<br>';
 
-// Create table
-$table = get_bacdt_checkbox($courseid);
+// Print table
 echo html_writer::table($table);
+// Pagination
+$baseurl = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['search' => $search]);
+echo $OUTPUT->paging_bar(count(get_bacdt_checkbox($search, -1)->data), $page, 5, $baseurl);
 
-// Button delete BDT
-echo '  ';
-echo \html_writer::tag(
-    'button',
-    'Xóa BDT',
-    array('id' => 'btn_delete_bacdt')
-);
-echo '<br>';
 
 // basic pdf
 
@@ -85,42 +138,55 @@ echo '<br>';
 
 // Export inpage
 // create new PDF document
-class MYPDF extends TCPDF {
-    //Page header
-    public function Header() {
-        // Logo
-        $image_file = K_PATH_IMAGES.'logo.jpg';
-        $this->Image($image_file, 10, 10, 40, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        // Set font
-        $this->SetFont('times', '', 20);
-        // Title
-        $this->Cell(-15, 15, 'Đại học Khoa hoc Tu Nhien - DHQG HCM', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+class MYPDF extends TCPDF
+{
+   
+    public function Header()
+    {
+        $this->setJPEGQuality(90);
+        $this->SetFont('times', '', 12);
+        $this->Image('../exportpdf/img/logo.png', 16.7, 10.9, 19.4, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $this->Image('../exportpdf/img/logoR.png', 16.7, 10.7, 19.4, '', 'PNG', '', 'T', false, 300, 'R', false, false, 0, false, false, false);
+        $this->Ln(4);
+        $this->Cell(25, 1, '');
+        $this->Cell(50, 1, 'Trường Đại học Khoa Học Tự Nhiên, ĐHQG-HCM        ');
+        $this->Ln(7);
+        $this->Cell(25, 1, '');
+        $this->SetFont('timesbd', '', 12);
+        $this->Cell(50, 1, 'Khoa Công Nghệ Thông Tin');
+        $this->Ln(4);
+        $this->Cell(50, 1, '_____________________________________________________________________________________');
+        // $this->Cell(50, 5, '______________________________________', '', 0, 'C');
 
-    } 
+    }
+    public function Footer()
+    {
+        $image_file = "img/bg_bottom_releve.jpg";
+        $this->Image($image_file, 11, 241, 189, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+
+        $this->SetY(-20);
+        $this->SetFont('freeserif', 'I', 11);
+        $this->Ln(5);
+
+
+        $this->Ln(5);
+        $name = 'Các chủ đề nâng cao trong Công nghệ phần mềm';
+
+        $this->Cell(30, 5, 'Đề cương môn học ');
+        $this->SetFont('freeserif', 'BI', 11);
+        $this->Cell(60, 5, $name);
+        $this->SetFont('freeserif', '', 11);
+        $titulos = explode("|", bottom_info);
+
+        $num = $this->getAliasNumPage();
+        $pagin = 'Trang ' . $this->getPage() . '/' . $this->getNumPages();
+        $this->Cell(0, 5, $pagin, 0, 0, 'R');
+
+        $this->Ln(15);
+    }
 }
 
-class MYPDF1 extends TCPDF {
-	public function Header() {
-		$this->setJPEGQuality(90);
-        // $this->Image('logo.png', 120, 10, 75, 0, 'PNG');
-        $this->SetFont('freeserif', '', 20);
-        $this->Image('logo.png', 10, 10, 40, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-
-
-	}
-	public function Footer() {
-		$this->SetY(-15);
-        // $this->SetFont(PDF_FONT_NAME_MAIN, 'I', 8);
-        $this->SetFont('freeserif', '', 17);
-		$this->Cell(0, 10, 'DHKHTN - DHQG TP.HCM', 0, false, 'C');
-	}
-	public function CreateTextBox($textval, $x = 0, $y, $width = 0, $height = 10, $fontsize = 10, $fontstyle = '', $align = 'L') {
-		$this->SetXY($x+20, $y); // 20 = margin left
-		$this->SetFont(PDF_FONT_NAME_MAIN, $fontstyle, $fontsize);
-		$this->Cell($width, $height, $textval, 0, false, $align);
-	}
-}
-$pdf = new MYPDF1(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -130,12 +196,12 @@ $pdf->SetSubject('PDS Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set default header data
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 044', PDF_HEADER_STRING);
-$pdf->setFooterData(array(0,64,0), array(0,64,128));
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE . ' 044', PDF_HEADER_STRING);
+$pdf->setFooterData(array(0, 64, 0), array(0, 64, 128));
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 // set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -152,20 +218,21 @@ $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // set some language-dependent strings (optional)
-if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-    require_once(dirname(__FILE__).'/lang/eng.php');
+if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+    require_once(dirname(__FILE__) . '/lang/eng.php');
     $pdf->setLanguageArray($l);
 }
 
 // ---------------------------------------------------------
-
-// set default font subsetting mode
-$pdf->setFontSubsetting(false);
-
-// Set font
-// dejavusans is a UTF-8 Unicode font, if you only need to
-// print standard ASCII chars, you can use core fonts like
-// helvetica or times to reduce file size.
+// add font times new roman
+$fontpath1 = '../exportpdf/font/times.ttf';
+$fontpath2 = '../exportpdf/font/timesbd.ttf';
+$fontpath3 = '../exportpdf/font/timesbi.ttf';
+$fontpath4 = '../exportpdf/font/timesi.ttf';
+$fontname1 = TCPDF_FONTS::addTTFfont($fontpath1, 'TrueTypeUnicode', '', 96);
+$fontname2 = TCPDF_FONTS::addTTFfont($fontpath2, 'TrueTypeUnicode', '', 96);
+$fontname3 = TCPDF_FONTS::addTTFfont($fontpath3, 'TrueTypeUnicode', '', 96);
+$fontname4 = TCPDF_FONTS::addTTFfont($fontpath4, 'TrueTypeUnicode', '', 96);
 
 // $pdf->SetFont('times', '', 14, '', true);
 $pdf->SetFont('freeserif', '', 14, '', false);
@@ -175,7 +242,7 @@ $pdf->SetFont('freeserif', '', 14, '', false);
 $pdf->AddPage();
 
 // set text shadow effect
-$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+$pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
 
 // Set some content to print
 $html = <<<EOD
@@ -187,7 +254,7 @@ $html = <<<EOD
 EOD;
 $pdf->Ln(25);
 // Write table
-$table2 = get_bacdt($courseid);
+$table2 = get_bacdt();
 $output = html_writer::table($table2);
 $pdf->writeHTML('<h2>Danh mục bậc đào tạo<h2>');
 $pdf->writeHTML($output);

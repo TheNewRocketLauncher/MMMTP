@@ -488,10 +488,57 @@ echo '<br>';
 // Export file
 ////////////////////////////////////////////////////////////////////////////////
 
+class MYPDF extends TCPDF
+{
+   
+    public function Header()
+    {
+        $this->setJPEGQuality(90);
+        $this->SetFont('times', '', 12);
+        $this->Image('../exportpdf/img/logo.png', 16.7, 10.9, 19.4, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $this->Image('../exportpdf/img/logoR.png', 16.7, 10.7, 19.4, '', 'PNG', '', 'T', false, 300, 'R', false, false, 0, false, false, false);
+        $this->Ln(4);
+        $this->Cell(25, 1, '');
+        $this->Cell(50, 1, 'Trường Đại học Khoa Học Tự Nhiên, ĐHQG-HCM        ');
+        $this->Ln(7);
+        $this->Cell(25, 1, '');
+        $this->SetFont('timesbd', '', 12);
+        $this->Cell(50, 1, 'Khoa Công Nghệ Thông Tin');
+        $this->Ln(4);
+        $this->Cell(50, 1, '_____________________________________________________________________________________');
+        // $this->Cell(50, 5, '______________________________________', '', 0, 'C');
 
+    }
+    public function Footer()
+    {
+        $image_file = "img/bg_bottom_releve.jpg";
+        $this->Image($image_file, 11, 241, 189, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+
+        $this->SetY(-20);
+        $this->SetFont('freeserif', 'I', 11);
+        $this->Ln(5);
+
+
+        $this->Ln(5);
+        $name = 'Các chủ đề nâng cao trong Công nghệ phần mềm';
+
+        $this->Cell(30, 5, 'Đề cương môn học ');
+        $this->SetFont('freeserif', 'BI', 11);
+        $this->Cell(60, 5, $name);
+        $this->SetFont('freeserif', '', 11);
+        $titulos = explode("|", bottom_info);
+
+        $num = $this->getAliasNumPage();
+        $pagin = 'Trang ' . $this->getPage() . '/' . $this->getNumPages();
+        $this->Cell(0, 5, $pagin, 0, 0, 'R');
+
+        $this->Ln(15);
+    }
+}
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf->SetFooterMargin(400);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -500,42 +547,43 @@ $pdf->SetTitle('Đề cương môn học');
 $pdf->SetSubject('TCPDF Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
-// set default header data
-$pdf->SetHeaderData(
-    '../img/img.jpg',
-    25,
-    'Truong Dai hoc KHTN - HCM',
-    'Khoa Cong nghe thong tin'
-);
+// set orientation
+$pdf->setPageOrientation('',1,200);
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array('freeserif', '', PDF_FONT_SIZE_MAIN));
-$pdf->setFooterFont(Array('freeserif', '', PDF_FONT_SIZE_DATA));
+$pdf->setHeaderFont(array('times', '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(array('times', '', PDF_FONT_SIZE_DATA));
 
 // set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetMargins(15, 35, 15);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
+$pdf->SetAutoPageBreak(TRUE, 15);
 // set image scale factor
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // set some language-dependent strings (optional)
-if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-    require_once(dirname(__FILE__).'/lang/eng.php');
+if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+    require_once(dirname(__FILE__) . '/lang/eng.php');
     $pdf->setLanguageArray($l);
 }
 
 // ---------------------------------------------------------
-
+// add font times new roman
+$fontpath1 = '../exportpdf/font/times.ttf';
+$fontpath2 = '../exportpdf/font/timesbd.ttf';
+$fontpath3 = '../exportpdf/font/timesbi.ttf';
+$fontpath4 = '../exportpdf/font/timesi.ttf';
+$fontname1 = TCPDF_FONTS::addTTFfont($fontpath1, 'TrueTypeUnicode', '', 96);
+$fontname2 = TCPDF_FONTS::addTTFfont($fontpath2, 'TrueTypeUnicode', '', 96);
+$fontname3 = TCPDF_FONTS::addTTFfont($fontpath3, 'TrueTypeUnicode', '', 96);
+$fontname4 = TCPDF_FONTS::addTTFfont($fontpath4, 'TrueTypeUnicode', '', 96);
 // set font
-$pdf->SetFont('freeserif', 'B', 13);
+$pdf->SetFont('timesbd', 'B', 13, '', false);
 
 // add a page
 $pdf->AddPage();
@@ -543,142 +591,207 @@ $pdf->AddPage();
 $ttc_body = $chitietmh->tenmonhoc_vi;
 
 // 1. THÔNG TIN CHUNG
-$ttc_header = '<h2>1. THÔNG TIN CHUNG</h2>';
+$ttc_header = '1. THÔNG TIN CHUNG:';
 $pdf->writeHTML($ttc_header, true, false, true, false, '');
-
-
 // set default form properties
-$pdf->setFormDefaultProp(array('lineWidth'=>1, 'borderStyle'=>'solid', 'fillColor'=>array(255, 255, 200), 'strokeColor'=>array(255, 128, 128)));
-
-// $pdf->SetFont('helvetica', 'BI', 18);
-// $pdf->Cell(0, 5, 'Example of Form', 0, 1, 'C');
+$pdf->setFormDefaultProp(array('lineWidth' => 1, 'borderStyle' => 'solid', 'fillColor' => array(255, 255, 200), 'strokeColor' => array(255, 128, 128)));
 $pdf->Ln(4);
-
-$pdf->SetFont('freeserif', '', 12);
-
+$pdf->SetFont('times', '', 12, '', false);
 // Name.Vi
 $pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Tên môn học (tiếng Việt)');
+$pdf->Cell(65, 5, 'Tên môn học (tiếng Việt):');
 $pdf->Cell(35, 5,  $chitietmh->tenmonhoc_vi);
-$pdf->Ln(6);
-
+$pdf->Ln(8);
 // Name.En
 $pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Tên môn học (tiếng Anh)');
+$pdf->Cell(65, 5, 'Tên môn học (tiếng Anh):');
 $pdf->Cell(35, 5, $chitietmh->tenmonhoc_en);
-$pdf->Ln(6);
-
+$pdf->Ln(8);
 // Last name
 $pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Mã số môn học');
+$pdf->Cell(65, 5, 'Mã số môn học:');
 $pdf->Cell(35, 5, $chitietmh->mamonhoc);
-$pdf->Ln(6);
-
+$pdf->Ln(8);
 // 
 $pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Số tín chỉ: ');
+$pdf->Cell(65, 5, 'Số tín chỉ: ');
 $pdf->Cell(35, 5, $chitietmh->sotinchi);
-$pdf->Ln(6);
-
+$pdf->Ln(8);
 //
-$pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Số tiết lý thuyết ');
+$pdf->Cell(20, 5, '');
+$pdf->Cell(55, 5, 'Số tiết lý thuyết: ');
 $pdf->Cell(35, 5, $chitietmh->sotietlythuyet);
-$pdf->Ln(6);
-
+$pdf->Ln(8);
+// 
+$pdf->Cell(20, 5, '');
+$pdf->Cell(55, 5, 'Số tiết thực hành: ');
+$pdf->Cell(115, 5, $chitietmh->sotietthuchanh);
+$pdf->Ln(8);
+//
+$pdf->Cell(20, 5, '');
+$pdf->Cell(55, 5, 'Số tiết tự học: ');
+$pdf->Cell(35, 5, $chitietmh->sotiettuhoc);
+$pdf->Ln(8);
 // 
 $pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Số tiết thực hành ');
-$pdf->Cell(35, 5, $chitietmh->sotietthuchanh);
-$pdf->Ln(6);
-
-//
-$pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Số tiết tự học ');
-$pdf->Cell(35, 5, $chitietmh->sotietlythuyet);
-$pdf->Ln(6);
-
-// 
-$pdf->Cell(10, 5, '');
-$pdf->Cell(55, 5, 'Các môn học tiên quyết ');
+$pdf->Cell(65, 5, 'Các môn học tiên quyết: ');
 $pdf->Cell(35, 5, 'Không ');
 $pdf->Ln(10);
 
-// // reset font stretching
-// $pdf->setFontStretching(10);
-
-// // reset font spacing
-// $pdf->setFontSpacing(0);
-
 // 2. MÔ TẢ MÔN HỌC
-$pdf->SetFont('freeserif', 'B', 13);
-$mtmh_header = '<h2>2. MÔ TẢ MÔN HỌC</h2>';
-$pdf->writeHTML($mtmh_header, true, false, true, false, '');
-$mtmh_body = '<p>Môn học này nhằm cung cấp cho sinh viên một cái nhìn tổng quát về lĩnh vực Công nghệ phần mềm,
-các kiến thức nền tảng liên quan đến các thành phần chính yếu trong lĩnh vực công nghệ phần mềm
-(khái niệm về phần mềm, các tiến trình, các phương pháp, kỹ thuật phát triển phần mềm, các phương
-pháp tổ chức quản lý, công cụ và môi trường phát triển và triển khai phần mềm...). Môn học cũng giúp
-xây dựng kiến thức nền tảng cho chuyên ngành Kỹ thuật phần mềm nhằm tạo sự sẵn sàng cho các môn
-học chuyên sâu hơn ở các năm sau. Môn học cũng giúp sinh viên có những trải nghiệm thực tế về quá
-trình xây dựng một phần mềm ở mức độ đơn giản một cách có hệ thống và có phương pháp.</p>';
-$pdf->Ln(4);
-$pdf->SetFont('freeserif', '', 12);
-$pdf->Cell(100, 5, '');
+$pdf->SetFont('timesbd', 'B', 13, '', false);
+$part_header = '2. MÔ TẢ MÔN HỌC (COURSE DESCRIPTION)';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$mtmh_body = $chitietmh->mota;
+$pdf->Ln(1);
+$pdf->SetFont('times', '', 12, '', false);
+$pdf->setCellHeightRatio(2); //Tạo khoảng cách giữa các dòng trong 1 đoạn text
 $pdf->writeHTML($mtmh_body, true, false, true, false, '');
 $pdf->Ln(6);
 
 // 3. MỤC TIÊU MÔN HỌC
-$pdf->SetFont('freeserif', 'B', 13);
-$mtmh_header = '<h2>3. MỤC TIÊU MÔN HỌC</h2>';
-$pdf->writeHTML($mtmh_header, true, false, true, false, '');
-// Danh sách mục tiêu môn học
-$mtmh_body = get_muctieu_monmhoc_by_mamonhoc($a);
-// 
-$pdf->Ln(4);
-$pdf->SetFont('freeserif', '', 12);
-$pdf->Cell(100, 5, '');
-// $pdf->writeHTML($mtmh_body, true, false, true, false, '');
-$pdf->Ln(10);
-
-//MUCTIEU TABLE
-$header = array('Mục tiêu', 'Mô tả (mức chi tiết)', 'Chuẩn đầu ra CDIO của chương trình');
-
-$data_table = $DB->get_records('block_edu_muctieumonhoc', array('mamonhoc' => $a));
-
-foreach($data_table as $i){
-    $arr[] = [(string)$i->muctieu,(string)$i->mota, (string)$i->danhsach_cdr ];
+function fetch_data_muctieu()
+{
+    GLOBAL $DB;
+    $output = '';
+    $data_record = $DB->get_records('block_edu_muctieumonhoc', array());  
+    foreach ($data_record as $row) {
+       $output .= '
+               <tr>
+                   <td style = "text-align: center">' . $row->muctieu. '</td>
+                   <td>' . $row->mota. '</td>
+                   <td>' . $row->danhsach_cdr . '</td>
+                </tr>
+                ';
+    }
+    return $output;
 }
+$pdf->SetFont('timesbd', '', 13, '', false);
+$part_header = '3. MỤC TIÊU MÔN HỌC (COURSE GOALS)';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$pdf->SetFont('times', '', 13, '', false);
+$pdf->writeHTML('Sinh viên học xong môn học này có khả năng :', true, false, true, false, '');
+$table_content = '<table border = "1" cellspacing = "0" cellpadding ="5">
+                    <tr style = "font-family: timesbd; background-color: rgb(0, 112, 192); color:#fff; text-align:center">
+                        <th width = "15%" style = "display: flex; align-items: center;"><b>Mục tiêu</b></th>
+                        <th width = "60%" style = "display: flex; align-items: center;"><b>Mô tả (mức tổng quát )</b></th>
+                        <th width = "25%" style = "display: flex; align-items: center;"><b>CĐR CDIO<br>của chương trình</b></th>
+                    </tr>';
+$table_content .= fetch_data_muctieu();
+$table_content .= '</table>';
+$pdf->Ln(1);
+$pdf->SetFont('times', '', 12, '', false);
+$pdf->setCellHeightRatio(2); //Tạo khoảng cách giữa các dòng trong 1 đoạn text
+$pdf->writeHTML($table_content, true, false, true, false, '');
 
+// 4. CHUẨN ĐẦU RA MÔN HỌC 
+function fetch_data_cdr()
+{
+    GLOBAL $DB;
+    $output = '';
+    $data_record = $DB->get_records('block_edu_chuandaura', array());  
+    foreach ($data_record as $row) {
+       $output .= '
+               <tr>
+                   <td style = "text-align: center">' . $row->ma_cdr. '</td>
+                   <td>' . $row->mota. '</td>
+                   <td style = "text-align: center">' . $row->mucdo_utilize . '</td>
+                </tr>
+                ';
+    }
+    return $output;
+}
+$pdf->SetFont('timesbd', '', 13, '', false);
+$part_header = '4. CHUẨN ĐẦU RA MÔN HỌC';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$table_content = '<table border = "1" cellspacing = "0" cellpadding ="5">
+                    <tr style = "font-family: timesbd; background-color: rgb(0, 112, 192); color:#fff; text-align:center">
+                        <th width = "15%"><b>Chuẩn đầu ra</b></th>
+                        <th width = "60%"><b>Mô tả (Mức chi tiết - hành động)</b></th>
+                        <th width = "25%"><b>Mức độ (I/T/U)</b></th>
+                    </tr>';
+$table_content .= fetch_data_cdr();
+$table_content .= '</table>';
+$pdf->Ln(1);
+$pdf->SetFont('times', '', 12, '', false);
+$pdf->setCellHeightRatio(2); //Tạo khoảng cách giữa các dòng trong 1 đoạn text
+$pdf->writeHTML($table_content, true, false, true, false, '');
 
-$pdf->SetFillColor(0, 0, 255);
-$pdf->SetTextColor(255);
-$pdf->SetDrawColor(0, 0, 0);
-$pdf->SetLineWidth(0);
-$pdf->SetFont('', 'B');
-// Header
-$w = array(60, 60, 60);
-$num_headers = count($header);
-for($i = 0; $i < $num_headers; ++$i) {
-    $pdf->Cell($w[$i], 15, $header[$i], 1, 0, 'center', 1,'' , 1);
+// 5. KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT
+function fetch_data_lt()
+{
+    GLOBAL $DB;
+    $output = '';
+    $data_record = $DB->get_records('block_edu_kh_giangday_lt', []);
+    $stt = 1;   
+    foreach ($data_record as $row) {
+       $output .= '
+               <tr>
+                   <td style = "text-align: center">' . $stt . '</td>
+                   <td>' . $row->ten_chude . '</td>
+                   <td>' . $row->danhsach_cdr . '</td>
+                   <td>' . $row->hoatdong_gopy. '</td>
+                   <td>' . $row->hoatdong_danhgia. '</td>
+                </tr>
+                ';
+    }
+    return $output;
 }
-$pdf->Ln();
-// Color and font restoration
-$pdf->SetFillColor(224, 235, 255);
-$pdf->SetTextColor(0);
-$pdf->SetFont('');
-// Data
-$fill = 0;
-foreach($arr as $row) {
-    
-    $pdf->Cell($w[0], 15, $row[0], 'LR', 0, 'L', $fill);
-    $pdf->Cell($w[1], 15, $row[1], 'LR', 0, 'L', $fill);
-    $pdf->Cell($w[2], 15, $row[2], 'LR', 0, 'R', $fill);
-    
-    
-    $pdf->Ln();
-    $fill=!$fill;
+$pdf->SetFont('timesbd', '', 13, '', false);
+$part_header = '5. KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$table_content = '<table border = "1" cellspacing = "0" cellpadding ="5">
+                    <tr style = "font-family: timesbd; background-color: rgb(0, 112, 192); color:#fff; text-align:center">
+                        <th width = "10%"><b>STT</b></th>
+                        <th width = "30%"><b>Tên chủ đề</b></th>
+                        <th width = "20%"><b>Chuẩn đầu ra</b></th>
+                        <th width = "25%"><b>Hoạt động dạy/<br>Hoạt động học (gợi ý)</b></th>
+                        <th width = "15%"><b>Hoạt động đánh giá</b></th>
+                    </tr>';
+$table_content .= fetch_data_lt();
+$table_content .= '</table>';
+$pdf->Ln(1);
+$pdf->SetFont('times', '', 12, '', false);
+$pdf->setCellHeightRatio(2); //Tạo khoảng cách giữa các dòng trong 1 đoạn text
+$pdf->writeHTML($table_content, true, false, true, false, '');
+
+// 6. ĐÁNH GIÁ
+function fetch_data_dg()
+{
+    GLOBAL $DB;
+    $output = '';
+    $data_record = $DB->get_records('block_edu_danhgiamonhoc', []);
+    $stt = 1;   
+    foreach ($data_record as $row) {
+       $output .= '
+               <tr>
+                   <td style = "text-align: center">' . $madanhgia . '</td>
+                   <td>' . $row->tendanhgia . '</td>
+                   <td>' . $row->motadanhgia . '</td>
+                   <td>' . $row->chuandaura_danhgia. '</td>
+                   <td>' . $row->tile_danhgia. '</td>
+                </tr>
+                ';
+    }
+    return $output;
 }
-$pdf->Cell(array_sum($w), 0, '', 'T');
+$pdf->SetFont('timesbd', '', 13, '', false);
+$part_header = '6. ĐÁNH GIÁ';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$table_content = '<table border = "1" cellspacing = "0" cellpadding ="5">
+                    <tr style = "font-family: timesbd; background-color: rgb(0, 112, 192); color:#fff; text-align:center">
+                        <th width = "10%"><b>Mã</b></th>
+                        <th width = "30%"><b>Tên</b></th>
+                        <th width = "30%"><b>Mô tả (gợi ý)</b></th>
+                        <th width = "15%"><b>Các chuẩn</b></th>
+                        <th width = "15%"><b>Tỉ lệ (%)</b></th>
+                    </tr>';
+$table_content .= fetch_data_dg();
+$table_content .= '</table>';
+$pdf->Ln(1);
+$pdf->SetFont('times', '', 12, '', false);
+$pdf->setCellHeightRatio(2); //Tạo khoảng cách giữa các dòng trong 1 đoạn text
+$pdf->writeHTML($table_content, true, false, true, false, '');
 
 
 // output the HTML content
@@ -693,11 +806,10 @@ $pdf->setFontSpacing(0);
 // ---------------------------------------------------------
 
 //Close and output PDF document
-$pdf->Output(__DIR__.'/example_063.pdf', 'F');
-echo "<a href = 'example_063.pdf'>Export PDF</a>";
+$pdf->Output(__DIR__ . '/decuong.pdf', 'F');
+echo "<a href = 'decuong.pdf'>Export PDF</a>";
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Print footer
-echo $OUTPUT->footer();
-?>
+echo $OUTPUT->footer();?>

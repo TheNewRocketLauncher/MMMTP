@@ -216,12 +216,36 @@ define(['jquery'], function ($) {
                         list_id.push(item.name);
                     }
                 }
-                list_id.forEach(element => {
+                list_id.forEach((element, index, arr) => {
                     $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/bacdt/delete_bdt.php', {
-                        course: 1,
                         id: element
                     }).done(function (data) {
-                        location.reload(true);
+                        if (index == arr.length-1) {
+                            location.reload(true);
+                        }
+                    }).fail(function () {
+                        alert('Something wrong!');
+                    });
+                });
+            });
+
+            $("#btn_clone_bacdt").click(function () {
+                var list_id = [];
+                var allElement = document.getElementsByClassName('bdtcheckbox');
+                for (var i = 0; i < allElement.length; ++i) {
+                    var item = allElement[i];
+                    if (item.value == '1') {
+                        list_id.push(item.name);
+                    }
+                }
+                list_id.forEach((element, index, arr) => {
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/bacdt/clone_bdt.php', {
+                        id: element
+                    }).done(function (data) {
+                        if (index == arr.length-1) {
+                            // alert(arr[index]);
+                            location.reload(true);
+                        }
                     }).fail(function () {
                         alert('Something wrong!');
                     });
