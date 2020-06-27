@@ -865,52 +865,6 @@ define(['jquery'], function ($) {
                     });
                 }
             });
-            
-            $("#btn_clone_nganhdt").click(function () {
-                var list_id = [];
-                var allElement = document.getElementsByClassName('nganhdtcheckbox');
-                for (var i = 0; i < allElement.length; ++i) {
-                    var item = allElement[i];
-                    if (item.value == '1') {
-                        list_id.push(item.name);
-                    }
-                }
-                list_id.forEach((element, index, arr) => {
-                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/nganhdt/clone_nganhdt.php', {
-                        id: element
-                    }).done(function (data) {
-                        if (index == arr.length-1) {
-                            // alert(arr[index]);
-                            location.reload(true);
-                        }
-                    }).fail(function () {
-                        alert('Something wrong!');
-                    });
-                });
-            });
-            
-            $("#btn_clone_chuyennganhdt").click(function () {
-                var list_id = [];
-                var allElement = document.getElementsByClassName('chuyennganhdtcheckbox');
-                for (var i = 0; i < allElement.length; ++i) {
-                    var item = allElement[i];
-                    if (item.value == '1') {
-                        list_id.push(item.name);
-                    }
-                }
-                list_id.forEach((element, index, arr) => {
-                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/chuyennganhdt/clone_chuyennganhdt.php', {
-                        id: element
-                    }).done(function (data) {
-                        if (index == arr.length-1) {
-                            // alert(arr[index]);
-                            location.reload(true);
-                        }
-                    }).fail(function () {
-                        alert('Something wrong!');
-                    });
-                });
-            });
         }
     };
 });

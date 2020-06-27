@@ -13,10 +13,10 @@ class qlchuyennganh_form extends moodleform
     // Header
     $mform->addElement('header', 'general', 'Quản lý thông tin');
 
-    // ID
-    $idchuyennganh = array();
-    $idchuyennganh[] = &$mform->createElement('text', 'idchuyennganh', 'none', 'size="70"');
-    $mform->addGroup($idchuyennganh, 'idchuyennganh', 'ID', array(' '), false);
+    // // ID
+    // $idchuyennganh = array();
+    // $idchuyennganh[] = &$mform->createElement('text', 'idchuyennganh', 'none', 'size="70"');
+    // $mform->addGroup($idchuyennganh, 'idchuyennganh', 'ID', array(' '), false);
 
     // Mã bậc
     $mabac = array();
@@ -85,3 +85,25 @@ class qlchuyennganh_form extends moodleform
     return array();
   }
 }
+
+// Form search
+class chuyennganhdt_search extends moodleform
+{
+    public function definition()
+    {
+        global $CFG, $DB;
+        $mform = $this->_form;
+        
+        // Search        
+        $chuyennganhdt_search = array();
+        $chuyennganhdt_search[] = &$mform->createElement('text', 'chuyennganhdt_search', 'none',  array('size'=>'40'));
+        $chuyennganhdt_search[] = &$mform->createElement('submit', 'btn_chuyennganhdt_search', 'Tìm kiếm', array('style' => 'background-color: #1177d1;color: #fff'));
+        $mform->addGroup($chuyennganhdt_search, 'chuyennganhdt_search_group', ' ', ' ', false);
+    }
+
+    function validation($data, $files)
+    {
+        return array();
+    }
+}
+

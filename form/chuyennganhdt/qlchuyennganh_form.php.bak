@@ -3,7 +3,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once("../../js.php");
 
-class qlnganh_form extends moodleform
+class qlchuyennganh_form extends moodleform
 {
   public function definition()
   {
@@ -13,11 +13,12 @@ class qlnganh_form extends moodleform
     // Header
     $mform->addElement('header', 'general', 'Quản lý thông tin');
 
-    // // ID
-    // $idnganh = array();
-    // $idnganh[] = &$mform->createElement('text', 'idnganh', 'none', 'size="10"');
-    // $mform->addGroup($idnganh, 'idnganh', 'ID ngành đào tạo', array(' '), false);
+    // ID
+    $idchuyennganh = array();
+    $idchuyennganh[] = &$mform->createElement('text', 'idchuyennganh', 'none', 'size="70"');
+    $mform->addGroup($idchuyennganh, 'idchuyennganh', 'ID', array(' '), false);
 
+    // Mã bậc
     $mabac = array();
     $allbacdts = $DB->get_records('block_edu_bacdt', []);
     $arr_mabac = array();
@@ -47,51 +48,40 @@ class qlnganh_form extends moodleform
     $manienkhoa[] = &$mform->createElement('select', 'manienkhoa', 'test select:', $arr_manienkhoa, array());
     $mform->addGroup($manienkhoa, 'manienkhoa', 'Mã niên khóa đào tạo', array(' '), false);
 
-    // Mã ngành
+    //Mã ngành
     $manganh = array();
-    $manganh[] = &$mform->createElement('text', 'manganh', 'none', 'size="10"');
+    $allnganhdts = $DB->get_records('block_edu_nganhdt', []);
+    $arr_manganh = array();
+    foreach ($allnganhdts as $inganhdt) {
+      $arr_manganh += [$inganhdt->ma_nganh => $inganhdt->ma_nganh];
+    }
+    $manganh[] = &$mform->createElement('select', 'manganh', 'test select:', $arr_manganh, array());
     $mform->addGroup($manganh, 'manganh', 'Mã ngành đào tạo', array(' '), false);
 
-    // Tên ngành
-    $tennganh = array();
-    $tennganh[] = &$mform->createElement('text', 'tennganh', 'none', 'size="70"');
-    $mform->addGroup($tennganh, 'tennganh', 'Tên ngành đào tạo', array(' '), false);
+    // Mã chuyên ngành
+    $machuyennganh = array();
+    $machuyennganh[] = &$mform->createElement('text', 'machuyennganh', 'none', 'size="10"');
+    $mform->addGroup($machuyennganh, 'machuyennganh', 'Mã chuyên ngành đào tạo', array(' '), false);
+
+    // Tên chuyên ngành
+    $tenchuyennganh = array();
+    $tenchuyennganh[] = &$mform->createElement('text', 'tenchuyennganh', 'none', 'size="70"');
+    $mform->addGroup($tenchuyennganh, 'tenchuyennganh', 'Tên chuyên ngành đào tạo', array(' '), false);
 
     // Mô tả
     $mota = array();
     $mota[] = &$mform->createElement('textarea', 'mota', '', 'wrap="virtual" rows="7" cols="100"');
     $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), false);
-
+    
     // Button
     $buttonarray = array();
     $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Cập nhật');
     $buttonarray[] = $mform->createElement('cancel', null, 'Hủy');
     $mform->addGroup($buttonarray, 'buttonar', '', ' ', false);
   }
-
+  
   function validation($data, $files)
   {
     return array();
   }
-}
-
-// Form search
-class nganhdt_search extends moodleform
-{
-    public function definition()
-    {
-        global $CFG, $DB;
-        $mform = $this->_form;
-        
-        // Search        
-        $nganhdt_search = array();
-        $nganhdt_search[] = &$mform->createElement('text', 'nganhdt_search', 'none',  array('size'=>'40'));
-        $nganhdt_search[] = &$mform->createElement('submit', 'btn_nganhdt_search', 'Tìm kiếm', array('style' => 'background-color: #1177d1;color: #fff'));
-        $mform->addGroup($nganhdt_search, 'nganhdt_search_group', ' ', ' ', false);
-    }
-
-    function validation($data, $files)
-    {
-        return array();
-    }
 }

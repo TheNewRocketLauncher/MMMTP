@@ -100,8 +100,11 @@ class block_educationpgrs extends block_list
             //Quản lý đề cương môn học
             $url = new \moodle_url('/blocks/educationpgrs/pages/decuong/index.php');
             $linktext = get_string('label_quanly_decuong', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);            $url = new \moodle_url('/blocks/educationpgrs/pages/khoahoc/danhsach_khoahoc.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_khoahoc', 'block_educationpgrs');
+            $this->content->items[] = \html_writer::link($url, $linktext);
+
+            //Quản lý lớp mở
+            $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['courseid' => $courseid]);
+            $linktext = get_string('label_decuong', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
             
             //Quản lý khối kiến thức
@@ -111,7 +114,7 @@ class block_educationpgrs extends block_list
             
             //Quản lý cây khối kiến thức kiến thức
             $url = new \moodle_url('/blocks/educationpgrs/pages/caykkt/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_caykhoikienthuc', 'block_educationpgrs');
+            $linktext = get_string('head_caykkt', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
 
             //Quản lý chương trình đào tạo

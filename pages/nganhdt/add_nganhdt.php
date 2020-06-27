@@ -28,7 +28,7 @@ $PAGE->navbar->add(get_string('label_nganh', 'block_educationpgrs'));
 // Title.
 $PAGE->set_title('Thêm ngành đào tạo ');
 $PAGE->set_heading('Thêm mới ngành đào tạo ');
-$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
+// $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
 echo $OUTPUT->header();
@@ -52,6 +52,8 @@ if ($mform->is_cancelled()) {
     $param1->ma_nganh = $mform->get_data()->manganh;
     $param1->ten = $mform->get_data()->tennganh;
     $param1->mota = $mform->get_data()->mota;
+    // $param2 = new stdClass();
+    // $param2->ma_nganh = '665';
     insert_nganhdt($param1);
     // Hiển thị thêm thành công
     echo '<h2>Thêm mới thành công!</h2>';
