@@ -62,3 +62,24 @@ class mo_nienkhoa_form extends moodleform
         return $editoroptions;
     }
 }
+
+class nienkhoa_search extends moodleform
+{
+    public function definition()
+    {
+        global $CFG, $DB;
+        $mform = $this->_form;
+        
+        // Search        
+        $nienkhoa_search = array();
+        // $nienkhoa_search[] = &$mform->createElement('text', 'nienkhoa_search', 'none',  array('size'=>'40', 'onkeydown'=>"return event.key != 'Enter';"));
+        $nienkhoa_search[] = &$mform->createElement('text', 'nienkhoa_search', 'none',  array('size'=>'40'));
+        $nienkhoa_search[] = &$mform->createElement('submit', 'btn_nienkhoa_search', 'Tìm kiếm', array('style' => 'background-color: #1177d1;color: #fff'));
+        $mform->addGroup($nienkhoa_search, 'nienkhoa_search_group', ' ', ' ', false);
+    }
+
+    function validation($data, $files)
+    {
+        return array();
+    }
+}

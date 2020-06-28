@@ -29,7 +29,7 @@ $PAGE->navbar->add(get_string('label_quanly_decuong', 'block_educationpgrs'), ne
 
 // Title.
 $PAGE->set_title(get_string('label_quanly_decuong', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
-$PAGE->set_heading(get_string('Quản lý đề cương', 'block_educationpgrs'));
+$PAGE->set_heading(get_string('label_decuong', 'block_educationpgrs'));
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header

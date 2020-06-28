@@ -6,20 +6,14 @@ require_once("$CFG->libdir/formslib.php");
 require_once('../../model/nienkhoa_model.php');
 require_once('../../js.php');
 
+// require_once('../factory.php');
+$page = optional_param('page', 0, PARAM_INT);
+$search = trim(optional_param('search', '', PARAM_NOTAGS));
+// Create button with method post
 global $COURSE;
-$courseid = optional_param('courseid', SITEID, PARAM_INT);
-
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', []));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
@@ -27,29 +21,89 @@ $PAGE->set_pagelayout('standard');
 $PAGE->navbar->add(get_string('label_nienkhoa', 'block_educationpgrs'));
 
 // Title.
-$PAGE->set_title(get_string('label_nienkhoa', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
+$PAGE->set_title(get_string('label_nienkhoa', 'block_educationpgrs') . ' - Course ID: ' );
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
 echo $OUTPUT->header();
+// Search
+require_once('../../form/nienkhoa/mo_nienkhoa_form.php');
+$form_search = new nienkhoa_search();
 
-/// Button mở niên khóa
-$btn_mo_khoahoc = html_writer::tag('button', 'Mở niên khóa', array('onClick' => "window.location.href='create.php'"));
-echo $btn_mo_khoahoc;
-echo '<br>';
+// Process form
+if ($form_search->is_cancelled()) {
+    // Process button cancel
+} else if ($form_search->no_submit_button_pressed()) {
+    // $form_search->display();
+} else if ($fromform = $form_search->get_data()) {
+    // Redirect page
+    $search = $form_search->get_data()->nienkhoa_search;
+    $ref = $CFG->wwwroot . '/blocks/educationpgrs/pages/nienkhoa/index.php?search=' . $search . '&amp;page=' . $page;
+    echo "<script type='text/javascript'>location.href='$ref'</script>";
+} else if ($form_search->is_submitted()) {
+    // Process button submitted
+    $form_search->display();
+} else {
+    /* Default when page loaded*/
+    $toform;
+    $toform->nienkhoa_search = $search;
+    $form_search->set_data($toform);
+    // Displays form
+    $form_search->display();
+}
 
-// Print table
-$table = get_nienkhoa_checkbox($courseid);
+// Action
+$action_form =
+    html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Xóa ',
+        array('id' => 'btn_delete_nienkhoa', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
+    )
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Clone ',
+        array('id' => 'btn_clone_nienkhoa', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
+    )
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Thêm mới',
+        array('id' => 'btn_add_nienkhoa', 'onClick' => "window.location.href='create.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
+    )
+    . '<br>'
+    . html_writer::end_tag('div');
+echo $action_form;
+
+$table = get_nienkhoa_checkbox($search, $page);
 echo html_writer::table($table);
 
-// Button xóa niên khóa
-echo ' ';
-echo \html_writer::tag(
-    'button',
-    'Xóa niên khóa',
-    array('id' => 'btn_delete_nienkhoa')
-);
-echo '<br>';
+
+$baseurl = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['search' => $search]);
+echo $OUTPUT->paging_bar(count(get_nienkhoa_checkbox($search, -1)->data), $page, 5, $baseurl);
+
+
+
+
+//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
+// require_once('../../form/nienkhoa/danhsach_nienkhoa_form.php');
+// $mform = new danhsach_nienkhoa_form();
+
+
+$count = 1;
+if(array_key_exists('mmmy',$_SESSION)){
+    echo 'the s';
+    echo 'the end';
+
+
+    foreach ($table->data as $data) {
+      
+    }
+        
+    
+ }
 
 // Footer
 echo $OUTPUT->footer();

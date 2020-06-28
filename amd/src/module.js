@@ -911,6 +911,29 @@ define(['jquery'], function ($) {
                     });
                 });
             });
+            $("#btn_clone_nienkhoa").click(function () {
+			        var list_id = [];
+			        var allElement = document.getElementsByClassName("nienkhoacheckbox");
+			        for (var i = 0; i < allElement.length; ++i) {
+			          var item = allElement[i];
+			          if (item.value == "1") {
+			            list_id.push(item.name);
+			          }
+			        }
+			        list_id.forEach((element, index, arr) => {
+			          $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/nienkhoa/clone_nienkhoa.php", {
+			            id: element,
+			          })
+			            .done(function (data) {
+			              if (index == arr.length - 1) {
+			                location.reload(true);
+			              }
+			            })
+			            .fail(function () {
+			              alert("Something wrong!");
+			            });
+			        });
+			      });
         }
     };
 });

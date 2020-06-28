@@ -101,10 +101,10 @@ class block_educationpgrs extends block_list
             $url = new \moodle_url('/blocks/educationpgrs/pages/decuong/index.php');
             $linktext = get_string('label_quanly_decuong', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
-
-            //Quản lý lớp mở
+            
+            //Quản lớp mở
             $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_decuong', 'block_educationpgrs');
+            $linktext = get_string('label_lopmo', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
             
             //Quản lý khối kiến thức

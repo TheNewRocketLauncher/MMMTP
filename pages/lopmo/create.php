@@ -3,8 +3,9 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once('../../model/monhoc_model.php');
 require_once('../../model/lopmo_model.php');
+require_once('../../js.php');
+
 // require_once('../factory.php');
 
 // Create button with method post
@@ -41,19 +42,10 @@ class simplehtml_form extends moodleform
     }
 }
 global $COURSE;
-$courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/lopmo/create.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/lopmo/create.php', []));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
@@ -100,7 +92,7 @@ if ($mform->is_cancelled()) {
     echo '<h2>Thêm mới thành công!</h2>';
     echo '<br>';
     //link đến trang danh sách
-    $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['courseid' => $courseid]);
+    $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', []);
     $linktext = get_string('label_lopmo', 'block_educationpgrs');
     echo \html_writer::link($url, $linktext);
     // $mform->display();
