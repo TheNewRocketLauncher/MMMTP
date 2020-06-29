@@ -51,14 +51,42 @@ if ($confirmFrom->is_cancelled()) {
     
     $id = 0;
     $type = 1;
-    $paramfirst = 'gsEFSFS';
+    $paramfirst = '16CNTT-CN.1.1';
 
-    // if($id == 'nocheck'){
-    //     $result['error'] = 1;
-    //     $result['mess'] = 'Không có khối nào được chọn';
-    // }
+    $current_list = array();
+    $current_list[] = ['name' => $paramfirst,
+        'index' => '1',
+        'level' => 1,
+    ];
+    $current_list[] = ['name' => $paramfirst,
+        'index' => '1.1',
+        'level' => 2,
+    ];
+    $current_list[] = ['name' => $paramfirst,
+        'index' => '1.2',
+        'level' => 2,
+    ];
+    $current_list[] = ['name' => $paramfirst,
+        'index' => '2',
+        'level' => 2,
+    ];
+    $current_list[] = ['name' => $paramfirst,
+        'index' => '2.1',
+        'level' => 2,
+    ];
 
-    add_khoi($paramfirst);
+    
+    $current_list = get_current_list();
+    $index = explode('.', end($current_list)['index'])[0];
+
+    echo count($current_list);
+    $index++;
+    echo $index;
+
+    // $result = sort_list($current_list);
+    // echo json_encode($result);
+
+    //add_khoi($paramfirst);
 
     // switch ($type){
     //     case 1:
@@ -91,48 +119,6 @@ echo $OUTPUT->footer();
 ///-------------------------------------------------------------------------------------------------------///
 //FUNCTION
 
-// function get_point($pointString){
-//     // $arr = explode( '.', $pointString);
-//     // $point = 0;
-//     // $arrPoint = array(
-//     //     0 => 10000,
-//     //     1 => 100,
-//     //     2 => 1,
-//     // );
-//     // foreach($arr as $key => $item){
-//     //     $point = $point + $arrPoint[$key] * $item;
-//     // }
-//     // return $point;
-//     return $pointString;
-// }
-
-// function sort_list($list){
-//     $result = array();
-
-//     $listPoint = array();
-
-//     foreach($list as $item){
-//         $listPoint[] = get_point($item['index']);
-//     }
-
-//     asort($listPoint);
-    
-//     var_dump($listPoint);
-//     echo '<br>';
-//     foreach($listPoint as $key => $item){
-//         echo 'key ' . $key . ' item ' . $item . '<br>';
-//     }
-    
-//     foreach($listPoint as $key => $item){
-//         $result[] = [
-//             'name' => $list[$key]['name'],
-//             'index' => $list[$key]['index'],
-//         ];
-//     }
-//     var_dump($result);
-// }
-
-
 function get_current_list(){
     global $USER;
     $current_global = get_global($USER->id);
@@ -147,16 +133,17 @@ function get_current_list(){
         );
         set_global($USER->id, $current_global);
     } else if(array_key_exists('newcaykkt', $current_global)){
-        return $current_global;
+        return $current_global['newcaykkt'];
     } else {
         $current_global[] = array(
             'newcaykkt' => array(),
         );
         set_global($USER->id, $current_global);
     }
+
+    var_dump($current_global);
+    echo '<br>';
     return $current_global['newcaykkt'];
-
-
 }
 
 function update_global($newcaykkt){
@@ -176,11 +163,16 @@ function moveDown($index){
 
 function add_khoi($paramfirst){
     $current_list = get_current_list();
+    if(count($current_list) == 0){
+        $index = '1';
+    } else{
+        $index = explode('.', end($current_list)['index'])[0] + 1;
+    }
+
     $current_list[] = ['name' => $paramfirst,
-        'index' => '1',
+        'index' => (string) $index,
         'level' => 1,
     ];
-    $current_list = sort_list($current_list);
     update_global($current_list);
 }
 
@@ -194,7 +186,7 @@ function add_khoiCungCap($id, $paramfirst){
         }
     }
 
-    $arr = explode( '.', $lastIndex);
+    $arr = explode('.', $lastIndex);
     $arr[$level-1]++;
     foreach($arr as $item){
         $index .= $item;
@@ -228,8 +220,9 @@ function add_khoiCon($id, $paramfirst){
         'level' => $level,
     );
 
-    $current_list = sort_list($current_list);
-    update_global($current_list);
+    // $current_list = sort_list($current_list);
+    // update_global($current_list);
+    sort_list($current_list);
 }
 
 function removeLeafChild($id){
@@ -250,30 +243,22 @@ function removeLeafChild($id){
     sort_list($current_list);
 }
 
-function sort_list($list){
+function sort_list($current_list){
     $result = array();
-    $listPoint = array();
-    if(count($listPoint) == 1){
-        return $listPoint;
+    $sortList = array();
+    foreach($current_list as $item){
+        $sortList[] = $item['index'];
+    }    
+
+    asort($sortList);
+
+    $result = array();
+    foreach($sortList as $key => $item){
+        $result[] =['name' => $current_list[$key]['name'],
+                    'index' => $current_list[$key]['index'],
+                    'level' => $current_list[$key]['level'],
+        ];
     }
 
-    foreach($list as $item){
-        $listPoint[] = $item['index'];
-    }
-
-    // SORT Array
-    asort($listPoint);
-    // Replace old id
-    foreach($listPoint as $key => $item){
-        $result[] = array(
-            'name' => $list[$key]['name'],
-            'index' => $list[$key]['index'],
-            'level' => $list[$key]['level'],
-        );
-    }
-    var_dump($listPoint);
-    echo '<br>';
-    var_dump($result);
-    
     return $result;
 }

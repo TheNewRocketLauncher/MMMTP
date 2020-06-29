@@ -8,6 +8,8 @@ require_once('../../js.php');
 
 global $COURSE, $USER;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
+$page = optional_param('page', 0, PARAM_INT);
+$search = trim(optional_param('search', '', PARAM_NOTAGS));
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -40,6 +42,7 @@ echo $OUTPUT->header();
 require_once('../../form/ctdt/index_form.php');
 $customdata = array('hiddenID' => substr($hiddenID, 2));
 $mform = new index_form();
+$mform->display();
 
 // Form processing
 if ($mform->is_cancelled()) {
@@ -53,44 +56,69 @@ if ($mform->is_cancelled()) {
 } else if ($mform->is_submitted()) {
     // Button submit
 } else {
-    $mform->set_data($toform);
+    // $mform->set_data($toform);
     $mform->display();
 }
+
+
+//searching
+$form_search = new ctdt_seach();
+
+
+if ($form_search->is_cancelled()) {
+    
+} else if ($form_search->no_submit_button_pressed()) {
+    
+} else if ($fromform = $form_search->get_data()) {
+    
+    $search = $form_search->get_data()->ctdt_content_seach;
+    $ref = $CFG->wwwroot . '/blocks/educationpgrs/pages/ctdt/index.php?search=' . $search . '&amp;page=' . $page;
+    echo "<script type='text/javascript'>location.href='$ref'</script>";
+    
+} else if ($form_search->is_submitted()) {
+    
+    $form_search->display();
+} else {
+    
+    $toform;
+    $toform->ctdt_content_seach = $search;
+    $form_search->set_data($toform);
+    
+    $form_search->display();
+}
+///////////////////////////////////////////////////////
+
 
 // Action
 $action_form =
     html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))
+    . '<br>'
     . html_writer::tag(
         'button',
-        'Xóa CTĐT',
-        array('id' => 'btn_delete_ctdt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #z; color:#fff;')
+        'Xóa ',
+        array('id' => 'btn_delete_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
-        'Clone CTĐT',
-        array('id' => 'btn_clone_ctdt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        'Clone ',
+        array('id' => 'btn_clone_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_ctdt', 'onClick' => "window.location.href='newctdt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_add_ctdt', 'onClick' => "window.location.href='newctdt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
+echo '<br>';
 
 //Danh sách CTĐT
 $table = get_ctdt_checkbox($courseid);
 echo html_writer::table($table);
-echo ' ';
-echo \html_writer::tag(
-    'button',
-    'Xóa ctđt',
-    array('id' => 'btn_delete_ctdt')
-);
-echo '<br>';
+
 
 // Footer
 echo $OUTPUT->footer();

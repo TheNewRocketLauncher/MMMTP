@@ -8,6 +8,8 @@ require_once('../../js.php');
 
 global $USER;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
+$page = optional_param('page', 0, PARAM_INT);
+$search = trim(optional_param('search', '', PARAM_NOTAGS));
 
 // Force user login in course (SITE or Course).
 if ($courseid == SITEID) {
@@ -42,12 +44,6 @@ echo $OUTPUT->header();
 require_once('../../form/khoikienthuc/index_form.php');
 $mform = new index_form();
 
-// Thêm mới
-$url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/newkkt.php', ['courseid' => $courseid]);
-$ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
-echo  \html_writer::link($url, $ten_url);
-echo '<br><br>';
-
 // Form processing
 if ($mform->is_cancelled()) {
     
@@ -59,47 +55,106 @@ if ($mform->is_cancelled()) {
     $mform->display();
 }
 
-// Action
+//searching
+$form_search = new kkt_seach();
+
+
+if ($form_search->is_cancelled()) {
+    
+} else if ($form_search->no_submit_button_pressed()) {
+    
+} else if ($fromform = $form_search->get_data()) {
+    
+    $search = $form_search->get_data()->kkt_content_seach;
+    $ref = $CFG->wwwroot . '/blocks/educationpgrs/pages/khoikienthuc/index.php?search=' . $search . '&amp;page=' . $page;
+    echo "<script type='text/javascript'>location.href='$ref'</script>";
+    
+} else if ($form_search->is_submitted()) {
+    
+    $form_search->display();
+} else {
+    
+    $toform;
+    $toform->kkt_content_seach = $search;
+    $form_search->set_data($toform);
+    
+    $form_search->display();
+}
+///////////////////////////////////////////////////////
+
+
+
 $action_form =
     html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))
+    . '<br>'
     . html_writer::tag(
         'button',
-        'Xóa KKT',
-        array('id' => 'btn_delete_ctdt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #z; color:#fff;')
+        'Xóa',
+        array('id' => 'btn_delete_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
-        'Clone KKT',
-        array('id' => 'btn_clone_ctdt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        'Clone BDT',
+        array('id' => 'btn_clone_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_ctdt', 'onClick' => "window.location.href='newkkt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_add_ctdt', 'onClick' => "window.location.href='newkkt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
+echo '<br>';
+
 
 // Print table
-$table = get_kkt_table($courseid); 
+$table = get_kkt_table($courseid,$search, $page ); 
 echo html_writer::table($table);
 
-// Button delete KKT
-echo ' ';
-echo \html_writer::tag(
-    'button',
-    'Xóa kkt',
-    array('id' => 'btn_delete_kkt'));
-echo '<br>';
+
+$baseurl = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php', ['search' => $search]);
+echo $OUTPUT->paging_bar(count(get_kkt_table( $courseid, $search, -1)->data), $page, 5, $baseurl);
+
+
 
  // Footer
 echo $OUTPUT->footer();
 
+function vn_to_str($str)
+{
+   $unicode = array(
+      'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ|Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+      'd' => 'đ|Đ',
+      'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+      'i' => 'í|ì|ỉ|ĩ|ị|Í|Ì|Ỉ|Ĩ|Ị',
+      'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+      'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+      'y' => 'ý|ỳ|ỷ|ỹ|ỵ|Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+   );
+   foreach ($unicode as $nonUnicode => $uni) {
+      $str = preg_replace("/($uni)/i", $nonUnicode, $str);
+   }
+   $str = str_replace(' ', '_', $str);
+   return strtolower($str);
+}
 
-function get_kkt_table($courseid)
+function findContent($str, $key)
+{
+   $result = false;
+   $_str = vn_to_str($str);
+   $_key = vn_to_str($key);
+   if (strstr($_str, $_key)) {
+      $result = true;
+   } else {
+      $result = false;
+   }
+   return $result;
+}
+
+function get_kkt_table($courseid, $key_search = '', $page = 0)
 {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
@@ -107,17 +162,41 @@ function get_kkt_table($courseid)
     $allkkts = get_list_kkt();
     $stt = 1;
     foreach ($allkkts as $i) {
-        $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->id, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
-        if ($i->id_loai_ktt == 0 ){
-            $loaiktt = "Bắt buộc";
+
+        if (findContent($idata->ma_decuong, $key_search) || $key_search == '') {
+
+            if ($page < 0) { // Get all data without page
+
+                $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->id, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
+                if ($i->id_loai_ktt == 0 ){
+                    $loaiktt = "Bắt buộc";
+                }
+                else{
+                    $loaiktt = "Tự chọn";
+                }
+                $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_khoikienthuc.php', ['courseid' => $courseid, 'id' => $i->id]);
+                $ten_url = \html_writer::link($url, $i->ma_khoi);
+                $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaiktt, (string) $i->ten_khoi, (string) $i->mota];
+                $stt = $stt + 1;
+            } else if ($pos_in_table >= $page * 5 && $pos_in_table < $page * 5 + 5) {
+
+                $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->id, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
+                if ($i->id_loai_ktt == 0 ){
+                    $loaiktt = "Bắt buộc";
+                }
+                else{
+                    $loaiktt = "Tự chọn";
+                }
+                $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_khoikienthuc.php', ['courseid' => $courseid, 'id' => $i->id]);
+                $ten_url = \html_writer::link($url, $i->ma_khoi);
+                $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaiktt, (string) $i->ten_khoi, (string) $i->mota];
+                $stt = $stt + 1;
+            }
+
+            $pos_in_table = $pos_in_table + 1;
+
         }
-        else{
-            $loaiktt = "Tự chọn";
-        }
-        $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_khoikienthuc.php', ['courseid' => $courseid, 'id' => $i->id]);
-        $ten_url = \html_writer::link($url, $i->ma_khoi);
-        $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaiktt, (string) $i->ten_khoi, (string) $i->mota];
-        $stt = $stt + 1;
     }
     return $table;
 }
+

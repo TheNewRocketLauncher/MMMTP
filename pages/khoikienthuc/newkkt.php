@@ -179,7 +179,7 @@ function printMonTable($arrmamon){
     echo \html_writer::tag(
         'button',
         'Bỏ chọn môn',
-        array('id' => 'btn_remove_subject_from_list_mon'),
+        array('id' => 'btn_remove_subject_from_list_mon')
     );
 }
 

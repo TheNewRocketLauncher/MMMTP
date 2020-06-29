@@ -30,8 +30,8 @@ $PAGE->set_pagelayout('standard');
 $PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_caykhoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/caykkt/index.php'));
 // Title.
-$PAGE->set_title(get_string('label_caykkt', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
-$PAGE->set_heading(get_string('label_caykkt', 'block_educationpgrs'));
+$PAGE->set_title(get_string('label_caykhoikienthuc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
+$PAGE->set_heading(get_string('label_caykhoikienthuc', 'block_educationpgrs'));
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 echo $OUTPUT->header();
@@ -39,6 +39,7 @@ echo $OUTPUT->header();
 // Action
 $action_form =
     html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))
+    . '<br>'
     . html_writer::tag(
         'button',
         'Xóa Cây KKT',
@@ -54,7 +55,7 @@ $action_form =
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='newcaykkt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='add_caykkt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
     )
     . '<br>'
     . html_writer::end_tag('div');

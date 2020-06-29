@@ -19,7 +19,7 @@ function insert_kkt($param_khoi, $arr_mon)
             $DB->insert_record('block_edu_monthuockhoi', $param_mon);
         }
     }
-    echo 'end khoi';
+    return true;
 }
 
 function get_list_kkt()

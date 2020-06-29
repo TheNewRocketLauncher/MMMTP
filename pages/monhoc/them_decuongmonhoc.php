@@ -17,7 +17,7 @@ $ma_ctdt = optional_param('ma_ctdt', '', PARAM_ALPHANUMEXT);
 $mamonhoc = optional_param('mamonhoc', '', PARAM_ALPHANUMEXT);
 
 // $id = optional_param('id', 0, PARAM_INT);
-// $chitietmh = get_monhoc_by_id_monhoc($id);
+$chitietmh = get_monhoc_by_mamonhoc($mamonhoc);
 
 
 // Force user login in course (SITE or Course).
@@ -48,7 +48,7 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
-$chitietmh->mamonhoc = 'csc500';
+
 $a = $chitietmh->mamonhoc;
 
 

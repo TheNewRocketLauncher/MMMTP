@@ -77,6 +77,7 @@ $action_form =
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
+echo '<br>';
 
 $table = get_lopmo_checkbox($search, $page);
 echo html_writer::table($table);

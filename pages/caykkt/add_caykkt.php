@@ -64,12 +64,6 @@ $action_form =
     html_writer::start_tag('div', array('style' => 'display: flex; justify-content:center;'))
     . html_writer::tag(
         'button',
-        'Thêm thành khối cha',
-        array('id' => 'btn_addcaykkt_delete_khoi', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #z; color:#fff;')
-    )
-    . '<br>'
-    . html_writer::tag(
-        'button',
         'Thêm thành khối cùng cấp',
         array('id' => 'btn_addcaykkt_add_khoi', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
     )
@@ -77,8 +71,9 @@ $action_form =
     . html_writer::tag(
         'button',
         'Thêm thành khối con',
-        array('id' => 'btn_addcaykkt_addkhoi_asChild', 'onClick' => "window.location.href='newcaykkt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_addcaykkt_addkhoi_asChild', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
     )
+    . '<br>'
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;

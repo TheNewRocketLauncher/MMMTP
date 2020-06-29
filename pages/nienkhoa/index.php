@@ -76,7 +76,7 @@ $action_form =
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
-
+echo '<br>';
 $table = get_nienkhoa_checkbox($search, $page);
 echo html_writer::table($table);
 
@@ -84,12 +84,6 @@ echo html_writer::table($table);
 $baseurl = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['search' => $search]);
 echo $OUTPUT->paging_bar(count(get_nienkhoa_checkbox($search, -1)->data), $page, 5, $baseurl);
 
-
-
-
-//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-// require_once('../../form/nienkhoa/danhsach_nienkhoa_form.php');
-// $mform = new danhsach_nienkhoa_form();
 
 
 $count = 1;

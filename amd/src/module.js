@@ -723,7 +723,7 @@ define(['jquery'], function ($) {
                     }
                 }
                 if(list_id.length > 1){
-                    alert('Vui l�ng ch?n m?t kh?i');
+                    alert('Vui lòng chọn một khối');
                 } else{
                     var ma_khoi = $("#id_select_ma_khoi option:selected").text();
                     $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/caykkt/newcaykkt_addfuntion.php', {
@@ -749,21 +749,22 @@ define(['jquery'], function ($) {
                             list_id.push(item.name);
                         }
                     }
-                    if(list_id.length > 1){
-                        alert('Vui l�ng ch?n m?t kh?i');
-                    } else{
-                        $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/caykkt/newcaykkt_addfuntion.php', {
-                            id: allElement && allElement[0] || "nocheck",
-                            type: 1,
-                            paramfirst: ma_khoi
-                        }).done(function (data) {
-                            location.reload(true);
-                        }).fail(function () {
-                            alert('Something wrong!');
-                        });
+                    var id = 'nocheck';
+                    if(list_id.length != 0){
+                        id = list_id[0];
                     }
+                    $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/caykkt/newcaykkt_addfuntion.php', {
+                        // id: allElement && allElement[0] || ,
+                        id: id,
+                        type: 1,
+                        paramfirst: ma_khoi
+                    }).done(function (data) {
+                        location.reload(true);
+                    }).fail(function () {
+                        alert('Something wrong!');
+                    });
                 } else{
-                    alert('Kh�ng c� kh?i n�o du?c ch?n');
+                    alert('Không có khối nào được chọn');
                 }
             });
 
@@ -776,12 +777,12 @@ define(['jquery'], function ($) {
                         list_id.push(item.name);
                     }
                 }
-                if(list_id.length > 1){
-                    alert('Vui l�ng ch?n m?t kh?i');
+                if(list_id.length == 0){
+                    alert('Vui lòng chọn một khối?i');
                 } else{
                     var ma_khoi = $("#id_select_ma_khoi option:selected").text();
                     $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/caykkt/newcaykkt_addfuntion.php', {
-                        id: allElement[0],
+                        id: list_id[0],
                         type: 2,
                         paramfirst: ma_khoi
                     }).done(function () {
@@ -802,7 +803,7 @@ define(['jquery'], function ($) {
                     }
                 }
                 if(list_id.length > 1){
-                    alert('Vui l�ng ch?n m?t kh?i');
+                    alert('Vui lòng chọn một khối?i');
                 } else{
                     var ma_khoi = $("#id_select_ma_khoi option:selected").text();
                     $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/chuyennganhdt/get_chuyennganh_from_nganh.php', {
@@ -839,7 +840,7 @@ define(['jquery'], function ($) {
                     }
                 }
                 if(list_id.length > 1){
-                    alert('Vui l�ng ch?n m?t kh?i');
+                    alert('Vui lòng chọn một khối');
                 } else{
                     var ma_khoi = $("#id_select_ma_khoi option:selected").text();
                     $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/chuyennganhdt/get_chuyennganh_from_nganh.php', {

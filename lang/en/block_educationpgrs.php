@@ -60,9 +60,9 @@ $string['label_ctdt'] = 'Quản lý chương trình đào tạo';
 $string['label_monhoc'] = 'Quản lý môn học';
 $string['label_decuong'] = 'Quản lý đề cương môn học';
 $string['label_khoikienthuc'] = 'Quản lý khối kiến thức';
-$string['label_lopmo'] = 'Quản lý lớp mờ';
+$string['label_lopmo'] = 'Quản lý lớp mở';
 $string['label_quanly_decuong'] = 'Quản lý đề cương môn học';
-$string['label_caykhoikienthuc'] = 'Danh sách cây khối kiên thức';
+$string['label_caykhoikienthuc'] = 'Danh sách cây khối kiến thức';
 
 
 // Header
