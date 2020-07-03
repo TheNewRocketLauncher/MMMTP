@@ -63,6 +63,8 @@ $string['label_khoikienthuc'] = 'Quản lý khối kiến thức';
 $string['label_lopmo'] = 'Quản lý lớp mở';
 $string['label_quanly_decuong'] = 'Quản lý đề cương môn học';
 $string['label_caykhoikienthuc'] = 'Danh sách cây khối kiến thức';
+$string['label_chuandauractdt'] = 'Quản lý chuẩn đầu ra chương trình đào tạo';
+
 
 
 // Header
@@ -77,6 +79,7 @@ $string['head_decuong'] = 'Thêm đề cương môn học';
 $string['head_lopmo'] = 'Quản lý lớp mở';
 $string['head_molopmo'] = 'Mở khoá học';
 $string['head_caykkt'] = 'Quản lý cây khối kiến thức';
+$string['head_chuandauractdt'] = 'Quản lý chuẩn đầu ra chương trình đào tạo';
 
 
 
@@ -249,6 +252,7 @@ $string['themkkt_btn_xoakhoicon'] = 'Xoá khối con';
 $string['themkkt_btn_complete'] = 'Hoàn tất';
 $string['themkkt_btn_cancel'] = 'Huỷ bỏ';
 $string['themkkt_btn_themkhoimoi'] = 'Thêm khối mới';
+
 
 // Khoá học
 $string['ten_lopmo'] = 'Tên khoá học';

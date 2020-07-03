@@ -8,6 +8,7 @@ class them_decuongmonhoc_form extends moodleform
     {
         global $CFG;
         $mform = $this->_form;
+        
         $mform->closeHeaderBefore('them_decuongmonhoc_submit');
         $eGroup = $mform->addElement('submit', 'them_decuongmonhoc_submit', 'Xem trước');
     }
@@ -23,6 +24,7 @@ class tuychon_decuongmonhoc_form extends moodleform
         global $CFG, $DB;
         //Group thong tin chung
         $mform = $this->_form;
+
         $mform->addElement('header', 'general_tuychon', get_string('group_tuychon', 'block_educationpgrs'));
 
         $mform->addElement('hidden', 'madc_copy', '');
@@ -124,6 +126,12 @@ class thongtinchung_decuongmonhoc_form extends moodleform
         global $CFG;
         //Group thong tin chung
         $mform = $this->_form;
+        
+        $mform->addElement('header', 'thong_tin_cung', 'Bạn đang thêm thông tin cho đề cương');
+        $mform->addElement('text', 'ma_decuong_1', 'Mã đề cương');
+        $mform->addElement('text', 'ma_ctdt_1', 'Chương trình đào tạo');
+
+        
         $mform->addElement('header', 'general_thongtinchung', get_string('group_thongtinchung', 'block_educationpgrs'));
 
         $mform->addElement('hidden', 'mamonhoc', '');
@@ -275,17 +283,13 @@ class muctieumonhoc_decuongmonhoc_form extends moodleform
         $mform->addElement('hidden', 'ma_decuong', '');
         $mform->addElement('hidden', 'ma_ctdt', '');
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'muctieu_muctieumonhoc', '', 'size=50');
-        $mform->addGroup($eGroup, 'thongtinchung_group9', get_string('muctieu_muctieumonhoc', 'block_educationpgrs'), array(' '),  false);
+        
+        $mform->addElement('textarea', 'mota_muctieu_muctieumonhoc', 'Nội dung', 'wrap="virtual" rows="10" cols="105"');
+        $mform->addRule('mota_muctieu_muctieumonhoc', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('textarea', 'mota_muctieu_muctieumonhoc', get_string('mota_muctieu_muctieumonhoc', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
-        $mform->addGroup($eGroup, 'thongtinchung_group14', get_string('mota_muctieu_muctieumonhoc', 'block_educationpgrs'), array(' '),  false);
-
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'chuandaura_cdio_muctieumonhoc', '', 'size=50');
-        $mform->addGroup($eGroup, 'thongtinchung_group12', get_string('chuandaura_cdio_muctieumonhoc', 'block_educationpgrs'), array(' '),  false);
+        
+        $mform->addElement('text', 'chuandaura_cdio_muctieumonhoc',  get_string('chuandaura_cdio_muctieumonhoc', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('chuandaura_cdio_muctieumonhoc', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         $eGroup = array();
         $eGroup[] = &$mform->createElement('submit', 'btn_submit_muctieumonhoc', 'Thêm mục tiêu môn học mới');
@@ -300,6 +304,7 @@ class muctieumonhoc_decuongmonhoc_form extends moodleform
         $mform = &$this->_form;
         return $mform->getSubmitValue($elementname);
     }
+    
 }
 class chuandaura_decuongmonhoc_form extends moodleform
 {
@@ -315,23 +320,34 @@ class chuandaura_decuongmonhoc_form extends moodleform
         $mform->addElement('hidden', 'ma_decuong', '');
         $mform->addElement('hidden', 'ma_ctdt', '');
 
+        $arr_muctieu = array();
+        $arr_muctieu += ["0" => "Chọn mục tiêu"];
+        
         $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'chuandaura', get_string('chuandaura', 'block_educationpgrs'));
-        $mform->addGroup($eGroup, 'thongtinchung_group133', get_string('chuandaura', 'block_educationpgrs'), array(' '),  false);
+        $eGroup[] = &$mform->createElement('select', 'muctieu', 'Mã mục tiêu', $arr_muctieu );
+        $eGroup[] = &$mform->createElement('button', 'fetch_muctieu', 'fetch',['style'=>"border-radius: 3px; width: 100px; height:40px; background-color: #1177d1; color: #fff"]);
+        $mform->addGroup($eGroup, 'thongtinchung_group133',  'Mã mục tiêu', array(' '),  false);
+        
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('textarea', 'mota_chuandaura', get_string('mota_chuandaura', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
-        $mform->addGroup($eGroup, 'thongtinchung_group14', get_string('mota_chuandaura', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('textarea', 'mota_chuandaura', get_string('mota_chuandaura', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
+        $mform->addRule('mota_chuandaura', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group14', get_string('mota_chuandaura', 'block_educationpgrs'), array(' '),  false);
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'mucdo_itu_chuandaura', get_string('mucdo_itu_chuandaura', 'block_educationpgrs'));
-        $mform->addGroup($eGroup, 'thongtinchung_group15', get_string('mucdo_itu_chuandaura', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('text', 'mucdo_itu_chuandaura', get_string('mucdo_itu_chuandaura', 'block_educationpgrs'));
+        $mform->addRule('mucdo_itu_chuandaura', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group15', get_string('mucdo_itu_chuandaura', 'block_educationpgrs'), array(' '),  false);
 
         $eGroup = $mform->addElement('submit', 'them_chuandaura_monhoc_submit', 'Thêm chuẩn đầu ra môn học');
     }
     function validation($data, $files)
     {
         return array();
+    }
+    function get_submit_value($elementname){
+        $mform = & $this->_form;
+        return $mform->getSubmitValue($elementname);
     }
 }
 class giangday_TH_decuongmonhoc_form extends moodleform
@@ -390,22 +406,33 @@ class giangday_LT_decuongmonhoc_form extends moodleform
         $mform->addElement('hidden', 'ma_decuong', '');
         $mform->addElement('hidden', 'ma_ctdt', '');
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'chudegiangday', get_string('chudegiangday', 'block_educationpgrs'), 'size=50');
-        $mform->addGroup($eGroup, 'thongtinchung_group18', get_string('chudegiangday', 'block_educationpgrs'), array(' '),  false);
+
+        $arr_chuandaura = array();
+        $arr_chuandaura += [0 => "Chọn chuẩn đầu ra"];
+
+        $options = array(
+            'multiple' => true,
+            'noselectionstring' => 'Empty',
+        );
+        
 
         $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'danhsach_cdr', get_string('danhsach_cdr', 'block_educationpgrs'), 'size=50');
-        $mform->addGroup($eGroup, 'thongtinchung_group18', get_string('danhsach_cdr', 'block_educationpgrs'), array(' '),  false);
+        $eGroup[] = &$mform->createElement('autocomplete', 'danhsach_cdr', 'Chuẩn đầu ra', $arr_chuandaura, $options );
+        $eGroup[] = &$mform->createElement('button', 'fetch_danhsach_cdr', 'fetch', ['style'=>"margin-top: 45px; border-radius: 3px; width: 100px; height:40px; background-color: #1177d1; color: #fff"]);
+        $mform->addGroup($eGroup, 'gree4e',  'Danh sách chuẩn đầu ra', array(' '),  false);
 
-
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('textarea', 'hoatdong_giangday', '', 'wrap="virtual" rows="10" cols="105"');
-        $mform->addGroup($eGroup, 'thongtinchung_group21', get_string('hoatdong_giangday', 'block_educationpgrs'), array(' '),  false);
-
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'hoatdong_danhgia', '', 'size=50');
-        $mform->addGroup($eGroup, 'thongtinchung_group21', get_string('hoatdong_danhgia', 'block_educationpgrs'), array(' '),  false);
+        
+        $mform->addElement('text', 'chudegiangday', get_string('chudegiangday', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('chudegiangday', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+       
+       
+        $mform->addElement('textarea', 'hoatdong_giangday', 'Hoạt động giảng dạy/Hoạt động học', 'wrap="virtual" rows="10" cols="105"');
+        $mform->addRule('hoatdong_giangday', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+       
+       
+        $mform->addElement('text', 'hoatdong_danhgia', 'Hoạt động đánh giá', 'size=50');
+        $mform->addRule('hoatdong_danhgia', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+       
 
         $eGroup = $mform->addElement('submit', 'them_kehoachgiangday_LT_submit', 'Thêm kế hoạch giảng dạy');
     }
@@ -413,6 +440,11 @@ class giangday_LT_decuongmonhoc_form extends moodleform
     {
         return array();
     }
+    function get_submit_value($elementname){
+        $mform = & $this->_form;
+        return $mform->getSubmitValue($elementname);
+    }
+   
 }
 class danhgia_decuongmonhoc_form extends moodleform
 {
@@ -428,25 +460,32 @@ class danhgia_decuongmonhoc_form extends moodleform
         $mform->addElement('hidden', 'ma_decuong', '');
         $mform->addElement('hidden', 'ma_ctdt', '');
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'madanhgia', get_string('madanhgia', 'block_educationpgrs'), array('G1.1', 'G2.2'));
-        $mform->addGroup($eGroup, 'thongtinchung_group23', get_string('madanhgia', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('text', 'madanhgia', get_string('madanhgia', 'block_educationpgrs'), array('G1.1', 'G2.2'));
+        $mform->addRule('madanhgia', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group23', get_string('madanhgia', 'block_educationpgrs'), array(' '),  false);
+
+        // $eGroup = array();
+        $mform->addElement('text', 'tendanhgia', 'Tên đánh giá', 'size=50');
+        $mform->addRule('tendanhgia', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group24', get_string('tendanhgia', 'block_educationpgrs'), array(' '),  false);
+
+        // $eGroup = array();
+        $mform->addElement('textarea', 'motadanhgia', get_string('motadanhgia', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
+        $mform->addRule('motadanhgia', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group25', get_string('motadanhgia', 'block_educationpgrs'), array(' '),  false);
 
         $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'tendanhgia', '', 'size=50');
-        $mform->addGroup($eGroup, 'thongtinchung_group24', get_string('tendanhgia', 'block_educationpgrs'), array(' '),  false);
-
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('textarea', 'motadanhgia', get_string('motadanhgia', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
-        $mform->addGroup($eGroup, 'thongtinchung_group25', get_string('motadanhgia', 'block_educationpgrs'), array(' '),  false);
-
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'cacchuandaura_danhgia', '', 'size=50');
+        // $eGroup[] = &$mform->createElement('text', 'cacchuandaura_danhgia', '', 'size=50');
+        // $mform->addGroup($eGroup, 'thongtinchung_group26', get_string('cacchuandaura_danhgia', 'block_educationpgrs'), array(' '),  false);
+        $eGroup[] = &$mform->createElement('select', 'cacchuandaura_danhgia', 'Chuẩn đầu ra', $arr_chuandaura );
+        $eGroup[] = &$mform->createElement('button', 'fetch_chuandaura', 'fetch');
         $mform->addGroup($eGroup, 'thongtinchung_group26', get_string('cacchuandaura_danhgia', 'block_educationpgrs'), array(' '),  false);
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'tile_danhgia', '', 'size=5');
-        $mform->addGroup($eGroup, 'thongtinchung_group27', get_string('tile_danhgia', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('text', 'tile_danhgia', '', 'size=5');
+        $mform->addRule('tile_danhgia', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group27', get_string('tile_danhgia', 'block_educationpgrs'), array(' '),  false);
 
         $eGroup = array();
         $eGroup[] = &$mform->createElement('submit', 'them_danhgiamonhoc_submit', 'Thêm đánh giá môn học');
@@ -477,17 +516,20 @@ class tainguyenmonhoc_decuongmonhoc_form extends moodleform
         $arr_loaitainguyen += ["2" => "Internet"];
         $arr_loaitainguyen += ["3" => "Khác"];
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('select', 'loaitainguyen', '', $arr_loaitainguyen);
-        $mform->addGroup($eGroup, 'loaitainguyen', get_string('loaitainguyen', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('select', 'loaitainguyen', 'Chọn loại tài nguyên', $arr_loaitainguyen);
+        $mform->addRule('loaitainguyen', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'loaitainguyen', get_string('loaitainguyen', 'block_educationpgrs'), array(' '),  false);
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('textarea', 'mota_tainguyen', get_string('mota_tainguyen', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
-        $mform->addGroup($eGroup, 'thongtinchung_group29', get_string('mota_tainguyen', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('textarea', 'mota_tainguyen', get_string('mota_tainguyen', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
+        $mform->addRule('mota_tainguyen', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group29', get_string('mota_tainguyen', 'block_educationpgrs'), array(' '),  false);
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'link_tainguyen', '', 'size=50');
-        $mform->addGroup($eGroup, 'thongtinchung_group31', get_string('link_tainguyen', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('text', 'link_tainguyen', '', 'size=50');
+        $mform->addRule('link_tainguyen', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group31', get_string('link_tainguyen', 'block_educationpgrs'), array(' '),  false);
 
         $eGroup = $mform->addElement('submit', 'them_tainguyenmonhoc_submit', 'Thêm tài nguyên môn học');
     }
@@ -516,9 +558,10 @@ class quydinhchung_decuongmonhoc_form extends moodleform
         $mform->addElement('hidden', 'ma_ctdt', '');
         
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('textarea', 'mota_quydinhchung', get_string('mota_quydinhchung', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
-        $mform->addGroup($eGroup, 'thongtinchung_group32', get_string('mota_quydinhchung', 'block_educationpgrs'), array(' '),  false);
+        // $eGroup = array();
+        $mform->addElement('textarea', 'mota_quydinhchung', get_string('mota_quydinhchung', 'block_educationpgrs'), 'wrap="virtual" rows="10" cols="105"');
+        $mform->addRule('mota_quydinhchung', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        // $mform->addGroup($eGroup, 'thongtinchung_group32', get_string('mota_quydinhchung', 'block_educationpgrs'), array(' '),  false);
 
         $eGroup = $mform->addElement('submit', 'them_quydinhchung_submit', 'Thêm quy định chung');
     }

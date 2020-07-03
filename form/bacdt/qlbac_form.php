@@ -58,7 +58,7 @@ class bacdt_seach extends moodleform
         // Search        
         $bacdt_seach = array();
         // $bacdt_seach[] = &$mform->createElement('text', 'bacdt_seach', 'none',  array('size'=>'40', 'onkeydown'=>"return event.key != 'Enter';"));
-        $bacdt_seach[] = &$mform->createElement('text', 'bacdt_seach', 'none',  array('size'=>'40'));
+        $bacdt_seach[] = &$mform->createElement('text', 'bacdt_seach', 'none',  array('size' => '40'));
         $bacdt_seach[] = &$mform->createElement('submit', 'btn_bacdt_seach', 'Tìm kiếm', array('style' => 'background-color: #1177d1;color: #fff'));
         $mform->addGroup($bacdt_seach, 'bacdt_seach_group', ' ', ' ', false);
     }

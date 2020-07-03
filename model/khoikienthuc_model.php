@@ -244,3 +244,40 @@ function delete_dieukien_kkt($param_dieukien_kkt)
 {
 
 }
+
+function get_adding_list(){
+    global $USER;
+    $current_global = get_global($USER->id);
+    if($current_global == null){
+        $current_global = array(
+            'newcaykkt' => array(
+                'value' => array(),
+                'tencay' => '',
+                'mota' => '',
+            ),
+        );
+        set_global($USER->id, $current_global);
+    } else if(empty($current_global)){
+        $current_global[] = array(
+            'newcaykkt' => array(
+                'value' => array(),
+                'tencay' => '',
+                'mota' => '',
+            ),
+        );
+        set_global($USER->id, $current_global);
+    } else if(array_key_exists('newcaykkt', $current_global)){
+        return $current_global['newcaykkt']['value'];
+    } else {
+        $current_global[] = array(
+            'newcaykkt' => array(
+                'value' => array(),
+                'tencay' => '',
+                'mota' => '',
+            ),
+        );
+        set_global($USER->id, $current_global);
+    }
+    $current_global = get_global($USER->id);
+    return $current_global['newcaykkt']['value'];
+}

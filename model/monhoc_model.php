@@ -139,6 +139,25 @@ function get_muctieu_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc)
    }
    return $table;
 }
+function get_muctieu_monmhoc_by_madc_1($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   
+   $arr = array();
+   $alldatas = $DB->get_records('block_edu_muctieumonhoc', array('ma_decuong' => $ma_decuong));
+   
+   usort($alldatas, function($a, $b)
+   {
+      return strcmp($a->muctieu, $b->muctieu);
+   });
+
+   foreach ($alldatas as $idata) {
+      
+      $arr[] = (string)$idata->muctieu;
+      
+   }
+   return $arr;
+}
 
 function get_muctieu_monmhoc_by_mamonhoc_1($id_monhoc)
 {
@@ -173,6 +192,12 @@ function get_chuandaura_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc)
    $table = new html_table();
    $table->head = array(' ', 'STT', 'Chuẩn đầu ra', 'Mô tả(Mức chi tiết-hành động)', 'Mức độ(I/T/U)');
    $alldatas = $DB->get_records('block_edu_chuandaura', ['ma_decuong' => $ma_decuong]);
+
+   usort($alldatas, function($a, $b)
+   {
+      return strcmp($a->ma_cdr, $b->ma_cdr);
+   });
+
    $stt = 1;
    foreach ($alldatas as $idata) {
       $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_chuan_daura.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
@@ -181,6 +206,8 @@ function get_chuandaura_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc)
       $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->mota, (string) $idata->mucdo_utilize];
       $stt = $stt + 1;
    }
+
+  
    return $table;
 }
 

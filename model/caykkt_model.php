@@ -3,11 +3,41 @@ require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . './global_model.php');
 require_once('../../model/global_model.php');
 
-function insert_cay_kkt($param)
+function insert_cay_kkt()
 {
     global $DB, $USER, $CFG, $COURSE;
-    if (userIsAdmin()) {
-        $DB->insert_record('block_edu_cay_khoikienthuc', $param);
+    $global_caykkt = get_global($USER->id)['newcaykkt'];
+
+    $firstNode = new stdClass();
+    $firstNode->ma_cay_khoikienthuc = $USER->id . 'caykkt' . time();
+    $childNode->ma_tt = NULL;
+    $firstNode->ma_khoi = 'caykkt' . $time;
+    $firstNode->ma_khoicha = NULl;
+    $firstNode->ten_cay = $global_caykkt['tencay'];
+    $firstNode->mota = $global_caykkt['mota'];
+
+    $DB->insert_record('block_edu_cay_khoikienthuc', $firstNode);
+
+    foreach($global_caykkt['value'] as $item){
+        if($item['level'] == 1){
+            $childNode = new stdClass();
+            $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
+            $childNode->ma_tt = $item['index'];
+            $childNode->ma_khoi = $item['name'];
+            $childNode->ma_khoicha = $firstNode->ma_khoi;
+            $childNode->ten_cay = $global_caykkt['tencay'];
+            $childNode->mota = $global_caykkt['mota'];
+            $DB->insert_record('block_edu_cay_khoikienthuc', $childNode);
+        } else{
+            $childNode = new stdClass();
+            $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
+            $childNode->ma_tt = $item['index'];
+            $childNode->ma_khoi = $item['name'];
+            $childNode->ma_khoicha = $item['fatherName'];
+            $childNode->ten_cay = $global_caykkt['tencay'];
+            $childNode->mota = $global_caykkt['mota'];
+            $DB->insert_record('block_edu_cay_khoikienthuc', $childNode);
+        }
     }
 }
 

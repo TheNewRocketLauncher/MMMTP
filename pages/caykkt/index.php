@@ -55,24 +55,13 @@ $action_form =
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='add_caykkt.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='add_caykkt_editable.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
     )
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
 
-// Thêm mới
-$url = new \moodle_url('/blocks/educationpgrs/pages/caykkt/newcaykkt.php', ['courseid' => $courseid]);
-$ten_url = \html_writer::link($url, '<u><i>Thêm mới</i></u>');
-echo  \html_writer::link($url, $ten_url);
-echo '<br><br>';
-
-// $btn_tao_caykkt = html_writer::tag('button','Tạo cây khối kiến thức', array('onClick' => "window.location.href='create.php'"));
-// echo $btn_tao_caykkt;
-// echo '<br>';
-
-
-
+echo '<br>';
 
 $table = get_cay_kkt_table();
 
@@ -98,7 +87,7 @@ function get_cay_kkt_table()
     $rows = $DB->get_records('block_edu_cay_khoikienthuc', []);
     $stt = 1;
     foreach ($rows as $item) {
-        if((string)$item->ma_khoicha == ""){
+        if((string)$item->ma_khoicha == NULL){
             $checkbox = html_writer::tag('input', ' ', array('class' => 'ckktcheckbox', 'type' => "checkbox", 'name' => $item->id,   'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
             $table->data[] = [$checkbox, (string) $stt, (string) $item->id, (string) $item->ma_cay_khoikienthuc, (string) $item->ma_khoi, (string) $item->ten_cay, (string) $item->mota];
             $stt = $stt + 1;

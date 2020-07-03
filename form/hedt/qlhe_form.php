@@ -54,3 +54,26 @@ class qlhe_form extends moodleform
         return array();
     }
 }
+
+
+// Form search
+class hedt_seach extends moodleform
+{
+    public function definition()
+    {
+        global $CFG, $DB;
+        $mform = $this->_form;
+
+        // Search        
+        $hedt_seach = array();
+        // $bacdt_seach[] = &$mform->createElement('text', 'bacdt_seach', 'none',  array('size'=>'40', 'onkeydown'=>"return event.key != 'Enter';"));
+        $hedt_seach[] = &$mform->createElement('text', 'hedt_seach', 'none',  array('size' => '40'));
+        $hedt_seach[] = &$mform->createElement('submit', 'btn_hedt_seach', 'Tìm kiếm', array('style' => 'background-color: #1177d1;color: #fff'));
+        $mform->addGroup($hedt_seach, 'hedt_seach_group', ' ', ' ', false);
+    }
+
+    function validation($data, $files)
+    {
+        return array();
+    }
+}

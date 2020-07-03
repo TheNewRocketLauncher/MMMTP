@@ -146,6 +146,23 @@ require_once("$CFG->libdir/formslib.php");
             $eGroup[] =& $mform->createElement('select','select_caykkt', '', $listMaCay);
             $eGroup[] =& $mform->createElement('submit', 'btnchoosetree', 'Chọn cây');
             $mform->addGroup($eGroup, 'ndctbtn', '', '', false);
+
+            /////////////////// IMPORT FILE
+            ///----------------------------------------------------------------------------------------------------------------------///
+            $mform->addElement('header', 'general8', get_string('themctdt_lbl_importfile', 'block_educationpgrs'));
+            $mform->setExpanded('general8', true);
+            ///----------------------------------------------------------------------------------------------------------------------///            
+            
+            $mform->addElement('filepicker', 'file_cdtt_full', 'File CTĐT đầy đủ', null, array('maxbytes' => $maxbytes, 'accepted_types' => '.xls'));
+
+            $mform->registerNoSubmitButton('btn_review');
+            $eGroup=array();
+            $eGroup[] = $mform->createElement('submit', 'btn_review', 'Xem trước PDF');
+            $eGroup[] = $mform->createElement('submit', 'btn_complete', get_string('themkkt_btn_complete', 'block_educationpgrs'));
+            $mform->addGroup($eGroup, 'ndctbtn', '', '', false);
+            $mform->registerNoSubmitButton('btn_review');
+
+            $mform->disable_form_change_checker();
         }
 
         function validation($data, $files)

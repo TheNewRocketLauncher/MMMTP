@@ -81,6 +81,13 @@ class block_educationpgrs extends block_list
             $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
             $this->content->items[] = \html_writer::link($url, $linktext);
                 
+            //Quản lý chuẩn đầu ra ctdt
+            $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php', []);
+            $linktext = get_string('label_chuandauractdt', 'block_educationpgrs');
+            $this->content->items[] = \html_writer::link($url, $linktext);
+
+
+
             //Quản lý ngành đào tạo
             $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
             $linktext = get_string('label_nganh', 'block_educationpgrs');

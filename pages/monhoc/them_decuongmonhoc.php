@@ -30,7 +30,7 @@ if ($courseid == SITEID) {
 }
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
@@ -50,35 +50,6 @@ echo $OUTPUT->header();
 require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
 
 $a = $chitietmh->mamonhoc;
-
-
-///==========================================================================
-//TUY CHON
-
-    // $mforms = new tuychon_decuongmonhoc_form();
-
-    // $madc = $mforms->madc;
-    // echo '<br>';
-
-    // if ($mforms->is_cancelled()) {
-    // } else if ($mforms->no_submit_button_pressed()) {
-    //     // Button no_submit
-    // } else if ($fromform = $mforms->get_data()) {
-    //     $param2 = new stdClass();
-    //     $param2->mamonhoc = $mforms->get_submit_value('tuychon_mon');
-    //     $param2->ma_decuong = $mforms->get_submit_value('madc');
-    //     $param2->ma_ctdt = $mforms->get_submit_value('tuychon_ctdt');
-    //     $param2->mota = $mforms->get_submit_value('mota_decuong');
-        
-    //     $mforms->madc_copy = $param2->ma_decuong;
-    //     insert_decuong($param2);
-    // 	$mforms->display();
-        
-    // } else {    
-    //     //Set default data from DB
-    //     $mforms->display();
-        
-// }
 
 
 ///===========================================================================
@@ -118,6 +89,10 @@ if ($mform1->is_cancelled()) {
     $chitietmonhoc = get_monhoc_by_mamonhoc($mamonhoc);
 
     $toform;
+    
+    $toform->ma_decuong_1 = $ma_decuong;
+    $toform->ma_ctdt_1 = $ma_ctdt;
+
     $toform->masomonhoc_thongtinchung = $chitietmonhoc->mamonhoc;
     $toform->tenmonhoc1_thongtinchung = $chitietmonhoc->tenmonhoc_vi;
     $toform->tenmonhoc2_thongtinchung = $chitietmonhoc->tenmonhoc_en;
@@ -171,9 +146,9 @@ if ($mform0->is_cancelled()) {
 } else {
     //Set default data from DB
     $toform;
-    $toform->mamonhoc = $chitietmonhoc->mamonhoc;
-    $toform->ma_decuong = $chitietmonhoc->ma_decuong;
-    $toform->ma_ctdt = $chitietmonhoc->ma_ctdt;
+    $toform->mamonhoc = $mamonhoc;
+    $toform->ma_decuong = $ma_decuong;
+    $toform->ma_ctdt = $ma_ctdt;
     $toform->mota = $chitietmonhoc->mota;
     
     $mform0->set_data($toform);
@@ -194,15 +169,29 @@ if ($mform2->is_cancelled()) {
     $param2 = new stdClass();
     $param2->mamonhoc = $fromform->mamonhoc;
     $param2->ma_decuong = $fromform->ma_decuong;
-    $param2->muctieu = $fromform->muctieu_muctieumonhoc;
+    
+    // $param2->muctieu = $fromform->muctieu_muctieumonhoc;
+    $arr_muctieu = get_muctieu_monmhoc_by_madc_1($ma_decuong, $ma_ctdt, $mamonhoc);
+    
+    $clength = count($arr_muctieu);
+    for($x = 0; $x < $clength; $x++) {
+        $b[] = (int) filter_var((string)$arr_muctieu[$x], FILTER_SANITIZE_NUMBER_INT);
+        
+    }
+
+    rsort($b);
+
+    $param2->muctieu = 'G'. (int)($b[0] + 1);
+    
+
     $param2->mota = $fromform->mota_muctieu_muctieumonhoc;
     $param2->danhsach_cdr = $fromform->chuandaura_cdio_muctieumonhoc;
     insert_muctieumonhoc_table($param2);
 
     $table2 = get_muctieu_monmhoc_by_madc($param2->ma_decuong, $ma_ctdt, $mamonhoc);
 
-
-	$mform2->display();
+    $mform2->display();
+    
     echo html_writer::table($table2);
     echo \html_writer::tag(
         'button',
@@ -210,6 +199,7 @@ if ($mform2->is_cancelled()) {
         array('id' => 'btn_delete_muctieumonhoc')
     );
     echo '<br>';
+    
     
 }else if ($mform2->is_submitted()) {
     echo 'xin chao viet nam';
@@ -234,6 +224,7 @@ if ($mform2->is_cancelled()) {
     
 }
 
+
 ///================================================================================
 //CHUAN DAU RA MON HOC
 $table3 = get_chuandaura_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc);
@@ -248,12 +239,20 @@ if ($mform3->is_cancelled()) {
     $param2 = new stdClass();
     $param2->mamonhoc = $fromform->mamonhoc;
     $param2->ma_decuong = $fromform->ma_decuong;
-    $param2->ma_cdr = $fromform->chuandaura;
+    
+    $ma_muctieu= $mform3->get_submit_value('muctieu');
+    
+    $rsx = get_allmuctieu($param2->ma_decuong, $ma_muctieu);
+    $rsx_1 = intval($rsx) + 1;
+    $param2->ma_cdr = $ma_muctieu . '.' . $rsx_1;
+
+
     $param2->mota = $fromform->mota_chuandaura;
     $param2->mucdo_utilize = $fromform->mucdo_itu_chuandaura;
     $param2->mucdo_teach = 1;
     $param2->mucdo_introduce = 1;
 
+    
     insert_chuandaura_table($param2);
     $table3 = get_chuandaura_monmhoc_by_madc($param2->ma_decuong, $ma_ctdt, $mamonhoc);
 	$mform3->display();
@@ -264,6 +263,7 @@ if ($mform3->is_cancelled()) {
         array('id' => 'btn_delete_chuandauramonhoc')
     );
     echo '<br>';
+    
     
 } else {
     $toform;
@@ -283,6 +283,39 @@ if ($mform3->is_cancelled()) {
     echo '<br>';
     
 }
+function startsWith($haystack, $needle)
+{
+     $length = strlen($needle);
+     return (substr($haystack, 0, $length) === $needle);
+}
+
+function get_allmuctieu($ma_decuong,$ma_chuandaura) {
+    global $DB, $USER, $CFG, $COURSE;
+    
+    $all_CDR = $DB->get_records('block_edu_chuandaura', array('ma_decuong' => $ma_decuong));
+    $arr_muctieu = array(); $arr = array();  $result;
+
+    $stt = 1;
+    foreach ($all_CDR as $i_CDR) {
+
+        if(startsWith($i_CDR->ma_cdr, $ma_chuandaura)){
+            $arr_muctieu[] = $i_CDR->ma_cdr;
+        }
+        
+        $stt = $stt + 1;
+    }
+    
+
+    rsort($arr_muctieu);
+
+    $arr = explode(".", $arr_muctieu[0]);
+
+    $len = count($arr);
+
+    $result = $arr[$len-1];
+
+    return $result;
+}
 
 //=================================================================================
 //KE HOACH GIANG DAY LY THUYET
@@ -298,11 +331,20 @@ if ($mform4->is_cancelled()) {
     $param2->ma_decuong = $fromform->ma_decuong;
 
     $param2->ten_chude = $fromform->chudegiangday;
-    $param2->danhsach_cdr = $fromform->danhsach_cdr;
+    // $param2->danhsach_cdr = $fromform->danhsach_cdr;
+    $danhsach_cdr = $mform4->get_submit_value('danhsach_cdr');
+    
     $param2->hoatdong_gopy = $fromform->hoatdong_giangday;
     $param2->hoatdong_danhgia = $fromform->hoatdong_danhgia;
 
-    echo 'xin chao'.$param2->mamonhoc;
+    $str = '';
+    foreach($danhsach_cdr as $item){
+        $str .= $item . '-'; 
+    }
+    $param2->danhsach_cdr = substr($str, 0, -1);
+
+
+    
     insert_kehoachgiangday_LT_table($param2);
 
     $table4 = get_kehoachgiangday_LT_by_ma_decuong($param2->ma_decuong, $ma_ctdt, $mamonhoc);
