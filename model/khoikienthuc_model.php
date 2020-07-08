@@ -2,8 +2,10 @@
 require_once(__DIR__ . '/../../../config.php');
 require_once(__DIR__ . './global_model.php');
 require_once('../../model/global_model.php');
+require_once('../../model/ctdt_model.php');
+require_once('../../model/caykkt_model.php');
 
-function insert_kkt($param_khoi, $arr_mon)
+function insert_kkt($param_khoi, $arr_mon, $arr_makhoi)
 {
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
@@ -19,7 +21,29 @@ function insert_kkt($param_khoi, $arr_mon)
             $DB->insert_record('block_edu_monthuockhoi', $param_mon);
         }
     }
-    return true;
+
+    if($arr_makhoi != NULL){$firstNode = new stdClass();
+        $firstNode->ma_cay_khoikienthuc = $USER->id . 'khoi' . time();
+        $firstNode->ma_tt = 0;
+        $firstNode->ma_khoi = $param_khoi->ma_khoi;
+        $firstNode->ma_khoicha = NULL;
+        $firstNode->ten_cay = $param_khoi->ten_khoi;
+        $firstNode->mota = $param_khoi->mota;
+        $DB->insert_record('block_edu_cay_khoikienthuc', $firstNode);
+    
+        $stt = 1;
+        foreach($arr_makhoi as $item){
+            $childNode = new stdClass();
+            $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
+            $childNode->ma_tt = $stt;
+            $childNode->ma_khoi = $item;
+            $childNode->ma_khoicha = $firstNode->ma_khoi;
+            $childNode->ten_cay = $firstNode->ten_cay;
+            $childNode->mota = $firstNode->mota;
+            $DB->insert_record('block_edu_cay_khoikienthuc', $childNode);
+            $stt++;
+        }
+    }
 }
 
 function get_list_kkt()
@@ -33,27 +57,28 @@ function get_list_kkt()
     return $listkkt;
 }
 
-function get_list_kkt_byFather($ma_khoi_cha)
+function get_list_kkt_byMaKhoi($ma_khoicha)
 {
     global $DB, $USER, $CFG, $COURSE;
-    if (userIsAdmin()) {
-        $listkkt = $DB->get_records('block_edu_khoikienthuc', []);
-    } else {
-        $listkkt = NULL;
-    }
-    return $listkkt;
+    
+    
+    $firstNode = $DB->get_record('block_edu_cay_khoikienthuc', ['ma_khoi' => $ma_khoicha, 'ma_tt' => 0, 'ma_khoicha' => NULL, ]);
+    
+    $all_khoi = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_khoicha' => $ma_khoicha, 'ma_cay_khoikienthuc' => $firstNode->ma_cay_khoikienthuc]);
+    
+    return $all_khoi;
 }
 
 function get_kkt_byID($id)
 {
-   global $DB, $USER, $CFG, $COURSE;
-   if (userIsAdmin()) {
+    global $DB, $USER, $CFG, $COURSE;
+    if (userIsAdmin()) {
 
-   $kkt = $DB->get_record('block_edu_khoikienthuc', ['id' => $id]);
-   }else{
-       $kkt = NULL;
-}
-   return $kkt;
+        $kkt = $DB->get_record('block_edu_khoikienthuc', ['id' => $id]);
+    } else{
+        $kkt = NULL;
+    }
+    return $kkt;
 }
 
 function get_kkt_byMaKhoi($ma_khoi)
@@ -67,7 +92,7 @@ function get_kkt_byMaKhoi($ma_khoi)
     return $kkt;
 }
 
-function get_kkt_byMa($ma_ctdt)
+function get_kkt_byMaCTDT($ma_ctdt)
 {
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
@@ -81,31 +106,27 @@ function get_kkt_byMa($ma_ctdt)
 function delete_kkt_byID($id)
 {
     global $DB, $USER, $CFG, $COURSE;
-    if (userIsAdmin()) {
-        $khoi = get_kkt_byMaKhoi($id);
-        if (empty($khoi)) {
-            return false;
-        } else {
-            $DB->delete_records('block_edu_khoikienthuc', array('id' => $id));
-        }
-    } else {
+    $khoi = get_kkt_byID($id);
+    if (empty($khoi)) {
         return false;
+    } else {
+        //Delete Mon thuoc khoi
+        $listmonthuockhoi = $DB->get_records('block_edu_monthuockhoi', ['ma_khoi' => $khoi->ma_khoi]);
+        foreach($listmonthuockhoi as $item){
+            
+            $DB->delete_records('block_edu_monthuockhoi', ['id' => $item->id]);
+        }
+        //Delete list khoi con
+        delete_caykkt_byMaKhoi($khoi->ma_khoi);
+        $DB->delete_records('block_edu_khoikienthuc', ['id' => $id]);
     }
 }
 
 function delete_kkt_byMaKhoi($ma_khoi)
 {
     global $DB, $USER, $CFG, $COURSE;
-    if (userIsAdmin()) {
-        $khoi = get_kkt_byMaKhoi($ma_khoi);
-        if (empty($khoi)) {
-            return false;
-        } else {
-            $DB->delete_records('block_edu_khoikienthuc', array('id' => $khoi->id));
-        }
-    } else {
-        return false;
-    }
+    $khoi = get_kkt_byMaKhoi($ma_khoi);
+    delete_kkt_byID($khoi->id);
 }
 
 function update_kkt($param)
@@ -151,14 +172,11 @@ function get_caykkt_by_kkt($ma_khoi)
     }
     return $table;
 }
-function mon_thuoc_khoi($ma_khoi){
+
+function get_monthuockhoi($ma_khoi){
     global $DB, $USER, $CFG, $COURSE;
-    if (userIsAdmin()) {
-        $listkkt = $DB->get_records('block_edu_monthuockhoi', ['ma_khoi' => $ma_khoi] );
-    } else {
-        $listkkt = NULL;
-    }
-    return $listkkt;
+    $list_monhoc = $DB->get_records('block_edu_monthuockhoi', ['ma_khoi' => $ma_khoi] );
+    return $list_monhoc;
 }
 
 function get_monhoc_by_kkt($ma_khoi)
@@ -168,7 +186,7 @@ function get_monhoc_by_kkt($ma_khoi)
     $table->head = array('STT', 'Mã môn học', 'Tên môn hoc', 'Số tín chỉ', 'Actions');
 
 
-    $monthuockhois = mon_thuoc_khoi($ma_khoi);
+    $monthuockhois = get_monthuockhoi($ma_khoi);
     echo $monthuockhois->mamonhoc;
     $allmonhocs = $DB->get_records('block_edu_monhoc',  ['mamonhoc' => $monthuockhois->mamonhoc]);
 
@@ -213,13 +231,12 @@ function get_dieukien_kkt($id = NULL, $ma_dieukien = NULL, $ma_loaidieukien = NU
         if($ten_dieukien != NULL){
             $arr += ['ten_dieukien' => $ten_dieukien];
         }
-        echo json_encode($arr);
 
-        $list_loaidieukien = $DB->get_record('block_edu_dieukien_kkt', $arr);
+        $loaidieukien = $DB->get_record('block_edu_dieukien_kkt', $arr);
     } else {
-        $list_loaidieukien = NULL;
+        $loaidieukien = NULL;
     }  
-    return $list_loaidieukien;
+    return $loaidieukien;
 }
 
 function insert_dieukien_kkt($param_dieukien_kkt)
@@ -280,4 +297,15 @@ function get_adding_list(){
     }
     $current_global = get_global($USER->id);
     return $current_global['newcaykkt']['value'];
+}
+
+function can_edit_kkt($ma_khoi){
+    $listcaykkt = get_list_caykkt_byMaKhoi($ma_khoi);
+    foreach($listcaykkt as $item){
+        $listctdt = get_list_ctdt_byMaCayKKT($item->$ma_cay_khoikienthuc);
+        if($listctdt != null || empty($listctdt)){
+            return false;
+        }
+    }
+    return true;
 }

@@ -42,12 +42,13 @@ require_once('../../form/decuongmonhoc/chitiet_monhoc_form.php');
 // Thêm đề cương
 $url = new \moodle_url('them_decuongmonhoc.php', ['id' => $id]);
 echo \html_writer::link($url, 'Thêm đề cương môn học');
-
-// Button xóa đề cương
-echo html_writer::tag('button', 'Xóa đề cương môn học', array('id' => 'btn_delete_decuong'));
-$url1 = new \moodle_url('update_monhoc.php', ['id' => $id]);
+echo '<br>';
+// // Button xóa đề cương
+// echo html_writer::tag('button', 'Xóa đề cương môn học', array('id' => 'btn_delete_decuong'));
+// $url1 = new \moodle_url('update_monhoc.php', ['id' => $id]);
 
 // Cập nhật nội dụng
+$url1 = new \moodle_url('upate_monhoc.php', ['id' => $id]);
 echo \html_writer::link($url1, 'Cập nhật nội dung môn học');
 echo '<br>';
 $mform = new chitiet_monhoc_form();

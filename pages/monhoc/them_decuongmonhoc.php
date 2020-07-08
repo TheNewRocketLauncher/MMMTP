@@ -51,12 +51,48 @@ require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
 
 $a = $chitietmh->mamonhoc;
 
+///==========================================================================
+$mform8 = new header_decuongmonhoc_form();
+
+if ($mform8->is_cancelled()) {
+} else if($mform8->no_submit_button_pressed()) {
+} else if ($fromform = $mform8->get_data()) {
+} else if ($mform8->is_submitted()) {
+} else {
+    //Set default data from DB
+    $toform;
+    $toform->ma_decuong_1 = $ma_decuong;
+    $toform->ma_ctdt_1 = $ma_ctdt;
+    
+    $mform8->set_data($toform);
+
+    // displays the form
+    $mform8->display();
+}
 
 ///===========================================================================
+function get_name_khoikienthuc($ma_ctdt, $mamonhoc){
+    global $DB;
+    $listkhoi = $DB->get_records('block_edu_monthuockhoi', ['mamonhoc' => $mamonhoc]);
+
+    foreach($listkhoi as $ikhoi){
+        $listcay = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_khoi' => $ikhoi->ma_khoi]);
+
+        foreach($listcay as $icay){
+            $ctdt_ss =  $DB->get_record('block_edu_ctdt', ['ma_cay_khoikienthuc' => $icay->ma_cay_khoikienthuc]);
+            if($ctdt_ss->ma_ctdt == $ma_ctdt){
+                
+                $khoikienthuc = $DB->get_record('block_edu_khoikienthuc', ['ma_khoi' => $ikhoi->ma_khoi]);
+
+                return $khoikienthuc->ten_khoi;
+            }
+        }
+    }
+
+}
 //THONG TIN CHUNG
 $mform1 = new thongtinchung_decuongmonhoc_form();
 
-// $ttc_body;
 // Process form
 if ($mform1->is_cancelled()) {
     // Handle form cancel operation
@@ -90,8 +126,8 @@ if ($mform1->is_cancelled()) {
 
     $toform;
     
-    $toform->ma_decuong_1 = $ma_decuong;
-    $toform->ma_ctdt_1 = $ma_ctdt;
+    // $toform->ma_decuong_1 = $ma_decuong;
+    // $toform->ma_ctdt_1 = $ma_ctdt;
 
     $toform->masomonhoc_thongtinchung = $chitietmonhoc->mamonhoc;
     $toform->tenmonhoc1_thongtinchung = $chitietmonhoc->tenmonhoc_vi;
@@ -100,6 +136,10 @@ if ($mform1->is_cancelled()) {
     $toform->sotinchi_thongtinchung = $chitietmonhoc->sotinchi;
     $toform->tietlythuyet_thongtinchung = $chitietmonhoc->sotietlythuyet;
     $toform->tietthuchanh_thongtinchung = $chitietmonhoc->sotietthuchanh;
+
+    $thuoc_khoikienthuc_thongtinchung = get_name_khoikienthuc($ma_ctdt, $chitietmonhoc->mamonhoc);
+    $toform->thuoc_khoikienthuc_thongtinchung = $thuoc_khoikienthuc_thongtinchung;
+
 
     $mform1->set_data($toform);
     $mform1->display();
@@ -185,7 +225,16 @@ if ($mform2->is_cancelled()) {
     
 
     $param2->mota = $fromform->mota_muctieu_muctieumonhoc;
-    $param2->danhsach_cdr = $fromform->chuandaura_cdio_muctieumonhoc;
+    
+    // $param2->danhsach_cdr = $fromform->chuandaura_cdio_muctieumonhoc;
+    $danhsach_cdr = $mform2->get_submit_value('chuandaura_cdio_muctieumonhoc');
+
+    $str = '';
+    foreach($danhsach_cdr as $item){
+        $str .= $item . ', ';
+    }
+    $param2->danhsach_cdr = substr($str, 0, -1);
+
     insert_muctieumonhoc_table($param2);
 
     $table2 = get_muctieu_monmhoc_by_madc($param2->ma_decuong, $ma_ctdt, $mamonhoc);
@@ -195,8 +244,8 @@ if ($mform2->is_cancelled()) {
     echo html_writer::table($table2);
     echo \html_writer::tag(
         'button',
-        'Xóa Muc Tieu',
-        array('id' => 'btn_delete_muctieumonhoc')
+        'Xóa Mục Tiêu',
+        array('id' => 'btn_delete_muctieumonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -217,8 +266,8 @@ if ($mform2->is_cancelled()) {
 
     echo \html_writer::tag(
         'button',
-        'Xóa Muc Tieu',
-        array('id' => 'btn_delete_muctieumonhoc')
+        'Xóa Mục Tiêu',
+        array('id' => 'btn_delete_muctieumonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -260,7 +309,7 @@ if ($mform3->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa chuẩn đầu ra',
-        array('id' => 'btn_delete_chuandauramonhoc')
+        array('id' => 'btn_delete_chuandauramonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -278,7 +327,7 @@ if ($mform3->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa chuẩn đầu ra',
-        array('id' => 'btn_delete_chuandauramonhoc')
+        array('id' => 'btn_delete_chuandauramonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -331,7 +380,7 @@ if ($mform4->is_cancelled()) {
     $param2->ma_decuong = $fromform->ma_decuong;
 
     $param2->ten_chude = $fromform->chudegiangday;
-    // $param2->danhsach_cdr = $fromform->danhsach_cdr;
+    
     $danhsach_cdr = $mform4->get_submit_value('danhsach_cdr');
     
     $param2->hoatdong_gopy = $fromform->hoatdong_giangday;
@@ -339,10 +388,9 @@ if ($mform4->is_cancelled()) {
 
     $str = '';
     foreach($danhsach_cdr as $item){
-        $str .= $item . '-'; 
+        $str .= $item . ', ';
     }
     $param2->danhsach_cdr = substr($str, 0, -1);
-
 
     
     insert_kehoachgiangday_LT_table($param2);
@@ -353,7 +401,7 @@ if ($mform4->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa kế hoạch giảng dạy',
-        array('id' => 'btn_delete_khgdltmonhoc')
+        array('id' => 'btn_delete_khgdltmonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -370,7 +418,7 @@ if ($mform4->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa kế hoạch giảng dạy',
-        array('id' => 'btn_delete_khgdltmonhoc')
+        array('id' => 'btn_delete_khgdltmonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -393,8 +441,17 @@ if ($mform5->is_cancelled()) {
     $param2->madanhgia = $fromform->madanhgia;
     $param2->tendanhgia = $fromform->tendanhgia;
     $param2->motadanhgia = $fromform->motadanhgia;
-    $param2->chuandaura_danhgia = $fromform->cacchuandaura_danhgia;
+
+    $danhsach_cdr = $mform5->get_submit_value('cacchuandaura_danhgia');
+    
+
     $param2->tile_danhgia = $fromform->tile_danhgia;
+
+    $str = '';
+    foreach($danhsach_cdr as $item){
+        $str .= $item . ', ';
+    }
+    $param2->chuandaura_danhgia = substr($str, 0, -2);
 
     insert_danhgiamonhoc_table($param2);
 
@@ -404,7 +461,7 @@ if ($mform5->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa đánh giá môn học',
-        array('id' => 'btn_delete_danhgiamonhoc')
+        array('id' => 'btn_delete_danhgiamonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -420,7 +477,7 @@ if ($mform5->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa đánh giá môn học',
-        array('id' => 'btn_delete_danhgiamonhoc')
+        array('id' => 'btn_delete_danhgiamonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -443,19 +500,25 @@ if ($mform6->is_cancelled()) {
 
     $param2->mamonhoc = $fromform->mamonhoc;
     $param2->ma_decuong = $fromform->ma_decuong;
+
     $param2->loaitainguyen = $mform6->get_submit_value('loaitainguyen');
+
+    $param2->ten_tainguyen = $fromform->ten_tainguyen;
+
     $param2->mota_tainguyen = $fromform->mota_tainguyen;
     $param2->link_tainguyen = $fromform->link_tainguyen;
     
 
+    
     insert_tainguyenmonhoc_table($param2);
+    
     $table6 = get_tainguyenmonhoc_by_ma_decuong($fromform->ma_decuong, $ma_ctdt, $mamonhoc);
 	$mform6->display();
     echo html_writer::table($table6);
     echo \html_writer::tag(
         'button',
         'Xóa tài nguyên môn học',
-        array('id' => 'btn_delete_tainguyenmonhoc')
+        array('id' => 'btn_delete_tainguyenmonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -465,13 +528,14 @@ if ($mform6->is_cancelled()) {
     $toform->ma_decuong = $ma_decuong;
     $toform->ma_ctdt = $ma_ctdt;
 
+
     $mform6->set_data($toform);
 	$mform6->display();
     echo html_writer::table($table6);
     echo \html_writer::tag(
         'button',
         'Xóa tài nguyên môn học',
-        array('id' => 'btn_delete_tainguyenmonhoc')
+        array('id' => 'btn_delete_tainguyenmonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -502,7 +566,7 @@ if ($mform7->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa quy định chung môn học',
-        array('id' => 'btn_delete_quydinhchungmonhoc')
+        array('id' => 'btn_delete_quydinhchungmonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -518,7 +582,7 @@ if ($mform7->is_cancelled()) {
     echo \html_writer::tag(
         'button',
         'Xóa quy định chung môn học',
-        array('id' => 'btn_delete_quydinhchungmonhoc')
+        array('id' => 'btn_delete_quydinhchungmonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
     );
     echo '<br>';
     
@@ -849,8 +913,7 @@ $pdf->setFontSpacing(0);
 
 //Close and output PDF document
 $pdf->Output(__DIR__ . '/decuong.pdf', 'F');
-echo "<a href = 'decuong.pdf'>Export PDF</a>";
-
+echo "<button style='border: none;width: auto; height:40px; background-color: #1177d1; color: #fff'><a href = 'decuong.pdf' style='color: #fff'>Export PDF</a></button>";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Print footer

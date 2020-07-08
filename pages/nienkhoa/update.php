@@ -55,12 +55,16 @@ $mform = new mo_nienkhoa_form();
 // Form processing
 if ($mform->is_cancelled()) {
     // Handle form cancel operation
+    echo '<h2>Hủy cập nhật</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
     /* Thực hiện insert */
     $param1 = new stdClass();
-    $param1->id =  $mform->get_data()->id;
+    $param1->id =  $fromform->idnienkhoa;
     $param1->ma_bac = $mform->get_data()->mabac;
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ma_nienkhoa = $mform->get_data()->ma_nienkhoa;
@@ -76,15 +80,26 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Button submit
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     //Set default data from DB
-    $toform;
-    $toform->id = $nienkhoa->id;
-    $toform->ma_bac = $nienkhoa->ma_bac;
-    $toform->ma_he = $nienkhoa->ma_he;
+    $toform; global $DB;
+
+    $toform->idnienkhoa = $nienkhoa->id;
+    $toform->mabac = $nienkhoa->ma_bac;
+    $toform->mahe = $nienkhoa->ma_he;
     $toform->ma_nienkhoa = $nienkhoa->ma_nienkhoa;
     $toform->ten_nienkhoa = $nienkhoa->ten_nienkhoa;
     $toform->mota = $nienkhoa->mota;
+    $toform->mabac;
+    $toform->mahe;
+    $bacdt = $DB->get_record('block_edu_bacdt', ['ma_bac'=> $toform->mabac]);
+    $toform->bacdt = $bacdt->ten;
+    $hedt = $DB->get_record('block_edu_hedt', ['ma_he'=> $toform->mahe]);
+    $toform->hedt = $hedt->ten;
     $mform->set_data($toform);
     $mform->display();
 }

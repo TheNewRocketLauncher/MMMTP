@@ -14,11 +14,11 @@ function get_leaves_from_branch($ma_cay_khoikienthuc) {
 }
 
 function delete_caykkt($id) {
-global $DB, $USER, $CFG, $COURSE;
-$cay_khoi_kien_thuc = get_cay_kkt_byID($id);
-$ma_cay_khoi_kien_thuc= $cay_khoi_kien_thuc->ma_cay_khoikienthuc;
-echo $ma_cay_khoi_kien_thuc;
-$DB->delete_records('block_edu_cay_khoikienthuc', array('ma_cay_khoikienthuc' => $ma_cay_khoi_kien_thuc));
+  global $DB, $USER, $CFG, $COURSE;
+  $cay_khoi_kien_thuc = get_caykkt_byID($id);
+  $ma_cay_khoi_kien_thuc = $cay_khoi_kien_thuc->ma_cay_khoikienthuc;
+  echo $ma_cay_khoi_kien_thuc;
+  $DB->delete_records('block_edu_cay_khoikienthuc', array('ma_cay_khoikienthuc' => $ma_cay_khoi_kien_thuc));
 }
 
 delete_caykkt($id);

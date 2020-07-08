@@ -12,30 +12,32 @@ class qlhe_form extends moodleform
         // Header
         $mform->addElement('header', 'general', 'Quản lý thông tin');
 
-        // ID
-        $idhe = array();
-        $idhe[] = &$mform->createElement('text', 'idhe', 'none', 'size="70"');
-        $mform->addGroup($idhe, 'idhe', 'ID', array(' '), false);
+        $mform->addElement('hidden', 'idhe', '');
 
         // Mã bậc
         $mabac = array();
         $allbacdts = $DB->get_records('block_edu_bacdt', []);
         $arr_mabac = array();
+        $arr_mabac += [""=> "Chọn bậc đào tạo"];
+
         foreach ($allbacdts as $ibacdt) {
-            $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
+          $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
         }
-        $mabac[] = &$mform->createElement('select', 'mabac', 'test select:', $arr_mabac, array());
-        $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
+        $mform->addElement('select', 'mabac', 'Mã bậc đào tạo:', $arr_mabac, array());
+        $mform->addRule('mabac', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+    
+        $eGroup = array();
+        $eGroup[] = &$mform->createElement('text', 'bacdt', '', 'size=50');
+        $mform->addGroup($eGroup, 'bacdt', '', array(' '), false);
+        $mform->disabledIf('bacdt', '');
 
         // Mã hệ
-        $mahe = array();
-        $mahe[] = &$mform->createElement('text', 'mahe', 'none', 'size="70"');
-        $mform->addGroup($mahe, 'mahe', 'Mã hệ đào tạo', array(' '), false);
+        $mform->addElement('text', 'mahe', 'Mã hệ đào tạo', 'size="70"');
+        $mform->addRule('mahe', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         // Tên hệ
-        $tenhe = array();
-        $tenhe[] = &$mform->createElement('text', 'tenhe', 'B', 'size="70"');
-        $mform->addGroup($tenhe, 'tenhe', 'Tên hệ đào tạo', array(' '), false);
+        $mform->addElement('text', 'tenhe', 'Tên hệ đào tạo', 'size="70"');
+        $mform->addRule('tenhe', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         // Mô tả
         $mota = array();
@@ -55,21 +57,19 @@ class qlhe_form extends moodleform
     }
 }
 
-
 // Form search
-class hedt_seach extends moodleform
+class hedt_search extends moodleform
 {
     public function definition()
     {
         global $CFG, $DB;
         $mform = $this->_form;
-
+        
         // Search        
-        $hedt_seach = array();
-        // $bacdt_seach[] = &$mform->createElement('text', 'bacdt_seach', 'none',  array('size'=>'40', 'onkeydown'=>"return event.key != 'Enter';"));
-        $hedt_seach[] = &$mform->createElement('text', 'hedt_seach', 'none',  array('size' => '40'));
-        $hedt_seach[] = &$mform->createElement('submit', 'btn_hedt_seach', 'Tìm kiếm', array('style' => 'background-color: #1177d1;color: #fff'));
-        $mform->addGroup($hedt_seach, 'hedt_seach_group', ' ', ' ', false);
+        $hedt_search = array();
+        $hedt_search[] = &$mform->createElement('text', 'hedt_search', 'none',  array('size'=>'40'));
+        $hedt_search[] = &$mform->createElement('submit', 'btn_hedt_search', 'Tìm kiếm', array('style' => 'background-color: #1177d1;color: #fff'));
+        $mform->addGroup($hedt_search, 'hedt_search_group', ' ', ' ', false);
     }
 
     function validation($data, $files)

@@ -39,17 +39,22 @@ $mform = new qlchuyennganh_form();
 
 // Process formm
 if ($mform->is_cancelled()) {
-    // Something here
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
     /* Thực hiện insert */    
     // $param
     $param1 = new stdClass();
+    $param1->ma_bac = $mform->get_data()->mabac;
+    $param1->ma_he = $mform->get_data()->mahe;
+    $param1->ma_nienkhoa=$mform->get_data()->manienkhoa;
+    $param1->ma_nganh = $mform->get_data()->manganh;
     $param1->ma_chuyennganh = $mform->get_data()->machuyennganh;
     $param1->ten = $mform->get_data()->tenchuyennganh;
     $param1->mota = $mform->get_data()->mota;
     insert_chuyennganhdt($param1);
+    
     // Hiển thị thêm thành công
     echo '<h2>Thêm mới thành công!</h2>';
     echo '<br>';
@@ -59,6 +64,10 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Something here
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_chuyennganh', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     $mform->set_data($toform);
     $mform->display();

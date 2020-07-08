@@ -34,14 +34,17 @@ $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
 echo $OUTPUT->header();
-require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
+
+// Create table
+//$table = get_monhoc_checkbox($search, $page);
 
 //searching
+require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
 $form_search = new monhoc_seach();
 
 
 if ($form_search->is_cancelled()) {
-    
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($form_search->no_submit_button_pressed()) {
     
 } else if ($fromform = $form_search->get_data()) {
@@ -74,14 +77,14 @@ $action_form =
     . '<br>'
     . html_writer::tag(
         'button',
-        'Clone BDT',
+        'Clone',
         array('id' => 'btn_clone_monhoc', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_them_monhoc', 'onClick' => "window.location.href='them_monhoc.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
+        array('id' => 'btn_add_monhoc', 'onClick' => "window.location.href='them_monhoc.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
@@ -89,23 +92,11 @@ echo $action_form;
 echo '<br>';
 
 
-// // Thêm môn học
-// $url = new \moodle_url('them_monhoc.php', []);
-// echo \html_writer::link($url, 'Thêm môn học');
-// echo '<br>';
-
-// Print table
+// // Print table
 $table = get_monhoc_table($search, $page);
 echo html_writer::table($table);
 
-// // Button xóa môn học
-// echo ' ';
-// echo \html_writer::tag(
-//     'button',
-//     'Xóa môn học',
-//     array('id' => 'btn_delete_monhoc')
-// );
-// echo '<br>';
+
 
 $baseurl = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['search' => $search]);
 echo $OUTPUT->paging_bar(count(get_monhoc_table($search, -1)->data), $page, 5, $baseurl);

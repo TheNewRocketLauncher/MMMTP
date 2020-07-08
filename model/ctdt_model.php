@@ -105,3 +105,14 @@ function checkingRef()
     }
     return false;
 }
+
+function get_list_ctdt_byMaCayKKT($ma_cay_khoikienthuc)
+{
+    global $DB, $USER, $CFG, $COURSE;
+    if (userIsAdmin()) {
+        $listctdt =   $DB->get_records('block_edu_ctdt', ['ma_cay_khoikienthuc' => $ma_cay_khoikienthuc]);
+    } else {
+        $listctdt = NULL;
+    }
+    return $listctdt;
+}

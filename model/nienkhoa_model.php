@@ -44,7 +44,7 @@ function get_nienkhoa_checkbox($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('', 'STT', 'Id niên khóa', 'Mã bậc', 'Mã hệ', 'Mã niên khóa', 'Tên niên khóa', 'Mô tả');
+   $table->head = array('', 'STT','Bậc đào tạo','Hệ đào tạo',  'Niên khóa đào tạo', 'Mô tả');
    $allnienkhoas = $DB->get_records('block_edu_nienkhoa', []);
    $stt = 1 + $page * 5;
    $pos_in_table = 1;
@@ -52,15 +52,15 @@ function get_nienkhoa_checkbox($key_search = '', $page = 0)
       if (findContent($inienkhoa->ten_nienkhoa, $key_search) || $key_search == '') {
 
       $checkbox = html_writer::tag('input', ' ', array('class' => 'nienkhoacheckbox', 'type' => "checkbox", 'name' => $inienkhoa->id, 'id' => 'bdt' . $inienkhoa->id, 'value' => '0', 'onclick' => "changecheck($inienkhoa->id)"));
-      $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/update.php', ['courseid' => $courseid, 'id' => $inienkhoa->id]);
+      $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/update.php', ['id' => $inienkhoa->id]);
       $ten_url = \html_writer::link($url, $inienkhoa->ten_nienkhoa);
 
 
       if ($page < 0) { // Get all data without page
-         $table->data[] = [$checkbox, (string) $stt, (string) $inienkhoa->id, (string) $inienkhoa->ma_bac, (string) $inienkhoa->ma_he, (string) $inienkhoa->ma_nienkhoa, $ten_url, (string) $inienkhoa->mota];
+         $table->data[] = [$checkbox, (string) $stt,(string)$inienkhoa->ma_bac,(string)$inienkhoa->ma_he,$ten_url, (string) $inienkhoa->mota];
          $stt = $stt + 1;
       } else if ($pos_in_table > $page * 5 && $pos_in_table <= $page * 5 + 5) {
-         $table->data[] = [$checkbox, (string) $stt, (string) $inienkhoa->id, (string) $inienkhoa->ma_bac, (string) $inienkhoa->ma_he, (string) $inienkhoa->ma_nienkhoa, $ten_url, (string) $inienkhoa->mota];
+         $table->data[] = [$checkbox, (string) $stt,(string)$inienkhoa->ma_bac,(string)$inienkhoa->ma_he,$ten_url, (string) $inienkhoa->mota];
          $stt = $stt + 1;
       }
       $pos_in_table = $pos_in_table + 1;

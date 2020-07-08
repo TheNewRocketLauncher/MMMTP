@@ -4,7 +4,6 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/lopmo_model.php');
-require_once('../../js.php');
 
 
 // require_once('../factory.php');
@@ -15,7 +14,7 @@ global $COURSE;
 
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', []));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['courseid' => $courseid]));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 // Navbar.
@@ -35,7 +34,7 @@ $form_search = new lopmo_search();
 if ($form_search->is_cancelled()) {
     // Process button cancel
 } else if ($form_search->no_submit_button_pressed()) {
-    // $form_search->display();
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($fromform = $form_search->get_data()) {
     // Redirect page
     $search = $form_search->get_data()->lopmo_search;
@@ -86,26 +85,6 @@ echo html_writer::table($table);
 $baseurl = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['search' => $search]);
 echo $OUTPUT->paging_bar(count(get_lopmo_checkbox($search, -1)->data), $page, 5, $baseurl);
 
-
-
-
-//TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
-// require_once('../../form/lopmo/danhsach_lopmo_form.php');
-// $mform = new danhsach_lopmo_form();
-
-
-$count = 1;
-if(array_key_exists('mmmy',$_SESSION)){
-    echo 'the s';
-    echo 'the end';
-
-
-    foreach ($table->data as $data) {
-      
-    }
-        
-    
- }
 
  // Footere
 echo $OUTPUT->footer();

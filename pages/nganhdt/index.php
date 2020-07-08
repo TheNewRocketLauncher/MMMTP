@@ -45,7 +45,7 @@ $form_search = new nganhdt_search();
 
 // Process form
 if ($form_search->is_cancelled()) {
-    // Process button cancel
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($form_search->no_submit_button_pressed()) {
     // $form_search->display();
 } else if ($fromform = $form_search->get_data()) {
@@ -90,38 +90,7 @@ $action_form =
     . html_writer::end_tag('div');
 echo $action_form;
 
-// Insert data if table is empty
-if (!$DB->count_records('block_edu_nganhdt', [])) {
-    $param1 = new stdClass();
-    $param2 = new stdClass();
-    $param3 = new stdClass();
-    // $param->id_bac = 1;
-    $param1->ma_bac = 'DH';
-    $param1->ma_he = 'CQ';
-    $param1->ma_nganh = '7480101';
-    $param1->ten = 'Khoa học máy tính';
-    $param1->mota = 'Đại học,chính quy,niên khóa: 2016 - 2020';
-    // $param->id_bac = 2;
-    $param2->ma_bac = 'DH';
-    $param2->ma_he = 'CQ';
-    $param2->ma_nganh = '7480103';
-    $param2->ten = 'Kỹ thuật phần mềm';
-    $param2->mota = 'Đại học,chính quy,niên khóa: 2016 - 2020';
-    // $param->id_bac = 3;
-    $param3->ma_bac = 'DH';
-    $param3->ma_he = 'CNTN';
-    $param3->ma_nganh = '7480104';
-    $param3->ten = 'Hệ thống thông tin';
-    $param3->mota = 'Đại học,chính quy,niên khóa: 2016 - 2020';
-    insert_nganhdt($param1);
-    insert_nganhdt($param2);
-    insert_nganhdt($param3);
-}
 
-// Thêm mới
-$url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/add_nganhdt.php', []);
-$ten_url = \html_writer::link($url, '<u><i>Thêm mới </i></u>');
-// echo  \html_writer::link($url, $ten_url);
 echo '<br>';
 
 

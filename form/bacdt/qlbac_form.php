@@ -12,22 +12,17 @@ class qlbac_form extends moodleform
 
         // Header
         $mform->addElement('header', 'general', 'Quản lý thông tin');
-
-        // id
-        $idbac = array();
-        $idbac[] = &$mform->createElement('text', 'idbac', 'none', 'size="70"');
-        $mform->addGroup($idbac, 'idbac', 'ID', array(' '), false);
+        
+        $mform->addElement('hidden', 'idbac', '');
 
         // Mã bậc
-        $mabac = array();
-        $mabac[] = &$mform->createElement('text', 'mabac', 'none', 'size="70"');
-        $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
+        $mform->addElement('text', 'mabac', 'Mã bậc đào tạo', 'size="70"');
+        $mform->addRule('mabac', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         // Tên bậc
-        $tenbac = array();
-        $tenbac[] = &$mform->createElement('text', 'tenbac', 'none', 'size="70"');
-        $mform->addGroup($tenbac, 'tenbac', 'Tên bậc đào tạo', array(' '), false);
-
+        $mform->addElement('text', 'tenbac', 'Tên bậc đào tạo', 'size="70"');
+        $mform->addRule('tenbac', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+    
         // Mô tả
         $mota = array();
         $mota[] = &$mform->createElement('textarea', 'mota', '', 'wrap="virtual" rows="7" cols="75"');
@@ -43,6 +38,12 @@ class qlbac_form extends moodleform
     function validation($data, $files)
     {
         return array();
+    }
+
+    function get_value() {
+        $mform = & $this->_form;
+        $data = $mform->exportValues();
+        return (object)$data;
     }
 }
 

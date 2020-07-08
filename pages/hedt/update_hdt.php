@@ -54,13 +54,17 @@ $mform = new qlhe_form();
 // Form processing
 if ($mform->is_cancelled()) {
     //Handle form cancel operation
+    echo '<h2>Hủy cập nhật</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_hedt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
     /* Thực hiện insert */
     // Param
     $param1 = new stdClass();
-    $param1->id = $mform->get_data()->idhe; // The data object must have the property "id" set.
+    $param1->id = $fromform->idhe; // The data object must have the property "id" set.
     $param1->ma_bac = $mform->get_data()->mabac;
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;
@@ -74,7 +78,11 @@ if ($mform->is_cancelled()) {
     $linktext = get_string('label_hedt', 'block_educationpgrs');
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
-    // Button sumbit
+    // Process button submitted
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_hedt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     //Set default data from DB
     $toform;
@@ -83,6 +91,9 @@ if ($mform->is_cancelled()) {
     $toform->mahe = $hedt->ma_he;
     $toform->tenhe = $hedt->ten;
     $toform->mota = $hedt->mota;
+    $toform->mabac;
+    $bacdt = $DB->get_record('block_edu_bacdt', ['ma_bac'=> $toform->mabac]);
+    $toform->bacdt = $bacdt->ten;
     $mform->set_data($toform);
     $mform->display();
 }

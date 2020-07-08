@@ -1,11 +1,13 @@
 <?php
+
+// Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/hedt_model.php');
-require_once('../../js.php');
+// require_once('../../js.php');
 
-global $COURSE, $GLOBALS;
-$courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
+global $COURSE;
+$courseid = optional_param('courseid', SITEID, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
 $search = trim(optional_param('search', '', PARAM_NOTAGS));
 
@@ -39,7 +41,7 @@ $table = get_hedt_checkbox($search, $page);
 
 // Search
 require_once('../../form/hedt/qlhe_form.php');
-$form_search = new hedt_seach();
+$form_search = new hedt_search();
 
 // Process form
 if ($form_search->is_cancelled()) {
@@ -48,7 +50,7 @@ if ($form_search->is_cancelled()) {
     // $form_search->display();
 } else if ($fromform = $form_search->get_data()) {
     // Redirect page
-    $search = $form_search->get_data()->hedt_seach;
+    $search = $form_search->get_data()->hedt_search;
     $ref = $CFG->wwwroot . '/blocks/educationpgrs/pages/hedt/index.php?search=' . $search . '&amp;page=' . $page;
     echo "<script type='text/javascript'>location.href='$ref'</script>";
 } else if ($form_search->is_submitted()) {
@@ -57,7 +59,7 @@ if ($form_search->is_cancelled()) {
 } else {
     /* Default when page loaded*/
     $toform;
-    $toform->hedt_seach = $search;
+    $toform->hedt_search = $search;
     $form_search->set_data($toform);
     // Displays form
     $form_search->display();
@@ -69,13 +71,13 @@ $action_form =
     . '<br>'
     . html_writer::tag(
         'button',
-        'Xóa HDT',
+        'Xóa',
         array('id' => 'btn_delete_hedt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
-        'Clone HDT',
+        'Clone',
         array('id' => 'btn_clone_hedt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
     )
     . '<br>'
@@ -88,30 +90,7 @@ $action_form =
     . html_writer::end_tag('div');
 echo $action_form;
 
-// Insert data if table is empty
-if (!$DB->count_records('block_edu_hedt', [])) {
-    $param1 = new stdClass();
-    $param2 = new stdClass();
-    $param3 = new stdClass();
-    // $param->id_he = 1;
-    $param1->ma_bac = 'DH';
-    $param1->ma_he = 'DHCQ';
-    $param1->ten = 'Đại học - Chính quy';
-    $param1->mota = 'Bậc Đại học - Hệ Chính quy HCMUS';
-    // $param
-    $param2->ma_bac = 'DH';
-    $param2->ma_he = 'DHCNTT';
-    $param2->ten = 'Đại học - Cử nhân tài năng';
-    $param2->mota = 'Bậc Đại học - Hệ Cử nhân tài năng HCMUS';
-    // $param
-    $param3->ma_bac = 'DH';
-    $param3->ma_he = 'DHTC';
-    $param3->ten = 'Đại học - Tại chức';
-    $param3->mota = 'Bậc Đại học - Hệ Tại Chức HCMUS';
-    insert_hedt($param1);
-    insert_hedt($param2);
-    insert_hedt($param3);
-}
+echo '<br>';
 
 // Print table
 echo html_writer::table($table);

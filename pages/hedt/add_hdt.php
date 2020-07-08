@@ -28,6 +28,7 @@ $PAGE->navbar->add(get_string('label_hedt', 'block_educationpgrs'));
 // Title.
 $PAGE->set_title('Thêm Hệ đào tạo ');
 $PAGE->set_heading('Thêm mới Hệ đào tạo ');
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
 echo $OUTPUT->header();
@@ -38,7 +39,7 @@ $mform = new qlhe_form();
 
 // Form processing
 if ($mform->is_cancelled()) {
-    // Handle form cancel operation
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -59,7 +60,10 @@ if ($mform->is_cancelled()) {
     $linktext = get_string('label_hedt', 'block_educationpgrs');
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
-    // Something here
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_hedt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     $mform->set_data($toform);
     $mform->display();

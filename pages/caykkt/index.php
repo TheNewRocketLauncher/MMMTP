@@ -55,7 +55,7 @@ $action_form =
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='add_caykkt_editable.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='add_caykkt_ttc.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
     )
     . '<br>'
     . html_writer::end_tag('div');
@@ -84,14 +84,12 @@ function get_cay_kkt_table()
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
     $table->head = array('', 'STT', 'ID', 'Mã cây khối kiến thức', 'Mã khối', 'Tên cây', 'Mô tả');
-    $rows = $DB->get_records('block_edu_cay_khoikienthuc', []);
+    $rows = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_khoi' => 'caykkt', 'ma_khoicha' => NULL, 'ma_tt' => NULL]);
     $stt = 1;
     foreach ($rows as $item) {
-        if((string)$item->ma_khoicha == NULL){
-            $checkbox = html_writer::tag('input', ' ', array('class' => 'ckktcheckbox', 'type' => "checkbox", 'name' => $item->id,   'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
-            $table->data[] = [$checkbox, (string) $stt, (string) $item->id, (string) $item->ma_cay_khoikienthuc, (string) $item->ma_khoi, (string) $item->ten_cay, (string) $item->mota];
-            $stt = $stt + 1;
-        }
+        $checkbox = html_writer::tag('input', ' ', array('class' => 'ckktcheckbox', 'type' => "checkbox", 'name' => $item->id,   'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
+        $table->data[] = [$checkbox, (string) $stt, (string) $item->id, (string) $item->ma_cay_khoikienthuc, (string) $item->ma_khoi, (string) $item->ten_cay, (string) $item->mota];
+        $stt = $stt + 1;
     }
     return $table;
 }

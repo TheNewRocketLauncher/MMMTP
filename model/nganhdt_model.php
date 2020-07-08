@@ -84,7 +84,7 @@ function get_nganhdt_checkbox($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('', 'STT', 'Ngành đào tạo', 'Mô tả search');
+   $table->head = array('', 'STT','Bậc đào tạo','Hệ đào tạo','Niên khóa đào tạo', 'Ngành đào tạo', 'Mô tả');
    $allnganhdts = $DB->get_records('block_edu_nganhdt', []);
    $stt = 1 + $page * 5;
    $pos_in_table = 1;
@@ -94,10 +94,10 @@ function get_nganhdt_checkbox($key_search = '', $page = 0)
          $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/update_nganhdt.php', ['id' => $inganhdt->id]);
          $ten_url = \html_writer::link($url, $inganhdt->ten);
          if ($page < 0) { // Get all data without page
-            $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $inganhdt->mota];
+            $table->data[] = [$checkbox, (string) $stt,(string)$inganhdt->ma_bac,(string)$inganhdt->ma_he,(string)$inganhdt->ma_nienkhoa, $ten_url, (string) $inganhdt->mota];
             $stt = $stt + 1;
          } else if ($pos_in_table > $page * 5 && $pos_in_table <= $page * 5 + 5) {
-            $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $inganhdt->mota];
+            $table->data[] = [$checkbox, (string) $stt, (string)$inganhdt->ma_bac,(string)$inganhdt->ma_he,(string)$inganhdt->ma_nienkhoa,$ten_url, (string) $inganhdt->mota];
             $stt = $stt + 1;
          }
          $pos_in_table = $pos_in_table + 1;

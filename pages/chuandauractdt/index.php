@@ -58,6 +58,12 @@ $action_form =
     . '<br>'
     . html_writer::tag(
         'button',
+        'Import',
+        array('onClick'=>"window.location.href='/moodle/blocks/educationpgrs/pages/chuandauractdt/import.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
+    )
+    . '<br>'
+    . html_writer::tag(
+        'button',
         'Xóa ',
         array('id' => 'btn_delete_chuandaura_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
     )
@@ -82,7 +88,7 @@ echo html_writer::table($table);
 
 
 $baseurl = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php', ['search' => $search]);
-echo $OUTPUT->paging_bar(count(get_chuandaura_ctdt_checkbox($search, -1)->data), $page, 5, $baseurl);
+echo $OUTPUT->paging_bar(count(get_chuandaura_ctdt_checkbox($search, -1)->data), $page, 20, $baseurl);
 
 
 

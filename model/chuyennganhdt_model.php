@@ -82,7 +82,7 @@ function get_chuyennganhdt_checkbox($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('', 'STT', 'Chuyên ngành đào tạo', 'Mô tả search');
+   $table->head = array('', 'STT','Bậc đào tạo','Hệ đào tạo','Niên khóa đào tạo', 'Ngành đào tạo', 'Chuyên ngành đào tạo', 'Mô tả');
    $allchuyennganhdts = $DB->get_records('block_edu_chuyennganhdt', []);
    $stt = 1 + $page * 5;
    $pos_in_table = 1;
@@ -92,10 +92,10 @@ function get_chuyennganhdt_checkbox($key_search = '', $page = 0)
          $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/update_chuyennganhdt.php', ['id' => $ichuyennganhdt->id]);
          $ten_url = \html_writer::link($url, $ichuyennganhdt->ten);
          if ($page < 0) { // Get all data without page
-            $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $ichuyennganhdt->mota];
+            $table->data[] = [$checkbox, (string) $stt,(string)$ichuyennganhdt->ma_bac,(string)$ichuyennganhdt->ma_he,(string)$ichuyennganhdt->ma_nienkhoa,(string)$ichuyennganhdt->ma_nganh, $ten_url, (string) $ichuyennganhdt->mota];
             $stt = $stt + 1;
          } else if ($pos_in_table > $page * 5 && $pos_in_table <= $page * 5 + 5) {
-            $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $ichuyennganhdt->mota];
+            $table->data[] = [$checkbox, (string) $stt, (string)$ichuyennganhdt->ma_bac,(string)$ichuyennganhdt->ma_he,(string)$ichuyennganhdt->ma_nienkhoa,(string)$ichuyennganhdt->ma_nganh,$ten_url, (string) $ichuyennganhdt->mota];
             $stt = $stt + 1;
          }
          $pos_in_table = $pos_in_table + 1;

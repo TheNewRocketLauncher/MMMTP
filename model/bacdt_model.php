@@ -85,7 +85,7 @@ function get_bacdt_checkbox($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('', 'STT', 'Bậc đào tạo', 'Mô tả search');
+   $table->head = array('', 'STT', 'Bậc đào tạo', 'Mô tả');
    $allbacdts = $DB->get_records('block_edu_bacdt', []);
    $stt = 1 + $page * 5;
    $pos_in_table = 1;

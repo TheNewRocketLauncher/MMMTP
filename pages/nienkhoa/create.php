@@ -39,7 +39,7 @@ $mform = new mo_nienkhoa_form();
 
 // Process form
 if ($mform->is_cancelled()) {
-    // Handle form cancel operation
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -60,6 +60,10 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Button submit
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     $mform->set_data($toform);
     $mform->display();

@@ -7,6 +7,7 @@ function get_cdr_from_ctdt($ma_ctdt) {
     global $DB, $USER, $CFG, $COURSE;
     $hdt = $DB->get_records('block_edu_chuandaura_ctdt', array('ma_ctdt' => $ma_ctdt));
     return $hdt;
+
 }
 $ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt' => $ma_ctdt]);
 

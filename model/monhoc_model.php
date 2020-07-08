@@ -49,19 +49,17 @@ function get_monhoc_table($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array(' ', 'STT', 'Mã môn học', 'Tên môn hoc', 'Mở hay chưa mở' ,'Số tín chỉ', 'Actions');
+   $table->head = array(' ', 'STT', 'Mã môn học', 'Tên môn hoc', 'Trạng thái' ,'Số tín chỉ','Loại học phần');
    $alldatas = $DB->get_records('block_edu_monhoc', []);
    $stt = 1 + $page * 5;
    foreach ($alldatas as $idata) {
       if (findContent($idata->tenmonhoc_vi, $key_search) || $key_search == '') {
             
          // url
-         $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php', ['id' => $idata->id]);
+         $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $idata->id]);
          $ten_url = \html_writer::link($url, $idata->tenmonhoc_vi);
 
-         // url1
-         $url1 = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['id' => $idata->id]);
-         $ten_url1 = \html_writer::link($url1, 'update');
+        
 
          if ($page < 0) { // Get all data without page
 			$lopmo;
@@ -76,7 +74,7 @@ function get_monhoc_table($key_search = '', $page = 0)
             $checkbox = html_writer::tag('input', ' ', array('class' => 'monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_monhoc($idata->id)"));
 
             // add table
-            $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url, $lopmo, (string) $idata->sotinchi, $ten_url1];
+            $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url, $lopmo, (string) $idata->sotinchi,(string)$idata->loaihocphan];
             $stt = $stt + 1;
          } else if ($pos_in_table >= $page * 5 && $pos_in_table < $page * 5 + 5) {
 			$lopmo;
@@ -91,7 +89,7 @@ function get_monhoc_table($key_search = '', $page = 0)
             $checkbox = html_writer::tag('input', ' ', array('class' => 'monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_monhoc($idata->id)"));
 
             // add table
-            $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url,$lopmo, (string) $idata->sotinchi, $ten_url1];
+            $table->data[] = [$checkbox, (string) $stt, (string) $idata->mamonhoc, $ten_url,$lopmo, (string) $idata->sotinchi,(string)$idata->loaihocphan];
             $stt = $stt + 1;
          }
          $pos_in_table = $pos_in_table + 1;
@@ -104,6 +102,12 @@ function get_monhoc_by_mamonhoc($mamonhoc)
 {
    global $DB, $USER, $CFG, $COURSE;
    return $DB->get_record('block_edu_monhoc', array('mamonhoc' => $mamonhoc));
+}
+
+function get_monhoc_by_id_monhoc($id)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   return $DB->get_record('block_edu_monhoc', array('id' => $id));
 }
 
 
@@ -461,3 +465,5 @@ function insert_quydinhchung_monhoc_table($param)
    global $DB, $USER, $CFG, $COURSE;
    $DB->insert_record('block_edu_quydinhchung', $param);
 }
+
+

@@ -59,7 +59,7 @@ function get_lopmo_checkbox($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('', 'STT', 'Tên khóa học', 'Giáo viên phụ trách', 'Mô tả');
+   $table->head = array('', 'STT','Mã môn học', 'Tên khóa học', 'Giáo viên phụ trách', 'Mô tả');
    $alllopmos = $DB->get_records('block_edu_lop_mo', []);
    $stt = 1 + $page * 5;
    $pos_in_table = 1;
@@ -73,10 +73,10 @@ function get_lopmo_checkbox($key_search = '', $page = 0)
 
 
       if ($page < 0) { // Get all data without page
-         $table->data[] = [$checkbox, (string) $item->id, $ten_url, (string) $item->assign_to, (string) $item->mota];
+         $table->data[] = [$checkbox, (string) $stt,(string)$item->mamonhoc, $ten_url, (string) $item->assign_to, (string) $item->mota];
          $stt = $stt + 1;
       } else if ($pos_in_table > $page * 5 && $pos_in_table <= $page * 5 + 5) {
-         $table->data[] = [$checkbox, (string) $item->id, $ten_url, (string) $item->assign_to, (string) $item->mota];
+         $table->data[] = [$checkbox, (string) $stt,(string)$item->mamonhoc, $ten_url, (string) $item->assign_to, (string) $item->mota];
          $stt = $stt + 1;
       }
       $pos_in_table = $pos_in_table + 1;

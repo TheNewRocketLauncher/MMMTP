@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../../config.php');
+require_once('../../js.php');
 
 function vn_to_str($str)
 {
@@ -88,7 +89,7 @@ function get_hedt_checkbox($key_search = '', $page = 0)
    foreach ($allhedts as $ihedt) {
       if (findContent($ihedt->ten, $key_search) || $key_search == '') {
          $checkbox = html_writer::tag('input', ' ', array('class' => 'hdtcheckbox', 'type' => "checkbox", 'name' => $ihedt->id, 'id' => 'hdt' . $ihedt->id, 'value' => '0', 'onclick' => "changecheck_hedt($ihedt->id)"));
-         $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/update_hdt.php', ['courseid' => $courseid, 'id' => $ihedt->id]);
+         $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/update_hdt.php', ['id' => $ihedt->id]);
          $ten_url = \html_writer::link($url, $ihedt->ten);
          if ($page < 0) { // Get all data without page
             $table->data[] = [$checkbox, (string) $stt, (string) $ihedt->ma_bac, $ten_url, (string) $ihedt->mota];

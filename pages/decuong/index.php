@@ -86,10 +86,6 @@ $action_form =
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
-
-// Thêm đề cương mới
-// $url = new \moodle_url('../monhoc/them_decuong_head.php', []);
-// echo \html_writer::link($url, 'Thêm đề cương môn học');
 echo '<br>';
 
 // Print table

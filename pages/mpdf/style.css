@@ -1,0 +1,27 @@
+th,td,tr {
+    border:1px solid black;
+    border-collapse:collapse;
+    font-size: 16px !important;
+    font-family: myTimes;
+  }
+  
+  table {
+    border:2px solid black;
+    border-collapse:collapse;
+    font-family: myTimes;
+  }
+  
+  td {
+    font-family:Arial;
+    font-size:16px;
+    font-family: myTimes;
+  }
+
+  p {
+    font-family:Arial;
+    font-size:16px;
+    font-family: myTimes;
+  }
+
+
+  

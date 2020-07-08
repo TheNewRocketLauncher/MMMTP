@@ -2,21 +2,27 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
-$bdt = required_param('bdt', PARAM_ALPHA);
+$bdt = trim(required_param('bdt', PARAM_NOTAGS));
 $courseid = required_param('course', PARAM_INT);
-function get_hdt_from_bdt($ma_bac) {
+function get_hdt_from_bdt($bdt) {
     global $DB, $USER, $CFG, $COURSE;
-    $hdt = $DB->get_records('block_edu_hedt', array('ma_bac' => $ma_bac));
+    $hdt = $DB->get_records('block_edu_hedt', array('ma_bac' => $bdt));
     return $hdt;
 }
-    // Lấy ra các hệ ĐT
+    $data = array();
     $allhedts = get_hdt_from_bdt($bdt);
-    // Tạo mảng chứa danh sách mã hệ
-    $arr_mahe = array();
+    
+    $data['hedt'] = array();
+    $data['hedt'][0]= "";
+
     foreach ($allhedts as $ihedt) {
-        $arr_mahe[] =& $ihedt->ma_he;
+      $data['hedt'][]=& $ihedt->ma_he;
       }
+
+    $tenbac = $DB->get_record('block_edu_bacdt', ['ma_bac' =>$bdt]);
+    $data['tenbac'] =& $tenbac->ten;
     // Trả về kết quả với json_encode
-    echo json_encode($arr_mahe);
+
+    echo json_encode($data);
     exit;
  

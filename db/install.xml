@@ -214,7 +214,7 @@
         <FIELD NAME="ten_chude" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="hoatdong_gopy" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="hoatdong_danhgia" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="hoatdong_danhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -239,7 +239,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_tainguyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ten_tainguyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="loaitainguyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="link_tainguyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
@@ -408,14 +409,16 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
-    </TABLE>    
+    </TABLE>
+    
     <TABLE NAME="block_edu_chuandaura_ctdt" COMMENT="block_edu_chuandaura_ctdt table retrofitted from MySQL">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="ma_cdr" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+		<FIELD NAME="have_ctdt" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="ten" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>       
         <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="level_cdr" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

@@ -55,18 +55,21 @@ $mform = new qlbac_form();
 
 // Process form
 if ($mform->is_cancelled()) {
-    // Process button cancel
+    echo '<h2>Hủy cập nhật</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_bacdt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
     /* Insert */
-
     // $param
     $param1 = new stdClass();
-    $param1->id = $mform->get_data()->idbac; // The data object must have the property "id" set.
+    $param1->id = $fromform->idbac; // The data object must have the property "id" set.
     $param1->ma_bac = $mform->get_data()->mabac;
     $param1->ten = $mform->get_data()->tenbac;
     $param1->mota = $mform->get_data()->mota;
+    
     update_bacdt($param1);
 
     // Hiển thị thêm thành côngz
@@ -79,12 +82,17 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Process button submitted
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_bacdt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     /* Default when page loaded*/
 
     //Set default data from DB
     $toform;
     $toform->idbac = $bacdt->id;
+    
     $toform->mabac = $bacdt->ma_bac;
     $toform->tenbac = $bacdt->ten;
     $toform->mota = $bacdt->mota;

@@ -38,11 +38,12 @@ function insert_chuandaura_ctdt($param)
 {   
    global $DB, $USER, $CFG, $COURSE;
    $DB->insert_record('block_edu_chuandaura_ctdt', $param);
-}
+}  
 function update_chuandaura_ctdt($param)
 {   
    global $DB, $USER, $CFG, $COURSE;
    $DB->update_record('block_edu_chuandaura_ctdt', $param, $bulk = false);
+   
 }
 
 
@@ -71,23 +72,39 @@ function get_chuandaura_ctdt_checkbox($key_search = '', $page = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('', 'STT','Tên chuẩn đầu ra', 'Mã chuẩn đầu ra', 'Mã chương trình đào tạo', 'Mô tả');
+   $table->head = array('', 'STT','Mã chuẩn đầu ra', 'Trạng thái(CTĐT)', 'Tên chuẩn đầu ra',  'Mô tả', );
    $allchuandaura_ctdts = $DB->get_records('block_edu_chuandaura_ctdt', []);
-   $stt = 1 + $page * 5;
+   usort($allchuandaura_ctdts, function($a, $b)
+   {
+      return strcmp($a->ma_cdr, $b->ma_cdr);
+   });
+   $stt = 1 + $page * 20;
    $pos_in_table = 1;
 
    foreach ($allchuandaura_ctdts as $item) {
       if (findContent($item->ten, $key_search) || $key_search == '') {
 
       $checkbox = html_writer::tag('input', ' ', array('class' => 'chuandauractdtcheckbox', 'type' => "checkbox", 'name' => $item->id, 'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
+      
       $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/update.php', [ 'id' => $item->id]);
       $ten_url = \html_writer::link($url, $item->ten);
+      if ($item->have_ctdt == 0 ){
+         $have_ctdt = "Chưa";
+         $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/update.php', [ 'id' => $item->id]);
+         $ten_url = \html_writer::link($url, $item->ten);
+      }
+      else{
+         $have_ctdt = "Có";
+         $ten_url = $item->ten;
+         $checkbox = " ";
 
+      }
       if ($page < 0) { // Get all data without page
-         $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $item->ma_cdr,(string) $item->ma_ctdt, (string) $item->mota];
+         
+         $table->data[] = [$checkbox, (string) $stt, (string) $item->ma_cdr, (string)$have_ctdt, $ten_url, (string) $item->mota];
          $stt = $stt + 1;
-      } else if ($pos_in_table > $page * 5 && $pos_in_table <= $page * 5 + 5) {
-         $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $item->ma_cdr,(string) $item->ma_ctdt, (string) $item->mota];
+      } else if ($pos_in_table > $page * 20 && $pos_in_table <= $page * 20 + 20) {
+         $table->data[] = [$checkbox, (string) $stt, (string) $item->ma_cdr, (string)$have_ctdt, $ten_url, (string) $item->mota];
          $stt = $stt + 1;
       }
       $pos_in_table = $pos_in_table + 1;

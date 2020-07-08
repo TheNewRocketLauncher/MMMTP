@@ -29,38 +29,21 @@ require_once("$CFG->libdir/formslib.php");
             }
             $mform->addElement('select', 'select_bacdt', get_string('themctdt_bacdt', 'block_educationpgrs'), $arr_mabac);
             
-            $allhedts = $DB->get_records('block_edu_hedt', []);
             $arr_mahe = array();
             $arr_mahe += [0 => 'Chọn Hệ đào tạo...'];
-            foreach ($allhedts as $i) {
-                $arr_mahe += [$i->ma_he => $i->ma_he];
-            }
             $mform->addElement('select', 'select_hedt', get_string('themctdt_hedt', 'block_educationpgrs'), $arr_mahe);
-            
-            $allnkdts = $DB->get_records('block_edu_nienkhoa', []);
+
             $arr_manienkhoa = array();
-            $arr_manienkhoa += [0 => 'Chọn Bậc đào tạo....'];
-            foreach ($allnkdts as $i) {
-                $arr_manienkhoa += [$i->ma_nienkhoa => $i->ma_nienkhoa];
-            }
+            $arr_manienkhoa += [0 => 'Chọn NIên khoá...'];
             $mform->addElement('select', 'select_nienkhoa', get_string('themctdt_khoatuyen', 'block_educationpgrs'), $arr_manienkhoa);
 
-            $allndts = $DB->get_records('block_edu_nganhdt', []);
             $arr_nganh = array();
-            $arr_nganh += [0 => 'Chọn Bậc đào tạo...'];
-            foreach ($allndts as $i) {
-                $arr_nganh += [$i->ma_nganh => $i->ma_nganh];
-            }
+            $arr_nganh += [0 => 'Chọn Ngành đào tạo...'];
             $mform->addElement('select', 'select_nganhdt', get_string('themctdt_nganhdt', 'block_educationpgrs'), $arr_nganh);
-            
-            $allcndts = $DB->get_records('block_edu_chuyennganhdt', []);
+
             $arr_chuyenganh = array();
-            $arr_chuyenganh += [0 => 'Chọn Bậc đào tạo...'];
-            foreach ($allcndts as $i) {
-                $arr_chuyenganh += [$i->ma_chuyenganh => $i->ma_chuyenganh];
-            }
+            $arr_chuyenganh += [0 => 'Chọn Chuyên ngành...'];
             $mform->addElement('select', 'select_chuyenganh', get_string('themctdt_chuyennganh', 'block_educationpgrs'), $arr_chuyenganh);
-            
 
             /////////////////// 1.1 MỤC TIÊU ĐÀO TẠO
             ///----------------------------------------------------------------------------------------------------------------------///        
@@ -72,8 +55,16 @@ require_once("$CFG->libdir/formslib.php");
             $mform->addElement('editor', 'editor_muctieudt_cuthe', '1.2.1 Mục tiêu cụ thể');
             $mform->addRule('editor_muctieudt_cuthe', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-            $mform->addElement('filepicker', 'file_cdr', 'Chuẩn đầu ra', null, array('maxbytes' => $maxbytes, 'accepted_types' => '.xls'));
-            $mform->addRule('file_cdr', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+            $arr_cdr = array();
+            $listcdr = $DB->get_records('block_edu_chuandaura_ctdt', []);
+            foreach($listcdr as $item){
+                $arr_cdr +=[$item->ma_cdr => $item->ma_cdr];
+            }
+            $arr_chuyenganh += [0 => 'Chọn Bậc đào tạo...'];
+            $mform->addElement('select', 'select_cdr', 'Chuẩn đầu ra', $listcdr);
+
+            // $mform->addElement('filepicker', 'file_cdr', 'Chuẩn đầu ra', null, array('maxbytes' => $maxbytes, 'accepted_types' => '.xls'));
+            // $mform->addRule('file_cdr', get_string('error'), 'required', 'extraruledata', 'server', false, false);
             
             $mform->addElement('editor', 'editor_muctieudt_chnn', '1.3 Cơ hội nghề nghiệp');
             $mform->addRule('editor_muctieudt_chnn', get_string('error'), 'required', 'extraruledata', 'server', false, false);
@@ -173,6 +164,12 @@ require_once("$CFG->libdir/formslib.php");
         function get_submit_value($elementname) {
             $mform = & $this->_form;
             return $mform->getSubmitValue($elementname);
+        }
+
+        function get_value() {
+            $mform = & $this->_form;
+            $data = $mform->exportValues();
+            return (object)$data;
         }
     }
 

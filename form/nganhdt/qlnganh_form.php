@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once("../../js.php");
 
 class qlnganh_form extends moodleform
 {
@@ -13,49 +12,67 @@ class qlnganh_form extends moodleform
     // Header
     $mform->addElement('header', 'general', 'Quản lý thông tin');
 
-    // // ID
-    // $idnganh = array();
-    // $idnganh[] = &$mform->createElement('text', 'idnganh', 'none', 'size="10"');
-    // $mform->addGroup($idnganh, 'idnganh', 'ID ngành đào tạo', array(' '), false);
+    $mform->addElement('hidden', 'idnganh', '');
 
+    // Mã bậc
     $mabac = array();
     $allbacdts = $DB->get_records('block_edu_bacdt', []);
     $arr_mabac = array();
+    $arr_mabac += [""=> "Chọn bậc đào tạo"];
+
     foreach ($allbacdts as $ibacdt) {
       $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
     }
-    $mabac[] = &$mform->createElement('select', 'mabac', 'test select:', $arr_mabac, array());
-    $mform->addGroup($mabac, 'mabac', 'Mã bậc đào tạo', array(' '), false);
+    $mform->addElement('select', 'mabac', 'Mã bậc đào tạo:', $arr_mabac, array());
+    $mform->addRule('mabac', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+    
+    $eGroup = array();
+    $eGroup[] = &$mform->createElement('text', 'bacdt', '', 'size=50');
+    $mform->addGroup($eGroup, 'bacdt', '', array(' '), false);
+    $mform->disabledIf('bacdt', '');
 
     // Mã hệ
     $mahe = array();
     $allhedts = $DB->get_records('block_edu_hedt', []);
     $arr_mahe = array();
+    $arr_mahe += [""=> "Chọn hệ đào tạo"];
+
     foreach ($allhedts as $ihedt) {
       $arr_mahe += [$ihedt->ma_he => $ihedt->ma_he];
     }
-    $mahe[] = &$mform->createElement('select', 'mahe', 'test select:', $arr_mahe, array());
-    $mform->addGroup($mahe, 'mahe', 'Mã hệ đào tạo', array(' '), false);
+    $mform->addElement('select', 'mahe', 'Mã hệ đào tạo:', $arr_mahe, array());
+    $mform->addRule('mahe', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+
+    $eGroup = array();
+    $eGroup[] = &$mform->createElement('text', 'hedt', '', 'size=50');
+    $mform->addGroup($eGroup, 'hedt', '', array(' '), false);
+    $mform->disabledIf('hedt', '');
 
     // Mã niên khóa
     $manienkhoa = array();
     $allnienkhoadts = $DB->get_records('block_edu_nienkhoa', []);
     $arr_manienkhoa = array();
+    $arr_manienkhoa += [""=> "Chọn niên khóa đào tạo"];
+
     foreach ($allnienkhoadts as $inienkhoadt) {
       $arr_manienkhoa += [$inienkhoadt->ma_nienkhoa => $inienkhoadt->ma_nienkhoa];
     }
-    $manienkhoa[] = &$mform->createElement('select', 'manienkhoa', 'test select:', $arr_manienkhoa, array());
-    $mform->addGroup($manienkhoa, 'manienkhoa', 'Mã niên khóa đào tạo', array(' '), false);
+    $mform->addElement('select', 'manienkhoa', 'Mã niên khóa đào tạo:', $arr_manienkhoa, array());
+    $mform->addRule('manienkhoa', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
+    $eGroup = array();
+    $eGroup[] = &$mform->createElement('text', 'nienkhoa', '', 'size=50');
+    $mform->addGroup($eGroup, 'nienkhoa', '', array(' '), false);
+    $mform->disabledIf('nienkhoa', '');
+    
+    
     // Mã ngành
-    $manganh = array();
-    $manganh[] = &$mform->createElement('text', 'manganh', 'none', 'size="10"');
-    $mform->addGroup($manganh, 'manganh', 'Mã ngành đào tạo', array(' '), false);
+    $mform->addElement('text', 'manganh', 'Mã ngành đào tạo', 'size="10"');
+    $mform->addRule('manganh', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
     // Tên ngành
-    $tennganh = array();
-    $tennganh[] = &$mform->createElement('text', 'tennganh', 'none', 'size="70"');
-    $mform->addGroup($tennganh, 'tennganh', 'Tên ngành đào tạo', array(' '), false);
+    $mform->addElement('text', 'tennganh', 'Tên ngành đào tạo', 'size="70"');
+    $mform->addRule('tennganh', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
     // Mô tả
     $mota = array();

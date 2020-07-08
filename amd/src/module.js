@@ -33,15 +33,18 @@ define(['jquery'], function ($) {
                 $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/hedt/get_hdt_from_bdt.php', {
                     course: 1,
                     bdt: bdt
-                }).done(function (data) {
-                    var list_mahe = JSON.parse(data);
+                }).done(function (response) {
+                    var data = JSON.parse(response);
+            
+                    var id_bacdt = document.getElementById("id_bacdt");
+                    id_bacdt.value = data.tenbac;
+
                     var x = document.getElementById('id_mahe');
                     // Remove all options
                     while (x.length > 0) {
                         x.remove(x.length - 1);
                     }
-                    var count = 1;
-                    list_mahe.forEach(mahe => {
+                    data.hedt.forEach(mahe => {
                         var option = document.createElement("option");
                         option.text = mahe;
                         option.value = mahe;
@@ -703,8 +706,7 @@ define(['jquery'], function ($) {
 			          .done(function (response) {
 			            var data = JSON.parse(response);
 			            // var list_monhoc = JSON.parse(data.monhoc);
-			            console.log(data.monhoc);
-			            console.log(data.ctdt);
+			            
 			            var id_bacdt = document.getElementById("id_bacdt");
 			            var id_hedt = document.getElementById("id_hedt");
 			            var id_nienkhoa = document.getElementById("id_nienkhoa");
@@ -1036,39 +1038,7 @@ define(['jquery'], function ($) {
                 
             });
 
-            $("#id_ma_ctdt_cdr").change(function () {
-        // Get BDT
-        var ma_ctdt = $("#id_ma_ctdt_cdr option:selected").text();
-
-        $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/chuandaura_ctdt/get_cdr_from_ctdt.php", {
-          ma_ctdt: ma_ctdt,
-        })
-          .done(function (response) {
-            var data = JSON.parse(response);
-
-            var id_tenctdt = document.getElementById("id_ten_ctdt");
-            id_tenctdt.value = data.ten_ctdt;
-
-            var x = document.getElementById("id_ma_cdr_cha");
-
-            while (x.length > 0) {
-              x.remove(x.length - 1);
-            }
-            var option1 = document.createElement("option");
-            option1.text = "Chọn chuẩn đầu ra";
-            option1.value = "";
-            x.add(option1);
-            data.ma_cdr.forEach((item) => {
-              var option = document.createElement("option");
-              option.text = item;
-              option.value = item;
-              x.add(option);
-            });
-          })
-          .fail(function () {
-            alert("Something wrong!");
-          });
-      });
+            
 
       $("#id_ma_cdr_cha").change(function () {
         // Get BDT
@@ -1098,7 +1068,7 @@ define(['jquery'], function ($) {
             list_id.push(item.name);
           }
         }
-        console.log("list id=", list_id);
+        
         list_id.forEach((element) => {
           $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/chuandaura_ctdt/delete_chuandaura_ctdt.php", {
             course: 1,
@@ -1136,7 +1106,276 @@ define(['jquery'], function ($) {
         });
       });
       
+      $("#id_mahe").change(function () {
+                // Get HDT
+                var hdt = $("#id_mahe option:selected").text();
+                // Get NKDT with HDT
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/nienkhoa/get_nienkhoadt_from_hdt.php', {
+                    course: 1,
+                    hdt: hdt
+                }).done(function (response) {
+                    var data = JSON.parse(response);
+                    
+                    var id_hedt = document.getElementById("id_hedt");
+                    id_hedt.value = data.tenhe;
+
+                    var x = document.getElementById('id_manienkhoa');
+                    // Remove all options
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    data.nienkhoadt.forEach(manienkhoa => {
+                        var option = document.createElement("option");
+                        option.text = manienkhoa;
+                        option.value = manienkhoa;
+                        x.add(option);
+                    });
+                }).fail(function () {
+                    alert('Something wrong!');
+                });
+            });
+
+            $("#id_manienkhoa").change(function () {
+                
+                // Get HDT
+                var nienkhoadt = $("#id_manienkhoa option:selected").text();
+                // Get NKDT with HDT
+                console.log("nienkhoadt: ",nienkhoadt);
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/nganhdt/get_nganhdt_from_nienkhoadt.php', {
+                    course: 1,
+                    nienkhoadt: nienkhoadt
+                }).done(function (response) {
+                    var data = JSON.parse(response);
+                    console.log(data);
+                    var id_nienkhoadt = document.getElementById("id_nienkhoa");
+                    // id_nienkhoadt.value = data.tennienkhoa;
+                    id_nienkhoadt.value = data.tennienkhoa;
+
+                    var x = document.getElementById('id_manganh');
+                    // Remove all options
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    data.nganhdt.forEach(manganh => {
+                        var option = document.createElement("option");
+                        option.text = manganh;
+                        option.value = manganh;
+                        x.add(option);
+                    });
+                }).fail(function () {
+                    alert('Something wrong!');
+                });
+            });
+
+            $("#id_manganh").change(function () {               
+                
+                var nganhdt = $("#id_manganh option:selected").text();
+                // Get HDT with BDT
+                $.post(M.cfg.wwwroot + '/blocks/educationpgrs/ajax/chuyennganhdt/get_tennganh.php', {
+                    course: 1,
+                    nganhdt: nganhdt
+                }).done(function (response) {
+                    // var data = JSON.parse(response);
+                    console.log(response);
+
+                    
+                    var id_nganhdt = document.getElementById("id_nganhdt");
+                    // id_nienkhoadt.value = data.tennienkhoa;
+                    id_nganhdt.value = response;
+                    
+                    // var id_nganhdt = document.getElementsByID("id_nganhdt");
+                    // id_nganhdt.value = response;
+
+                    
+                }).fail(function () {
+                    alert('Something wrong!');
+                });
+            });
+
+
+
+            $("#id_fetch_chuandaura").click(function () {
+                
+                
+                
+                var ma_decuong = document.getElementById("id_ma_decuong_1").value;
+                
+            
+                $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/decuong/fetch_chuandaura.php", {
+                    ma_decuong: ma_decuong,
+                })
+                .done(function (data) {
+                    
+                    var list = JSON.parse(data);
+                    var x = document.getElementById("id_cacchuandaura_danhgia");
+			            
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    
+                    list.forEach((idata) => {
+                        var option = document.createElement("option");
+                        option.innerHTML  = idata;
+                        option.value = idata;
+                        
+                        x.appendChild(option);
+                    });
+                })
+                .fail(function () {
+                    alert("Something wrong!");
+                });
+                
+            });
                   
+            $("#id_fetch_chuandaura_cdio_muctieumonhoc").click(function () {
+                
+                
+                
+                var ma_ctdt = document.getElementById("id_ma_ctdt_1").value;
+                
+            
+                $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/chuandaura_ctdt/get_cdr_from_ctdt.php", {
+                    ma_ctdt: ma_ctdt,
+                })
+                .done(function (data) {
+                    
+                    
+                    var list = JSON.parse(data);
+                    console.log('data:', list)
+                    var x = document.getElementById("id_chuandaura_cdio_muctieumonhoc");
+			            
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    
+                    list.ma_cdr.forEach((idata) => {
+                        var option = document.createElement("option");
+                        option.innerHTML  = idata;
+                        option.value = idata;
+                        
+                        x.appendChild(option);
+                    });
+                })
+                .fail(function () {
+                    alert("Something wrong!");
+                });
+                
+            });
+
+            $("#id_fetch_ctdt").click(function () {
+            
+                $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/thongke/get_ctdt.php", {
+                })
+                .done(function (data) {
+                    
+                    
+                    var list = JSON.parse(data);
+                    
+
+                    var x = document.getElementById("id_sort_ctdt");
+			            
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    
+                    list.forEach((idata) => {
+                        var option = document.createElement("option");
+                        option.text  = idata.ma_ctdt;
+                        option.value = idata.ma_ctdt;
+                        
+                        x.add(option);
+                    });
+
+                    var ma_bac = document.getElementById("id_ma_bac");
+                    var ma_he = document.getElementById("id_ma_he");
+                    var ma_nienkhoa = document.getElementById("id_ma_nienkhoa");
+                    var ma_nganh = document.getElementById("id_ma_nganh");
+                    var ma_chuyennganh = document.getElementById("id_ma_chuyennganh");
+                    ma_bac.value = list[0].ma_bac;
+                    ma_he.value = list[0].ma_he;
+                    ma_nienkhoa.value = list[0].ma_nienkhoa;
+                    ma_nganh.value = list[0].ma_nganh;
+                    ma_chuyennganh.value = list[0].ma_chuyennganh;
+                    
+                    
+                })
+                .fail(function () {
+                    alert("Something wrong!");
+                });
+                
+            });
+
+            $("#id_sort_ctdt").change(function () {
+            
+                $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/thongke/get_ctdt.php", {
+                })
+                .done(function (data) {
+                    
+                    
+                    var list = JSON.parse(data);
+                    
+
+                    var x = document.getElementById("id_sort_ctdt");
+			            
+                    while (x.length > 0) {
+                        x.remove(x.length - 1);
+                    }
+                    
+                    list.forEach((idata) => {
+                        var option = document.createElement("option");
+                        option.text  = idata.ma_ctdt;
+                        option.value = idata.ma_ctdt;
+                        
+                        x.add(option);
+                    });
+
+                    var ma_bac = document.getElementById("id_ma_bac");
+                    var ma_he = document.getElementById("id_ma_he");
+                    var ma_nienkhoa = document.getElementById("id_ma_nienkhoa");
+                    var ma_nganh = document.getElementById("id_ma_nganh");
+                    var ma_chuyennganh = document.getElementById("id_ma_chuyennganh");
+                    ma_bac.value = list[0].ma_bac;
+                    ma_he.value = list[0].ma_he;
+                    ma_nienkhoa.value = list[0].ma_nienkhoa;
+                    ma_nganh.value = list[0].ma_nganh;
+                    ma_chuyennganh.value = list[0].ma_chuyennganh;
+                    
+                    
+                })
+                .fail(function () {
+                    alert("Something wrong!");
+                });
+                
+            });
+            
+            //// CTDT SELECT
+            $("#id_select_bacdt").change(function () {
+                var ma_bac = document.getElementById('id_select_bacdt').value;
+                if(ma_bac != 0){
+                    $.post(M.cfg.wwwroot + "/blocks/educationpgrs/ajax/ctdt/select_change.php", {
+                        type: 1,
+                        param: ma_bac
+                    }).done(function (data) {
+                        var rsx = JSON.parse(data);
+                        var x = document.getElementById('id_select_hedt');
+                        // Remove all options
+                        while (x.length > 1) {
+                            x.remove(x.length - 1);
+                        }
+    
+                        for (var i in rsx) {
+                            var ma = rsx[i]
+    
+                            var option = document.createElement("option");
+                            option.text = ma;
+                            option.value = ma;
+                            x.add(option);
+                        }
+                    }).fail(function () {
+                        alert("Something wrong!");
+                    });
+                }
+            });
         }
     };
 });

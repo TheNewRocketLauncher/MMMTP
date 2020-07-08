@@ -36,7 +36,7 @@ $mform = new qlbac_form();
 
 // Process form
 if ($mform->is_cancelled()) {
-    // Process button cancel
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -59,6 +59,10 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Process button submitted
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_bacdt', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     $mform->set_data($toform);
     $mform->display();

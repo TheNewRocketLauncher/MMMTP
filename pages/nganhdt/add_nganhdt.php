@@ -28,7 +28,7 @@ $PAGE->navbar->add(get_string('label_nganh', 'block_educationpgrs'));
 // Title.
 $PAGE->set_title('Thêm ngành đào tạo ');
 $PAGE->set_heading('Thêm mới ngành đào tạo ');
-// $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
 echo $OUTPUT->header();
@@ -39,7 +39,7 @@ $mform = new qlnganh_form();
 
 // Form processing
 if ($mform->is_cancelled()) {
-    // Handle form cancel operation
+    echo '<h2>Thêm không thành công</h2>';
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -52,8 +52,6 @@ if ($mform->is_cancelled()) {
     $param1->ma_nganh = $mform->get_data()->manganh;
     $param1->ten = $mform->get_data()->tennganh;
     $param1->mota = $mform->get_data()->mota;
-    // $param2 = new stdClass();
-    // $param2->ma_nganh = '665';
     insert_nganhdt($param1);
     // Hiển thị thêm thành công
     echo '<h2>Thêm mới thành công!</h2>';
@@ -64,6 +62,10 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Button submit
+    echo '<h2>Nhập sai thông tin</h2>';
+    $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
+    $linktext = get_string('label_nganh', 'block_educationpgrs');
+    echo \html_writer::link($url, $linktext);
 } else {
     $mform->set_data($toform);
     $mform->display();

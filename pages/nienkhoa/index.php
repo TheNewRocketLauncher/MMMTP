@@ -4,7 +4,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/nienkhoa_model.php');
-require_once('../../js.php');
+//require_once('../../js.php');
 
 // require_once('../factory.php');
 $page = optional_param('page', 0, PARAM_INT);
@@ -22,10 +22,15 @@ $PAGE->navbar->add(get_string('label_nienkhoa', 'block_educationpgrs'));
 
 // Title.
 $PAGE->set_title(get_string('label_nienkhoa', 'block_educationpgrs') . ' - Course ID: ' );
+$PAGE->set_heading(get_string('head_nienkhoa', 'block_educationpgrs'));
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
 echo $OUTPUT->header();
+
+// Create table
+$table = get_nienkhoa_checkbox($search, $page);
+
 // Search
 require_once('../../form/nienkhoa/mo_nienkhoa_form.php');
 $form_search = new nienkhoa_search();
@@ -76,28 +81,16 @@ $action_form =
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
+
+
 echo '<br>';
-$table = get_nienkhoa_checkbox($search, $page);
+
+// Print table
 echo html_writer::table($table);
-
-
+// Pagination
 $baseurl = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['search' => $search]);
 echo $OUTPUT->paging_bar(count(get_nienkhoa_checkbox($search, -1)->data), $page, 5, $baseurl);
 
-
-
-$count = 1;
-if(array_key_exists('mmmy',$_SESSION)){
-    echo 'the s';
-    echo 'the end';
-
-
-    foreach ($table->data as $data) {
-      
-    }
-        
-    
- }
 
 // Footer
 echo $OUTPUT->footer();

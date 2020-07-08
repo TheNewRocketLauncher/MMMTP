@@ -12,51 +12,44 @@ class update_monhoc_form extends moodleform
         $mform = $this->_form;
         $mform->addElement('header', 'general_thong_tin_monhoc', 'Thông tin cập nhật');
 
-        $mform->addElement('hidden', 'id', '');
+        $mform->addElement('hidden', 'idmonhoc', '');
 
-        $eGroup1 = array();
-        $eGroup1[] = &$mform->createElement('text', 'mamonhoc', '', 'size=50');
-        $mform->addGroup($eGroup1, 'mamonhoc', get_string('mamonhoc_chitiet', 'block_educationpgrs'), array(' '), false);
+        
+        $mform->addElement('text', 'mamonhoc',  get_string('mamonhoc_chitiet', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('mamonhoc', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-        $eGroup1 = array();
-        $eGroup1[] = &$mform->createElement('text', 'tenmonhoc_vi', '', 'size=50');
-        $mform->addGroup($eGroup1, 'tenmonhoc', get_string('tenmonhoc1_thongtinchung', 'block_educationpgrs'), array(' '), false);
+        $mform->addElement('text', 'tenmonhoc_vi', get_string('tenmonhoc1_thongtinchung', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('tenmonhoc_vi', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        
+        $mform->addElement('text', 'tenmonhoc_en', get_string('tenmonhoc2_thongtinchung', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('tenmonhoc_en', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        
+        $mform->addElement('text', 'loaihocphan', get_string('loaihocphan', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('loaihocphan', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-        $eGroup1 = array();
-        $eGroup1[] = &$mform->createElement('text', 'tenmonhoc_en', '', 'size=50');
-        $mform->addGroup($eGroup1, 'tenmonhoc', get_string('tenmonhoc2_thongtinchung', 'block_educationpgrs'), array(' '), false);
+        $mform->addElement('text', 'sotinchi', get_string('sotinchi', 'block_educationpgrs'), 'size=10');
+        $mform->addRule('sotinchi', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        
+        $mform->addElement('text', 'sotiet_LT', get_string('sotiet_LT', 'block_educationpgrs'), 'size=10');
+        $mform->addRule('sotiet_LT', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-        $eGroup1 = array();
-        $eGroup1[] = &$mform->createElement('text', 'sotinchi', '', 'size=10');
-        $mform->addGroup($eGroup1, 'tenmonhoc', get_string('sotinchi', 'block_educationpgrs'), array(' '), false);
+        $mform->addElement('text', 'sotiet_TH', get_string('sotiet_TH', 'block_educationpgrs'), 'size=10');
+        $mform->addRule('sotiet_TH', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-        $eGroup1 = array();
-        $eGroup1[] = &$mform->createElement('text', 'sotiet_LT', '', 'size=10');
-        $mform->addGroup($eGroup1, 'tenmonhoc', get_string('sotiet_LT', 'block_educationpgrs'), array(' '), false);
+        $mform->addElement('text', 'sotiet_BT', get_string('sotiet_BT', 'block_educationpgrs'), 'size=10');
+        $mform->addRule('sotiet_BT', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-        $eGroup1 = array();
-        $eGroup1[] = &$mform->createElement('text', 'sotiet_TH', '', 'size=10');
-        $mform->addGroup($eGroup1, 'tenmonhoc', get_string('sotiet_TH', 'block_educationpgrs'), array(' '), false);
-
-        $eGroup1 = array();
-        $eGroup1[] = &$mform->createElement('text', 'sotiet_BT', '', 'size=10');
-        $mform->addGroup($eGroup1, 'tenmonhoc', get_string('sotiet_BT', 'block_educationpgrs'), array(' '), false);
-
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'loaihocphan', '', 'size=50');
-        $mform->addGroup($eGroup, 'loaihocphan', get_string('loaihocphan', 'block_educationpgrs'), array(' '),  false);
 
         $eGroup = array();
         $eGroup[] = &$mform->createElement('text', 'ghichu', '', 'size=50');
         $mform->addGroup($eGroup, 'ghichu', get_string('ghichu', 'block_educationpgrs'), array(' '),  false);
 
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'mota', '', 'size=50');
-        $mform->addGroup($eGroup, 'ghichu', 'Mô tả', array(' '),  false);
-
+        $mform->addElement('textarea', 'mota', 'Mô tả', 'wrap="virtual" rows="7" cols="100"');
+        $mform->addRule('mota', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         $eGroup = array();
         $eGroup[] = &$mform->createElement('submit', 'btn_submit_update_monhoc', 'Cập nhật');
+        $eGroup[] = &$mform->createElement('cancel', null, 'Hủy');
         $mform->addGroup($eGroup, 'thongtinchung_group16', '', array(' '),  false);
     }
 
