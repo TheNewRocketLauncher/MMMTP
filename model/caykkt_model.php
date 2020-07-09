@@ -93,7 +93,10 @@ function delete_caykkt($id)
 }
 
 function delete_caykkt_byMaCay($ma_cay_khoikienthuc){
+    global $DB, $USER, $CFG, $COURSE;
+
     $list_item = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_cay_khoikienthuc' => $ma_cay_khoikienthuc]);
+
     foreach($list_item as $item){
         $DB->delete_records('block_edu_cay_khoikienthuc', ['id' => $item->id]);
     }
@@ -139,4 +142,48 @@ function can_change_caykkt($ma_cay_khoikienthuc){
     }
     
     return true;
+}
+
+// Khởi tạo khung sườn cho các chức năng thêm, sửa khối kiến thức!
+function get_adding_list(){
+    global $USER;
+    $current_global = get_global($USER->id);
+    if($current_global == null){
+        $current_global = array(
+            'newcaykkt' => array(
+                'value' => array(),
+                'tencay' => '',
+                'mota' => '',
+                'edit_mode' => '0',
+                'ma_cay' => ''
+            ),
+        );
+        set_global($USER->id, $current_global);
+    } else if(empty($current_global)){
+        $current_global[] = array(
+            'newcaykkt' => array(
+                'value' => array(),
+                'tencay' => '',
+                'mota' => '',
+                'edit_mode' => '0',
+                'ma_cay' => ''
+            ),
+        );
+        set_global($USER->id, $current_global);
+    } else if(array_key_exists('newcaykkt', $current_global)){
+        return $current_global['newcaykkt']['value'];
+    } else {
+        $current_global[] = array(
+            'newcaykkt' => array(
+                'value' => array(),
+                'tencay' => '',
+                'mota' => '',
+                'edit_mode' => '0',
+                'ma_cay' => ''
+            ),
+        );
+        set_global($USER->id, $current_global);
+    }
+    $current_global = get_global($USER->id);
+    return $current_global['newcaykkt']['value'];
 }

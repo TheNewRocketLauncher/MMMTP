@@ -156,15 +156,15 @@ function get_caykkt_by_kkt($ma_khoi)
     foreach ($rows as $kkt) {
         if((string)$kkt->ma_khoicha == $ma_khoi){
             $item = get_kkt_byMaKhoi($kkt->ma_khoi);
-            if ($item->id_loai_ktt == 0 ){
-                $loaiktt = "Bắt buộc";
+            if ($item->id_loai_kkt == 0 ){
+                $loaikkt = "Bắt buộc";
             }
             else{
-                $loaiktt = "Tự chọn";
+                $loaikkt = "Tự chọn";
             }
             $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_khoikienthuc.php', ['courseid' => $courseid, 'id' => $item->id]);
             $ten_url = \html_writer::link($url, $item->ma_khoi);
-            $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaiktt, (string) $item->ten_khoi, (string) $item->mota];
+            $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaikkt, (string) $item->ten_khoi, (string) $item->mota];
             $stt = $stt + 1;
 
         
@@ -260,43 +260,6 @@ function update_dieukien_kkt($param_dieukien_kkt)
 function delete_dieukien_kkt($param_dieukien_kkt)
 {
 
-}
-
-function get_adding_list(){
-    global $USER;
-    $current_global = get_global($USER->id);
-    if($current_global == null){
-        $current_global = array(
-            'newcaykkt' => array(
-                'value' => array(),
-                'tencay' => '',
-                'mota' => '',
-            ),
-        );
-        set_global($USER->id, $current_global);
-    } else if(empty($current_global)){
-        $current_global[] = array(
-            'newcaykkt' => array(
-                'value' => array(),
-                'tencay' => '',
-                'mota' => '',
-            ),
-        );
-        set_global($USER->id, $current_global);
-    } else if(array_key_exists('newcaykkt', $current_global)){
-        return $current_global['newcaykkt']['value'];
-    } else {
-        $current_global[] = array(
-            'newcaykkt' => array(
-                'value' => array(),
-                'tencay' => '',
-                'mota' => '',
-            ),
-        );
-        set_global($USER->id, $current_global);
-    }
-    $current_global = get_global($USER->id);
-    return $current_global['newcaykkt']['value'];
 }
 
 function can_edit_kkt($ma_khoi){

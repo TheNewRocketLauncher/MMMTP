@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/caykkt_model.php');
 require_once('../../model/khoikienthuc_model.php');
+require_once('../../model/global_model.php');
 
 class newcaykkt_form_final extends moodleform
 {
@@ -85,17 +86,24 @@ class newcaykkt_form1_b extends moodleform
 {
     public function definition()
     {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
         $mform = $this->_form;
 
+        $current_global = get_global($USER->id);
+
+        $mform->addElement('hidden', 'edit_mode', $current_global['newcaykkt']['edit_mode']);
+
         $eGroup = array();
-        $eGroup[] = $mform->createElement('submit', 'btn_review', 'Xem thử dạng PDF');
+        // $eGroup[] = $mform->createElement('submit', 'btn_review', 'Xem thử dạng PDF');
         $eGroup[] = $mform->createElement('submit', 'btn_complete', 'Tạo cây này');
+        $eGroup[] = $mform->createElement('submit', 'btn_edit', 'Lưu thay đổi');
         $eGroup[] = $mform->createElement('submit', 'btn_cancle', 'Huỷ bỏ');        
         $mform->addGroup($eGroup, 'ndctbtn', '', '', false);
 
         $mform->registerNoSubmitButton('btn_cancle');
         $mform->registerNoSubmitButton('btn_review');
+        $mform->hideIf('btn_complete', 'edit_mode', 'eq', '1');
+        $mform->hideIf('btn_edit', 'edit_mode', 'eq', '0');
         
         $mform->disable_form_change_checker();
     }

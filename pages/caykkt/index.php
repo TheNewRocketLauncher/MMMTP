@@ -43,19 +43,19 @@ $action_form =
     . html_writer::tag(
         'button',
         'Xóa Cây KKT',
-        array('id' => 'btn_delete_caykkt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #z; color:#fff;')
+        array('id' => 'btn_delete_caykkt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
         'Clone Cây KKT',
-        array('id' => 'btn_clone_caykkt', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_clone_caykkt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 150px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='add_caykkt_ttc.php'", 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #1177d1; color:#fff;')
+        array('id' => 'btn_add_caykkt', 'onClick' => "window.location.href='add_caykkt_ttc.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
@@ -63,17 +63,10 @@ echo $action_form;
 
 echo '<br>';
 
-$table = get_cay_kkt_table();
 
+$table = get_cay_kkt_table();
 echo html_writer::table($table);
 
-echo '  ';
-echo \html_writer::tag(
-    'button',
-    'Xóa caykkt',
-    array('id' => 'btn_delete_caykkt'));
-
-echo '<br>';
 ///END Table
 
  // Footere
@@ -83,12 +76,15 @@ function get_cay_kkt_table()
 {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
-    $table->head = array('', 'STT', 'ID', 'Mã cây khối kiến thức', 'Mã khối', 'Tên cây', 'Mô tả');
+    $table->head = array('', 'STT', 'Tên cây', 'Mô tả');
     $rows = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_khoi' => 'caykkt', 'ma_khoicha' => NULL, 'ma_tt' => NULL]);
     $stt = 1;
-    foreach ($rows as $item) {
+    foreach ($rows as $item){
+        $url = new \moodle_url('/blocks/educationpgrs/pages/caykkt/chitiet_caykkt.php', ['ma_cay' => $item->ma_cay_khoikienthuc]);
+        $ten_cay = \html_writer::link($url, $item->ten_cay);
+
         $checkbox = html_writer::tag('input', ' ', array('class' => 'ckktcheckbox', 'type' => "checkbox", 'name' => $item->id,   'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
-        $table->data[] = [$checkbox, (string) $stt, (string) $item->id, (string) $item->ma_cay_khoikienthuc, (string) $item->ma_khoi, (string) $item->ten_cay, (string) $item->mota];
+        $table->data[] = [$checkbox, (string) $stt, (string) $ten_cay, (string) $item->mota];
         $stt = $stt + 1;
     }
     return $table;

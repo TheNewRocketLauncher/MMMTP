@@ -11,7 +11,7 @@ $paramfirst = required_param('paramfirst', PARAM_ALPHANUMEXT);
 // $paramsecond = required_param('paramsecond', PARAM_ALPHANUMEXT);
 
 
-// id: Mã khối cha
+// id: index Mã khối cha
 // type: nocheck: thêm khối ở level 1 (khối đầu tiên)
 // type:        1: thêm khối cùng cấp
 // type:        2: thêm khối ở level 1 
@@ -58,37 +58,6 @@ function mainDo($id, $type, $paramfirst){
 
 function get_current_list(){
     global $USER;
-    $current_global = get_global($USER->id);
-    if($current_global == null){
-        $current_global[] = array(
-            'newcaykkt' => array(
-                'value' => array(),
-                'tencay' => '',
-                'mota' => '',
-            ),
-        );
-        set_global($USER->id, $current_global);
-    } else if(empty($current_global)){
-        $current_global[] = array(
-            'newcaykkt' => array(
-                'value' => array(),
-                'tencay' => '',
-                'mota' => '',
-            ),
-        );
-        set_global($USER->id, $current_global);
-    } else if(array_key_exists('newcaykkt', $current_global)){
-        return $current_global['newcaykkt']['value'];
-    } else {
-        $current_global[] = array(
-            'newcaykkt' => array(
-                'value' => array(),
-                'tencay' => '',
-                'mota' => '',
-            ),
-        );
-        set_global($USER->id, $current_global);
-    }
     $current_global = get_global($USER->id);
     return $current_global['newcaykkt']['value'];
 }
@@ -140,25 +109,41 @@ function add_khoi($paramfirst){
 function add_khoiCungCap($id, $paramfirst){
     $current_list = get_current_list();
     $level = $current_list[$id]['level'];
-    $lastIndex = $current_list[$id]['index'];
-    foreach($current_list as $key => $item){
-        if($level == $item['level'] && strpos($item['index'], $lastIndex) === 0 && $id != $key){
-            $lastIndex = $item['index'];
+    if($level == 1){
+        add_khoi($paramfirst);
+    } else{
+        $fatherName = '';
+        foreach($current_list as $item){
+            if($level-1 == $item['level'] && strpos($lastIndex, $item['index']) === 0){
+                $fatherName = $item['name'];
+            }
         }
-    }
 
-    $arr = explode('.', $lastIndex);
-    $arr[$level-1]++;
-    foreach($arr as $item){
-        $index .= $item;
-    }
-    $current_list[] = array('name' => $paramfirst,
-        'index' => $index,
-        'level' => $level,
-    );
+        $lastIndex = $current_list[$id]['index'];
+        foreach($current_list as $item){
+            if($level == $item['level'] && $item['fatherName'] == $fatherName){
+                $lastIndex = $item['index'];
+            }
+        }
 
-    $current_list = sort_list($current_list);
-    update_global_listkkt($current_list);
+        $arr = explode('.', $lastIndex);
+        $arr[$level-1]++;
+
+        $index = 'DM';
+        foreach($arr as $item){
+            $index = $index . '.' . $item;
+        }
+        $index = substr($index, 3, 999);
+
+        $current_list[] = array('name' => $paramfirst,
+            'index' => $index,
+            'level' => $level,
+            'fatherName' => $fatherName,
+        );
+
+        $current_list = sort_list($current_list);
+        update_global_listkkt($current_list);
+    }
 }
 
 function add_khoiCon($id, $paramfirst){

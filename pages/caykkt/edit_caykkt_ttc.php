@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
 require_once('../../model/global_model.php');
+require_once('../../model/caykkt_model.php');
 require_once('../../js.php');
 
 global $DB, $USER, $CFG, $COURSE;
@@ -19,8 +20,6 @@ if ($courseid == SITEID) {
     require_login($courseid);
     $context = \context_course::instance($courseid); // Create instance base on $courseid
 }
-
-
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -37,6 +36,17 @@ $PAGE->set_title('Thêm cây mới');
 $PAGE->set_heading('Thêm cây mới');
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 echo $OUTPUT->header();
+
+
+$ma_cay_khoikienthuc = optional_param('ma_cay', NULL, PARAM_ALPHANUMEXT);
+$edit_mode = optional_param('edit_mode', 0, PARAM_ALPHANUMEXT);
+
+if($ma_cay_khoikienthuc != NULL){
+    set_target($ma_cay_khoikienthuc, $edit_mode);
+} else if($ma_cay_khoikienthuc == NULL && get_newcaykkt_global()['ma_cay'] == NULL){
+    echo 'Error';
+    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/index.php");
+}
 
 
 ///-------------------------------------------------------------------------------------------------------///
@@ -76,6 +86,8 @@ function get_newcaykkt_info(){
     $result = new stdClass();
     $result->tencay = $current_data['tencay'];
     $result->mota = $current_data['mota'];
+    $result->ma_cay = $current_data['ma_cay'];
+    $result->edit_mode = $current_data['edit_mode'];
     return $result;
 }
 
@@ -98,4 +110,36 @@ function reset_global(){
     $arr = get_global($USER->id);
     $arr['newcaykkt'] = array();
     set_global($USER->id, $arr);
+}
+
+function valid_edit_mode(){
+    global $DB, $USER;    
+}
+
+function set_target($ma_cay_khoikienthuc, $edit_mode){
+    global $USER;
+    get_adding_list();
+
+    $current_global = get_global($USER->id);
+    $current_data = $current_global['newcaykkt'];
+    $list = get_list_caykkt_byMaCay($ma_cay_khoikienthuc);
+
+    foreach($list as $item){
+        if($item->ma_khoicha != NULL){
+            $level = count(explode('.', $item->ma_tt));
+            $current_data['value'][] = array('name' => $item->ma_khoi,
+                'index' => (string) $item->ma_tt,
+                'level' => $level,
+                'fatherName' => $item->ma_khoicha,
+            );
+        }
+    }
+
+    $firstNode = reset($list);
+    $current_data['tencay'] = $firstNode->ten_cay;
+    $current_data['mota'] = $firstNode->mota;
+    $current_data['ma_cay'] = $ma_cay_khoikienthuc;
+    $current_data['edit_mode'] = $edit_mode;
+    $current_global['newcaykkt'] = $current_data;
+    set_global($USER->id, $current_global);
 }

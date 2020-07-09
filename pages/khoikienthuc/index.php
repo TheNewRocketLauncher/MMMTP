@@ -109,6 +109,9 @@ echo $action_form;
 echo '<br>';
 
 
+// $allkkts = get_list_kkt();
+// echo json_encode($allkkts);
+
 // Print table
 $table = get_kkt_table($courseid,$search, $page ); 
 echo html_writer::table($table);
@@ -162,33 +165,33 @@ function get_kkt_table($courseid, $key_search = '', $page = 0)
     $stt = 1;
     foreach ($allkkts as $i) {
 
-        if (findContent($idata->ma_decuong, $key_search) || $key_search == '') {
+        if (findContent($i->ma_khoi, $key_search) || $key_search == '') {
 
             if ($page < 0) { // Get all data without page
 
                 $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->id, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
-                if ($i->id_loai_ktt == 0 ){
-                    $loaiktt = "Bắt buộc";
+                if ($i->id_loai_kkt == 0 ){
+                    $loaikkt = "Bắt buộc";
                 }
                 else{
-                    $loaiktt = "Tự chọn";
+                    $loaikkt = "Tự chọn";
                 }
                 $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_kkt.php', ['ma_khoi' => $i->ma_khoi]);
                 $ten_url = \html_writer::link($url, $i->ma_khoi);
-                $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaiktt, (string) $i->ten_khoi, (string) $i->mota];
+                $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaikkt, (string) $i->ten_khoi, (string) $i->mota];
                 $stt = $stt + 1;
             } else if ($pos_in_table >= $page * 5 && $pos_in_table < $page * 5 + 5) {
 
                 $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->id, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
-                if ($i->id_loai_ktt == 0 ){
-                    $loaiktt = "Bắt buộc";
+                if ($i->id_loai_kkt == 0 ){
+                    $loaikkt = "Bắt buộc";
                 }
                 else{
-                    $loaiktt = "Tự chọn";
+                    $loaikkt = "Tự chọn";
                 }
                 $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/chitiet_kkt.php', ['ma_khoi' => $i->ma_khoi]);
                 $ten_url = \html_writer::link($url, $i->ma_khoi);
-                $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaiktt, (string) $i->ten_khoi, (string) $i->mota];
+                $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaikkt, (string) $i->ten_khoi, (string) $i->mota];
                 $stt = $stt + 1;
             }
 

@@ -4,6 +4,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
+require_once('../../model/caykkt_model.php');
 require_once('../../model/global_model.php');
 require_once('../../js.php');
 
@@ -20,6 +21,14 @@ if ($courseid == SITEID) {
     $context = \context_course::instance($courseid); // Create instance base on $courseid
 }
 
+$ma_cay_khoikienthuc = optional_param('ma_cay', NULL, PARAM_ALPHANUMEXT);
+$ma_cay_khoikienthuc = optional_param('edit_mode', 0, PARAM_ALPHANUMEXT);
+
+if($ma_cay_khoikienthuc != NULL){
+    active_edit_mode($ma_cay_khoikienthuc);
+} else if($ma_cay_khoikienthuc == NULL && get_newcaykkt_global()['edit_mode'] == 0){
+    echo 'Error';
+}
 
 
 ///-------------------------------------------------------------------------------------------------------///
@@ -30,11 +39,10 @@ $PAGE->set_pagelayout('standard');
 // Navbar.
 $PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_caykhoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/caykkt/index.php'));
-$PAGE->navbar->add('Thêm cây mới');
-$PAGE->navbar->add('Chọn danh sách khối');
+$PAGE->navbar->add('Chi tiết cây khối kiến thức');
 // Title.
-$PAGE->set_title('Thêm cây mới');
-$PAGE->set_heading('Thêm cây mới');
+$PAGE->set_title('Chi tiết cây khối kiến thức');
+$PAGE->set_heading('Chi tiết cây khối kiến thức');
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 echo $OUTPUT->header();
 
@@ -67,21 +75,33 @@ if(print_table()){
         array('id' => 'btn_addcaykkt_remove_khoi', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #fa4b1b; color:#fff;')
     )
     . '<br>'
-    . html_writer::tag(
-        'button',
-        'Di chuyển lên',
-        array('id' => 'btn_addcaykkt_moveup', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #32d96f; color:#fff;')
-    )
-    . '<br>'
-    . html_writer::tag(
-        'button',
-        'Di chuyển xuống',
-        array('id' => 'btn_addcaykkt_movedown', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #32d96f; color:#fff;')
-    )
-    . '<br>'
     . '<br>'
     . html_writer::end_tag('div');
     echo $action_form;
+
+    // $action_form =
+    // html_writer::start_tag('div', array('style' => 'display: flex; justify-content:left;'))
+    // . html_writer::tag(
+    //     'button',
+    //     'Xoá khối',
+    //     array('id' => 'btn_addcaykkt_remove_khoi', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #fa4b1b; color:#fff;')
+    // )
+    // . '<br>'
+    // . html_writer::tag(
+    //     'button',
+    //     'Di chuyển lên',
+    //     array('id' => 'btn_addcaykkt_moveup', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #32d96f; color:#fff;')
+    // )
+    // . '<br>'
+    // . html_writer::tag(
+    //     'button',
+    //     'Di chuyển xuống',
+    //     array('id' => 'btn_addcaykkt_movedown', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #32d96f; color:#fff;')
+    // )
+    // . '<br>'
+    // . '<br>'
+    // . html_writer::end_tag('div');
+    // echo $action_form;
 }
 
 $updateTableForm = new newcaykkt_form1_b();
@@ -94,9 +114,17 @@ if ($updateTableForm->is_cancelled()) {
         redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/index.php");
     }
 } else if ($fromform = $updateTableForm->get_data()) {
-    insert_cay_kkt();
-    reset_global();
-    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/index.php");
+    $info = get_newcaykkt_info();
+    if($info->edit_mode == 0){
+        delete_caykkt_byMaCay($info->ma_cay);
+        insert_cay_kkt();
+        reset_global();
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/index.php");
+    } else{
+        insert_cay_kkt();
+        reset_global();
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/index.php");
+    }
 }
 $updateTableForm->display();
 
@@ -108,6 +136,7 @@ echo $OUTPUT->footer();
 ///-------------------------------------------------------------------------------------------------------///
 //FUNCTION
 
+
 function get_newcaykkt_info(){
     global $USER;
     get_adding_list();
@@ -115,6 +144,8 @@ function get_newcaykkt_info(){
     $result = new stdClass();
     $result->tencay = $current_data['tencay'];
     $result->mota = $current_data['mota'];
+    $result->ma_cay = $current_data['ma_cay'];
+    $result->edit_mode = $current_data['edit_mode'];
     return $result;
 }
 
@@ -132,6 +163,15 @@ function update_newcaykkt_global($newdata){
     set_global($USER->id, $current_global);
 }
 
+function active_edit_mode(){
+    global $USER;
+    $list = get_list_caykkt_byMaCay($ma_cay_khoikienthuc);
+
+    $current_global = get_global($USER->id);
+    $current_global['edit_mode'] = 1;
+    set_global($USER->id, $current_global);
+}
+
 function print_table(){
     global $DB, $USER, $CFG, $COURSE;
     $list = get_adding_list();
@@ -145,14 +185,14 @@ function print_table(){
     foreach($list as $item){
         $khoi = get_kkt_byMaKhoi($item['name']);
         $mota = $khoi->name;
-        $loaiktt = "Tự chọn";
-        if ($i->id_loai_ktt === 0 ){
-            $loaiktt = "Bắt buộc";
+        $loaikkt = "Tự chọn";
+        if ($i->id_loai_kkt === 0 ){
+            $loaikkt = "Bắt buộc";
         }
         $rows[] = array(
             'index' => $item['index'],
             'ten_khoi' => $khoi->ten_khoi,
-            'loaikhoi'=> $loaiktt,
+            'loaikhoi'=> $loaikkt,
             'mota' => $khoi->mota,
             'ma_khoi' => $item['name'],
         );

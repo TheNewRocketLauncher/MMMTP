@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
 require_once('../../model/global_model.php');
+require_once('../../model/caykkt_model.php');
 require_once('../../js.php');
 
 global $DB, $USER, $CFG, $COURSE;
