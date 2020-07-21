@@ -4,6 +4,7 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
+require_once('../../controller/support.php');
 require_once('../../js.php');
 
 global $USER;
@@ -11,14 +12,12 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
 $search = trim(optional_param('search', '', PARAM_NOTAGS));
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -33,6 +32,8 @@ $PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new 
 // Title.
 $PAGE->set_title(get_string('label_khoikienthuc', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
 $PAGE->set_heading(get_string('label_khoikienthuc', 'block_educationpgrs'));
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -89,19 +90,19 @@ $action_form =
     . html_writer::tag(
         'button',
         'Xóa',
-        array('id' => 'btn_delete_kkt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
+        array('id' => 'btn_delete_kkt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 130px; height:35px; padding: 0; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
-        'Clone BDT',
-        array('id' => 'btn_clone_kkt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
+        'Sao chép',
+        array('id' => 'btn_clone_kkt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:130px; height:35px; padding: 0; background-color: white; color:black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_kkt', 'onClick' => "window.location.href='add_kkt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
+        array('id' => 'btn_add_kkt', 'onClick' => "window.location.href='add_kkt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 130px; height:35px; padding: 0; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
@@ -109,56 +110,24 @@ echo $action_form;
 echo '<br>';
 
 
-// $allkkts = get_list_kkt();
-// echo json_encode($allkkts);
-
 // Print table
 $table = get_kkt_table($courseid,$search, $page ); 
 echo html_writer::table($table);
 
 
 $baseurl = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php', ['search' => $search]);
-echo $OUTPUT->paging_bar(count(get_kkt_table( $courseid, $search, -1)->data), $page, 5, $baseurl);
+echo $OUTPUT->paging_bar(count(get_kkt_table( $courseid, $search, -1)->data), $page, 20, $baseurl);
 
 
 
  // Footer
 echo $OUTPUT->footer();
 
-function vn_to_str($str)
-{
-   $unicode = array(
-      'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ|Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
-      'd' => 'đ|Đ',
-      'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
-      'i' => 'í|ì|ỉ|ĩ|ị|Í|Ì|Ỉ|Ĩ|Ị',
-      'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
-      'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
-      'y' => 'ý|ỳ|ỷ|ỹ|ỵ|Ý|Ỳ|Ỷ|Ỹ|Ỵ',
-   );
-   foreach ($unicode as $nonUnicode => $uni) {
-      $str = preg_replace("/($uni)/i", $nonUnicode, $str);
-   }
-   $str = str_replace(' ', '_', $str);
-   return strtolower($str);
-}
-
-function findContent($str, $key)
-{
-   $result = false;
-   $_str = vn_to_str($str);
-   $_key = vn_to_str($key);
-   if (strstr($_str, $_key)) {
-      $result = true;
-   } else {
-      $result = false;
-   }
-   return $result;
-}
-
 function get_kkt_table($courseid, $key_search = '', $page = 0)
 {
+
     global $DB, $USER, $CFG, $COURSE;
+    $count = 20;
     $table = new html_table();
     $table->head = array('', 'STT', 'Mã khối', 'ID loại KKT', 'Tên khối', 'Mô tả');
     $allkkts = get_list_kkt();
@@ -169,7 +138,7 @@ function get_kkt_table($courseid, $key_search = '', $page = 0)
 
             if ($page < 0) { // Get all data without page
 
-                $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->id, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
+                $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->ma_khoi, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
                 if ($i->id_loai_kkt == 0 ){
                     $loaikkt = "Bắt buộc";
                 }
@@ -180,9 +149,9 @@ function get_kkt_table($courseid, $key_search = '', $page = 0)
                 $ten_url = \html_writer::link($url, $i->ma_khoi);
                 $table->data[] = [$checkbox, (string) $stt, $ten_url, $loaikkt, (string) $i->ten_khoi, (string) $i->mota];
                 $stt = $stt + 1;
-            } else if ($pos_in_table >= $page * 5 && $pos_in_table < $page * 5 + 5) {
+            } else if ($pos_in_table >= $page * $count && $pos_in_table < $page * $count + $count) {
 
-                $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->id, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
+                $checkbox = html_writer::tag('input', ' ', array('class' => 'kktcheckbox', 'type' => "checkbox", 'name' => $i->ma_khoi, 'id' => 'bdt' . $i->id, 'value' => '0', 'onclick' => "changecheck($i->id)"));
                 if ($i->id_loai_kkt == 0 ){
                     $loaikkt = "Bắt buộc";
                 }

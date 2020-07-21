@@ -66,16 +66,13 @@ class newkkt_form extends moodleform
             'noselectionstring' => 'Empty',
         );
         $mform->addElement('autocomplete', 'area_ma_khoi', 'Chọn các khối con', $this->get_listkkt(), $options);
-        //$mform->hideIf('area_ma_khoi', 'checkbox_cokhoicon', 'notchecked');
-        // $mform->disabledIf('txt_tenkkt', 'checkbox_cokhoicon', 'notchecked');
+        $mform->hideIf('area_ma_khoi', 'select_loaikhoi', 'eq', 1);
 
-        //$mform->addElement('checkbox', 'checkbox_comonhoc', 'Có môn học');
         $options = array(
             'multiple' => true,
             'noselectionstring' => 'Empty',
         );
         $mform->addElement('autocomplete', 'area_mamonhoc', 'Chọn các môn học', $this->get_listmonhoc(), $options);
-        //$mform->hideIf('area_mamonhoc', 'checkbox_comonhoc', 'notchecked');
 
         $mform->addElement('submit', 'btn_review', 'Xem trước');
         // $mform->registerNoSubmitButton('btn_review');
@@ -101,7 +98,7 @@ class newkkt_form extends moodleform
     function get_listmonhoc()
     {
         global $CFG, $DB;
-        $allmonhoc = $DB->get_records('block_edu_monhoc');
+        $allmonhoc = $DB->get_records('eb_monhoc');
         if ($allmonhoc == null) {
             return null;
         } else {
@@ -116,7 +113,7 @@ class newkkt_form extends moodleform
     function get_listkkt()
     {
         global $CFG, $DB;
-        $all_khoi = $DB->get_records('block_edu_khoikienthuc', []);
+        $all_khoi = $DB->get_records('eb_khoikienthuc', []);
         if ($all_khoi == null) {
             return null;
         } else {
@@ -192,8 +189,7 @@ class editkkt_form extends moodleform
             'noselectionstring' => 'Empty',
         );
         $mform->addElement('autocomplete', 'area_ma_khoi', 'Chọn các khối con', $this->get_listkkt(), $options);
-        //$mform->hideIf('area_ma_khoi', 'checkbox_cokhoicon', 'notchecked');
-        // $mform->disabledIf('txt_tenkkt', 'checkbox_cokhoicon', 'notchecked');
+        $mform->hideIf('area_ma_khoi', 'select_loaikhoi', 'eq', 1);
 
         //$mform->addElement('checkbox', 'checkbox_comonhoc', 'Có môn học');
         $options = array(
@@ -201,7 +197,6 @@ class editkkt_form extends moodleform
             'noselectionstring' => 'Empty',
         );
         $mform->addElement('autocomplete', 'area_mamonhoc', 'Chọn các môn học', $this->get_listmonhoc(), $options);
-        //$mform->hideIf('area_mamonhoc', 'checkbox_comonhoc', 'notchecked');
 
         $mform->registerNoSubmitButton('btn_review');
         $mform->registerNoSubmitButton('btn_cancle');
@@ -219,8 +214,8 @@ class editkkt_form extends moodleform
         $mform->addElement('hidden', 'edit_mode', '0');
         $mform->addElement('hidden', 'ma_khoi', '');
         // $mform->disabledIf('txt_makhoi', 'edit_mode', 'eq', '0');
-        $mform->hideIf('btn_edit', 'edit_mode', 'neq', '0');
-        $mform->hideIf('btn_newkkt', 'edit_mode', 'eq', '0');
+        $mform->hideIf('btn_edit', 'edit_mode', 'eq', '0');
+        $mform->hideIf('btn_newkkt', 'edit_mode', 'eq', '1');
     }
 
     function validation($data, $files)
@@ -237,7 +232,7 @@ class editkkt_form extends moodleform
     function get_listmonhoc()
     {
         global $CFG, $DB;
-        $allmonhoc = $DB->get_records('block_edu_monhoc');
+        $allmonhoc = $DB->get_records('eb_monhoc');
         if ($allmonhoc == null) {
             return null;
         } else {
@@ -252,7 +247,7 @@ class editkkt_form extends moodleform
     function get_listkkt()
     {
         global $CFG, $DB;
-        $all_khoi = $DB->get_records('block_edu_khoikienthuc', []);
+        $all_khoi = $DB->get_records('eb_khoikienthuc', []);
         if ($all_khoi == null) {
             return null;
         } else {

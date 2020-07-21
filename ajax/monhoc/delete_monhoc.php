@@ -6,7 +6,7 @@ $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
 function delete_monhoc($id) {
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_monhoc', array('id' => $id));
+    $DB->delete_records('eb_monhoc', array('id' => $id));
 }
     delete_monhoc($id);
     // return

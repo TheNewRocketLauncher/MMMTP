@@ -8,14 +8,12 @@ require_once('../../model/hedt_model.php');
 global $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/hedt/add_hdt.php', ['courseid' => $courseid]));
@@ -23,6 +21,7 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_hedt', 'block_educationpgrs'));
 
 // Title.
@@ -30,6 +29,8 @@ $PAGE->set_title('Thêm Hệ đào tạo ');
 $PAGE->set_heading('Thêm mới Hệ đào tạo ');
 
 // Require js_call_amd
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header

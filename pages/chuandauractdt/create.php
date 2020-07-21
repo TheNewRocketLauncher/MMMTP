@@ -13,12 +13,15 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add("Danh sách chuẩn đầu ra chương trình đào tạo", new moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php'));
 $PAGE->navbar->add('Thêm chuẩn đầu ra chương trình đào tạo');
 
 // Title.
 $PAGE->set_title('Thêm chuẩn đầu ra chương trình đào tạo'  );
 $PAGE->set_heading('Thêm chuẩn đầu ra chương trình đào tạo'  );
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -81,7 +84,7 @@ function handle( $ma_cdr_cha){
         $maxNew = 0 ;
         $maxOld = 0;
         $maxResult = 0 ;
-        $rows_cdr = $DB->get_records('block_edu_chuandaura_ctdt', []);
+        $rows_cdr = $DB->get_records('eb_chuandaura_ctdt', []);
         usort($rows_cdr, function($a, $b)
         {
            return strcmp($a->ma_cdr, $b->ma_cdr);
@@ -103,10 +106,10 @@ function handle( $ma_cdr_cha){
     }
     
     else if (intval($ma_cdr_cha) >= 1) {
-        $rows = $DB->get_record('block_edu_chuandaura_ctdt', ['ma_cdr' => $ma_cdr_cha]);
+        $rows = $DB->get_record('eb_chuandaura_ctdt', ['ma_cdr' => $ma_cdr_cha]);
         $level_cha = $rows->level_cdr;
         $level_con = intval($level_cha) + 1;
-        $rows_cdr = $DB->get_records('block_edu_chuandaura_ctdt', []);
+        $rows_cdr = $DB->get_records('eb_chuandaura_ctdt', []);
         usort($rows_cdr, function($a, $b)
         {
            return strcmp($a->ma_cdr, $b->ma_cdr);

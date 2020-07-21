@@ -7,7 +7,7 @@ $courseid = required_param('course', PARAM_INT);
 
 function delete_muctieumonhoc($id) {
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_muctieumonhoc', array('id' => $id));
+    $DB->delete_records('eb_muctieumonhoc', array('id' => $id));
 }
     delete_muctieumonhoc($id);
 

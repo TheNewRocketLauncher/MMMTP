@@ -10,14 +10,12 @@ require_once('../../js.php');
 global $DB, $USER, $CFG, $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -31,6 +29,8 @@ $PAGE->navbar->add(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'),
 // Title.
 $PAGE->set_title(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
 $PAGE->set_heading(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
@@ -55,13 +55,8 @@ if ($mform->is_cancelled()) {
         $mform->display();
         print_table_Monthuockhoi($arrmamon, $arr_makhoi);
     } else if ($mform->get_submit_value('btn_newkkt')) {
-        if($fromform->area_ma_khoi != NULL || $fromform->area_mamonhoc != NULL){
-            add_newkkt($fromform);
-            redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
-        } else{
-            echo 'Môn học phải ít nhất có một khối con hoặc một môn học';
-            $mform->display();
-        }
+        add_newkkt($fromform);
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
     }
     
 } else {
@@ -95,10 +90,12 @@ function print_table_Monthuockhoi($arrmamon, $arr_makhoi){
             $table = new html_table();
             $table->head = array('STT', 'Mã', 'Tên', 'Số TC', 'LT', 'TH', 'BT');
 
+            $table->data[] = [ '', $khoi->mota, '', '', '', '', ''];
+
             $listmonthuockhoi = get_monthuockhoi($item);
             if($listmonthuockhoi != NULL){
                 foreach($listmonthuockhoi as $mon){
-                    $imonhoc = (array) $DB->get_record('block_edu_monhoc', ['mamonhoc' => $mon->mamonhoc]);
+                    $imonhoc = (array) $DB->get_record('eb_monhoc', ['mamonhoc' => $mon->mamonhoc]);
                     $table->data[] = [(string) $stt, (string) $imonhoc['mamonhoc'], (string) $imonhoc['tenmonhoc_vi'],
                                         (string) $imonhoc['sotinchi'], (string) $imonhoc['sotietlythuyet'],
                                         (string) $imonhoc['sotietthuchanh'], (string) $imonhoc['sotiet_baitap']];
@@ -117,7 +114,7 @@ function print_table_Monthuockhoi($arrmamon, $arr_makhoi){
         $table->head = array('STT', 'Mã', 'Tên', 'Số TC', 'LT', 'TH', 'BT');
         
         foreach($arrmamon as $key => $item){
-            $imonhoc = (array) $DB->get_record('block_edu_monhoc', ['mamonhoc' => $item]);
+            $imonhoc = (array) $DB->get_record('eb_monhoc', ['mamonhoc' => $item]);
             $table->data[] = [(string) $stt, (string) $imonhoc['mamonhoc'], (string) $imonhoc['tenmonhoc_vi'],
                                 (string) $imonhoc['sotinchi'], (string) $imonhoc['sotietlythuyet'],
                                 (string) $imonhoc['sotietthuchanh'], (string) $imonhoc['sotiet_baitap']];

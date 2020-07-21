@@ -12,23 +12,12 @@ global $DB, $USER, $CFG, $COURSE;
 
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
-
-$ma_cay_khoikienthuc = optional_param('ma_cay', NULL, PARAM_ALPHANUMEXT);
-$ma_cay_khoikienthuc = optional_param('edit_mode', 0, PARAM_ALPHANUMEXT);
-
-if($ma_cay_khoikienthuc != NULL){
-    active_edit_mode($ma_cay_khoikienthuc);
-} else if($ma_cay_khoikienthuc == NULL && get_newcaykkt_global()['edit_mode'] == 0){
-    echo 'Error';
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 
 ///-------------------------------------------------------------------------------------------------------///
@@ -43,6 +32,8 @@ $PAGE->navbar->add('Chi tiết cây khối kiến thức');
 // Title.
 $PAGE->set_title('Chi tiết cây khối kiến thức');
 $PAGE->set_heading('Chi tiết cây khối kiến thức');
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 echo $OUTPUT->header();
 
@@ -57,7 +48,8 @@ if ($mform->is_cancelled()) {
 } else if ($mform->no_submit_button_pressed()) {
 
 } else if ($fromform = $mform->get_data()) {
-    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/add_caykkt_ttc.php");
+    $data = get_newcaykkt_info();
+    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/edit_caykkt.php?ma_cay=" . $data->ma_cay);
 } else{
     $toform = new stdClass();
     $data = get_newcaykkt_info();
@@ -79,29 +71,6 @@ if(print_table()){
     . html_writer::end_tag('div');
     echo $action_form;
 
-    // $action_form =
-    // html_writer::start_tag('div', array('style' => 'display: flex; justify-content:left;'))
-    // . html_writer::tag(
-    //     'button',
-    //     'Xoá khối',
-    //     array('id' => 'btn_addcaykkt_remove_khoi', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #fa4b1b; color:#fff;')
-    // )
-    // . '<br>'
-    // . html_writer::tag(
-    //     'button',
-    //     'Di chuyển lên',
-    //     array('id' => 'btn_addcaykkt_moveup', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #32d96f; color:#fff;')
-    // )
-    // . '<br>'
-    // . html_writer::tag(
-    //     'button',
-    //     'Di chuyển xuống',
-    //     array('id' => 'btn_addcaykkt_movedown', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #32d96f; color:#fff;')
-    // )
-    // . '<br>'
-    // . '<br>'
-    // . html_writer::end_tag('div');
-    // echo $action_form;
 }
 
 $updateTableForm = new newcaykkt_form1_b();
@@ -115,9 +84,9 @@ if ($updateTableForm->is_cancelled()) {
     }
 } else if ($fromform = $updateTableForm->get_data()) {
     $info = get_newcaykkt_info();
-    if($info->edit_mode == 0){
+    if($info->edit_mode == 1){
         delete_caykkt_byMaCay($info->ma_cay);
-        insert_cay_kkt();
+        update_caykkt();
         reset_global();
         redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/index.php");
     } else{
@@ -125,6 +94,7 @@ if ($updateTableForm->is_cancelled()) {
         reset_global();
         redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/index.php");
     }
+    $updateTableForm->display();
 }
 $updateTableForm->display();
 

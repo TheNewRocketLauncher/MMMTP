@@ -6,7 +6,7 @@ $bdt = trim(required_param('bdt', PARAM_NOTAGS));
 $courseid = required_param('course', PARAM_INT);
 function get_hdt_from_bdt($bdt) {
     global $DB, $USER, $CFG, $COURSE;
-    $hdt = $DB->get_records('block_edu_hedt', array('ma_bac' => $bdt));
+    $hdt = $DB->get_records('eb_hedt', array('ma_bac' => $bdt));
     return $hdt;
 }
     $data = array();
@@ -19,7 +19,7 @@ function get_hdt_from_bdt($bdt) {
       $data['hedt'][]=& $ihedt->ma_he;
       }
 
-    $tenbac = $DB->get_record('block_edu_bacdt', ['ma_bac' =>$bdt]);
+    $tenbac = $DB->get_record('eb_bacdt', ['ma_bac' =>$bdt]);
     $data['tenbac'] =& $tenbac->ten;
     // Trả về kết quả với json_encode
 

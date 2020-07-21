@@ -6,20 +6,17 @@ require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
 require_once('../../model/global_model.php');
 require_once('../../model/caykkt_model.php');
-require_once('../../js.php');
 
 global $DB, $USER, $CFG, $COURSE;
 
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -34,12 +31,14 @@ $PAGE->navbar->add('Chọn danh sách khối');
 // Title.
 $PAGE->set_title('Thêm cây mới');
 $PAGE->set_heading('Thêm cây mới');
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 echo $OUTPUT->header();
 
 
-$ma_cay_khoikienthuc = optional_param('ma_cay', NULL, PARAM_ALPHANUMEXT);
-$edit_mode = optional_param('edit_mode', 0, PARAM_ALPHANUMEXT);
+$ma_cay_khoikienthuc = optional_param('ma_cay', NULL, PARAM_NOTAGS);
+$edit_mode = optional_param('edit_mode', 0, PARAM_NOTAGS);
 
 if($ma_cay_khoikienthuc != NULL){
     set_target($ma_cay_khoikienthuc, $edit_mode);
@@ -60,10 +59,18 @@ if ($mform->is_cancelled()) {
 
 } else if ($fromform = $mform->get_data()) {
     $caykkt_global = get_newcaykkt_global();
-    $caykkt_global['tencay'] = $fromform->txt_tencay;
-    $caykkt_global['mota'] = $fromform->txt_mota;
-    update_newcaykkt_global($caykkt_global);
-    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/add_caykkt.php");
+    if($caykkt_global['edit_mode'] == 1){
+        $caykkt_global['tencay'] = $fromform->txt_tencay;
+        $caykkt_global['mota'] = $fromform->txt_mota;
+        update_newcaykkt_global($caykkt_global);
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/edit_caykkt.php");
+    } else{
+        $caykkt_global['tencay'] = $fromform->txt_tencay;
+        $caykkt_global['mota'] = $fromform->txt_mota;
+        update_newcaykkt_global($caykkt_global);
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/add_caykkt.php");
+    }
+
 } else{
     $toform = new stdClass();
     $data = get_newcaykkt_info();
@@ -118,6 +125,8 @@ function valid_edit_mode(){
 
 function set_target($ma_cay_khoikienthuc, $edit_mode){
     global $USER;
+    
+    reset_global();
     get_adding_list();
 
     $current_global = get_global($USER->id);

@@ -2,13 +2,15 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
+require_once('../../model/ctdt_model.php');
 $id = required_param('id', PARAM_INT);
-$courseid = required_param('course', PARAM_INT);
-function delete_ctdt($id) {
-    global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_ctdt', array('id' => $id));
-}
+
+if(can_edit_ctdt($id)){
     delete_ctdt($id);
-    // return
-    exit;
+    echo json_encode(['error' => 0]);
+} else{
+    echo json_encode(['error' => 1, 'errorMess' => 'Chuong trình dào t?o dang du?c s? d?ng']);
+}
+
+exit;
 

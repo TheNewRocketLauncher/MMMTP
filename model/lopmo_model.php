@@ -1,82 +1,148 @@
 <?php
 require_once(__DIR__ . '/../../../config.php');
-require_once('../../js.php');
+require_once('../../controller/support.php');
+require_once('../../../../course/lib.php');
+require_once('../../../../course/edit_form.php');
+require_once("$CFG->libdir/formslib.php");
 
-
-function vn_to_str($str)
-{
-   $unicode = array(
-      'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ|Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
-      'd' => 'đ|Đ',
-      'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
-      'i' => 'í|ì|ỉ|ĩ|ị|Í|Ì|Ỉ|Ĩ|Ị',
-      'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
-      'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
-      'y' => 'ý|ỳ|ỷ|ỹ|ỵ|Ý|Ỳ|Ỷ|Ỹ|Ỵ',
-   );
-   foreach ($unicode as $nonUnicode => $uni) {
-      $str = preg_replace("/($uni)/i", $nonUnicode, $str);
-   }
-   $str = str_replace(' ', '_', $str);
-   return strtolower($str);
-}
-
-function findContent($str, $key)
-{
-   $result = false;
-   $_str = vn_to_str($str);
-   $_key = vn_to_str($key);
-   if (strstr($_str, $_key)) {
-      $result = true;
-   } else {
-      $result = false;
-   }
-   return $result;
-}
+ 
 
 
 
 function insert_lopmo($param)
 {   
    global $DB, $USER, $CFG, $COURSE;
-   $ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt' => $param->ma_ctdt]);
-   $monhoc = $DB->get_record('block_edu_monhoc', ['mamonhoc' => $param->mamonhoc]);
+   $ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt' => $param->ma_ctdt]);
+   $monhoc = $DB->get_record('eb_monhoc', ['mamonhoc' => $param->mamonhoc]);
    $monhoc->lopmo = 1;
-   $DB->update_record('block_edu_monhoc', $monhoc, $bulk = false);
+   $DB->update_record('eb_monhoc', $monhoc, $bulk = false);
    $param->ma_nienkhoa = $ctdt->ma_nienkhoa;
    $param->ma_nganh = $ctdt->ma_nganh;
-   $DB->insert_record('block_edu_lop_mo', $param);
+
+   $data = new stdClass();
+   $category_id= 1;
+   $data->category = $category_id;
+   $data->fullname = $param->full_name;
+   $data->shortname = $param->short_name;
+   // Params
+   $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
+   $catcontext = context_coursecat::instance( $category_id);
+   $editoroptions['context'] = $catcontext; //
+   $editoroptions['subdirs'] = 0;
+   // Insert course
+   // if(Db->count_records)
+   $course = create_course($data, $editoroptions);
+
+   echo "courseId";
+   echo $course->id;
+   $param->course_id = $course->id;
+      $DB->insert_record('eb_lop_mo', $param);
 }
+
 
 function get_lopmo_byID($id)
 {
    global $DB, $USER, $CFG, $COURSE;
-   $lopmo = $DB->get_record('block_edu_lop_mo', ['id' => $id]);
+   $lopmo = $DB->get_record('eb_lop_mo', ['id' => $id]);
    return $lopmo;
 }
 
-function get_lopmo_checkbox($key_search = '', $page = 0)
+
+
+
+function update_lopmo($param)
+{   
+   global $DB, $USER, $CFG, $COURSE;
+   $ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt' => $param->ma_ctdt]);
+   $param->ma_nienkhoa = $ctdt->ma_nienkhoa;
+   $param->ma_nganh = $ctdt->ma_nganh;
+   $DB->update_record('eb_lop_mo', $param, $bulk = false);
+}
+
+
+
+function get_kkt_byMaKhoi($ma_khoi)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   if (userIsAdmin()) {
+
+   $kkt = $DB->get_record('eb_khoikienthuc', ['ma_khoi' => $ma_khoi]);
+   }else{
+       $kkt = NULL;
+}
+   return $kkt;
+}
+
+
+function get_makhoi_from_mactdt($ma_ctdt){
+   global $DB;
+   $ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt' => $ma_ctdt]);
+   $caykkt = $DB->get_record('eb_cay_khoikienthuc' , ['ma_cay_khoikienthuc'  => $ctdt->ma_cay_khoikienthuc]);
+   $ma_khoi = $caykkt->ma_khoi;
+   return $ma_khoi;
+}
+
+function get_list_monhoc_from_makhoi($ma_khoi){
+   global $DB;
+   $listmonhoc = $DB->get_records('eb_monthuockhoi', ['ma_khoi' => $ma_khoi]);
+   return $listmonhoc;
+}
+
+function get_ctdt_by_mactdt($ma_ctdt){
+   global $DB;
+
+
+   $data = array();
+   $ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt' => $ma_ctdt]);
+    
+
+   $tenbac = $DB->get_record('eb_bacdt', ['ma_bac' => $ctdt->ma_bac]);
+   $data[] =& $tenbac->ten;
+
+   $hedt = $DB->get_record('eb_hedt', ['ma_he' => $ctdt->ma_he]);
+   $data[] =& $hedt->ten;
+
+   $nienkhoa = $DB->get_record('eb_nienkhoa', ['ma_nienkhoa' => $ctdt->ma_nienkhoa]);
+   $data[] =& $nienkhoa->ten_nienkhoa;
+
+   $nganhdt = $DB->get_record('eb_nganhdt', ['ma_nganh' => $ctdt->ma_nganh]);
+   $data[] =& $nganhdt->ten;
+
+   $chuyennganh = $DB->get_record('eb_chuyennganhdt', ['ma_chuyennganh' => $ctdt->ma_chuyennganh]);
+   $data[] =& $chuyennganh->ten;
+
+   $data[] =& $ctdt->mota;
+   return $data;
+}
+
+function get_lopmo($key_search = '', $page = 0, $ma_ctdt = '')
 {
    global $DB, $USER, $CFG, $COURSE;
    $table = new html_table();
-   $table->head = array('', 'STT','Mã môn học', 'Tên khóa học', 'Giáo viên phụ trách', 'Mô tả');
-   $alllopmos = $DB->get_records('block_edu_lop_mo', []);
-   $stt = 1 + $page * 5;
+   // Get course by ctdt   
+   $alllopmos = $DB->get_records('eb_lop_mo', []);
+   if ($ma_ctdt != '') {
+      $alllopmos = $DB->get_records('eb_lop_mo', ['ma_ctdt' => $ma_ctdt]);
+   }
+   // Position
+   $stt = 1 + $page * 20;
    $pos_in_table = 1;
-
+   // Empty row
+   $table->data[] = [];
+   // Loop DB
    foreach ($alllopmos as $item) {
       if (findContent($item->full_name, $key_search) || $key_search == '') {
-
-      $checkbox = html_writer::tag('input', ' ', array('class' => 'lopmocheckbox', 'type' => "checkbox", 'name' => $item->id, 'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
-      $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/update.php', [ 'id' => $item->id]);
+      $course_id = 1;
+      $course_id = $item->course_id;
+      $url = new \moodle_url('/course/view.php', [ 'id' => $course_id]);
       $ten_url = \html_writer::link($url, $item->full_name);
-
-
       if ($page < 0) { // Get all data without page
-         $table->data[] = [$checkbox, (string) $stt,(string)$item->mamonhoc, $ten_url, (string) $item->assign_to, (string) $item->mota];
+         $html = '<div style = "font-size: 1.640625rem; font-weight: 300; line-height: 1.2;background-image: url(/moodle/theme/image.php/boost/core/1594902682/i/course);background-repeat: no-repeat; padding-left: 50px;">'.$ten_url.'</div>'.'<div style = "text-align: center">' . $item->mota . '</div>';
+         $table->data[] = [$html];
          $stt = $stt + 1;
-      } else if ($pos_in_table > $page * 5 && $pos_in_table <= $page * 5 + 5) {
-         $table->data[] = [$checkbox, (string) $stt,(string)$item->mamonhoc, $ten_url, (string) $item->assign_to, (string) $item->mota];
+      } else if ($pos_in_table > $page * 20 && $pos_in_table <= $page * 20 + 20) {
+         $html = '<div style = "font-size: 1.640625rem; font-weight: 300; line-height: 1.2;background-image: url(/moodle/theme/image.php/boost/core/1594902682/i/course);background-repeat: no-repeat; padding-left: 50px;">'.$ten_url.'</div>'.'<div style = "text-align: center">' . $item->mota . '</div>';
+         $table->data[] = [$html];
          $stt = $stt + 1;
       }
       $pos_in_table = $pos_in_table + 1;
@@ -87,68 +153,86 @@ function get_lopmo_checkbox($key_search = '', $page = 0)
 }
 
 
+function get_danhmuc_lopmo()
+{
+   global $DB;
+   // Begin
+   $action_form =
+   html_writer::start_tag('div', array('style' => 'display: block; padding: 15px;'));
 
-function update_lopmo($param)
-{   
-   global $DB, $USER, $CFG, $COURSE;
-   $ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt' => $param->ma_ctdt]);
-   $param->ma_nienkhoa = $ctdt->ma_nienkhoa;
-   $param->ma_nganh = $ctdt->ma_nganh;
-   $DB->update_record('block_edu_lop_mo', $param, $bulk = false);
+   // Lấy ra danh sách danh mục
+   $arr_danhmuc = array();
+   $alllopmos = $DB->get_records('eb_lop_mo', []);
+   foreach($alllopmos as $ilopmo) {
+      // print_r($ilopmo); 
+      $data = new stdClass();
+      $data->nam_hoc = $ilopmo->nam_hoc;
+      $data->hoc_ky = $ilopmo->hoc_ky;
+      // Thêm vào danh sách
+
+      $isExist = false;
+      foreach($arr_danhmuc as $item) {
+         if ($item->nam_hoc == $data->nam_hoc || $item->hoc_ky == $data->hoc_ky)
+            $isExist = true;
+      }
+      if (!$isExist)
+         $arr_danhmuc[] = $data;     
+   }
+
+   // In ra danh sách danh mục
+   foreach($arr_danhmuc as $item) {
+      // $infor->nam_hoc = 2017;
+      // $infor->hoc_ky = 3;
+      $tendanhmuc = "Học kỳ " . $item->hoc_ky . " (". $item->nam_hoc . "-" . ($item->nam_hoc + 1) . ")";
+      $ref = $CFG->wwwroot . 'view_semester.php?namhoc=' . $item->nam_hoc . '&hocky=' . $item->hoc_ky;
+
+      $action_form .= html_writer::tag(
+         'button',
+         "<p style='margin:0'><a href='".$ref."' style='color:#fff;font-size: 24px;'>".$tendanhmuc."</a></p>",
+         array(
+            'onClick' => "window.location.href='".$ref."'",
+            'style' => 'margin:20px;border: none;border-radius: 40px 10px 40px 10px;width: 250px; height:150px;background-color: #1177d1;color: #fff;'
+         )
+      );      
+   }
+
+   // End
+   $action_form .= html_writer::end_tag('div');
+
+   // Return
+   return $action_form;
 }
 
-
-
-function get_kkt_byMaKhoi($ma_khoi)
+function get_lopmo_thuoc_danhmuc($key_search = '', $page = 0, $nam_hoc = 0, $hoc_ky = 0)
 {
    global $DB, $USER, $CFG, $COURSE;
-   if (userIsAdmin()) {
-
-   $kkt = $DB->get_record('block_edu_khoikienthuc', ['ma_khoi' => $ma_khoi]);
-   }else{
-       $kkt = NULL;
-}
-   return $kkt;
-}
-
-
-function get_makhoi_from_mactdt($ma_ctdt){
-   global $DB;
-   $ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt' => $ma_ctdt]);
-   $caykkt = $DB->get_record('block_edu_cay_khoikienthuc' , ['ma_cay_khoikienthuc'  => $ctdt->ma_cay_khoikienthuc]);
-   $ma_khoi = $caykkt->ma_khoi;
-   return $ma_khoi;
-}
-
-function get_list_monhoc_from_makhoi($ma_khoi){
-   global $DB;
-   $listmonhoc = $DB->get_records('block_edu_monthuockhoi', ['ma_khoi' => $ma_khoi]);
-   return $listmonhoc;
-}
-
-function get_ctdt_by_mactdt($ma_ctdt){
-   global $DB;
-
-
-   $data = array();
-   $ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt' => $ma_ctdt]);
-    
-
-   $tenbac = $DB->get_record('block_edu_bacdt', ['ma_bac' => $ctdt->ma_bac]);
-   $data[] =& $tenbac->ten;
-
-   $hedt = $DB->get_record('block_edu_hedt', ['ma_he' => $ctdt->ma_he]);
-   $data[] =& $hedt->ten;
-
-   $nienkhoa = $DB->get_record('block_edu_nienkhoa', ['ma_nienkhoa' => $ctdt->ma_nienkhoa]);
-   $data[] =& $nienkhoa->ten_nienkhoa;
-
-   $nganhdt = $DB->get_record('block_edu_nganhdt', ['ma_nganh' => $ctdt->ma_nganh]);
-   $data[] =& $nganhdt->ten;
-
-   $chuyennganh = $DB->get_record('block_edu_chuyennganhdt', ['ma_chuyennganh' => $ctdt->ma_chuyennganh]);
-   $data[] =& $chuyennganh->ten;
-
-   $data[] =& $ctdt->mota;
-   return $data;
+   $table = new html_table();
+   // Get course by ctdt   
+   $alllopmos = $DB->get_records('eb_lop_mo', ['nam_hoc' => $nam_hoc, 'hoc_ky' => $hoc_ky]);
+   // $alllopmos = $DB->get_records('eb_lop_mo', []);
+   // Position
+   $stt = 1 + $page * 20;
+   $pos_in_table = 1;
+   // Empty row
+   $table->data[] = [];
+   // Loop DB
+   foreach ($alllopmos as $item) {
+      if (findContent($item->full_name, $key_search) || $key_search == '') {
+      $course_id = 1;
+      $course_id = $item->course_id;
+      $url = new \moodle_url('/course/view.php', [ 'id' => $course_id]);
+      $ten_url = \html_writer::link($url, $item->full_name);
+      if ($page < 0) { // Get all data without page
+         $html = '<div style = "font-size: 1.640625rem; font-weight: 300; line-height: 1.2;background-image: url(/moodle/theme/image.php/boost/core/1594902682/i/course);background-repeat: no-repeat; padding-left: 50px;">'.$ten_url.'</div>'.'<div style = "text-align: center">' . $item->mota . '</div>';
+         $table->data[] = [$html];
+         $stt = $stt + 1;
+      } else if ($pos_in_table > $page * 20 && $pos_in_table <= $page * 20 + 20) {
+         $html = '<div style = "font-size: 1.640625rem; font-weight: 300; line-height: 1.2;background-image: url(/moodle/theme/image.php/boost/core/1594902682/i/course);background-repeat: no-repeat; padding-left: 50px;">'.$ten_url.'</div>'.'<div style = "text-align: center">' . $item->mota . '</div>';
+         $table->data[] = [$html];
+         $stt = $stt + 1;
+      }
+      $pos_in_table = $pos_in_table + 1;
+      }
+   }
+   return $table;
 }

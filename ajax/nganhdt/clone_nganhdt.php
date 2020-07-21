@@ -7,11 +7,11 @@ function clone_nganhdt($id)
 {
     global $DB, $USER, $CFG, $COURSE;
     // Clone param
-    $param = $DB->get_record('block_edu_nganhdt', array('id' => $id));
+    $param = $DB->get_record('eb_nganhdt', array('id' => $id));
     // Config param
     $param->id = null;
     $param->ma_nganh = $param->ma_nganh . '_copy';
-    $DB->insert_record('block_edu_nganhdt', $param);
+    $DB->insert_record('eb_nganhdt', $param);
 }
 // Clone bậc đào tạo có id truyền vào
 clone_nganhdt($id);

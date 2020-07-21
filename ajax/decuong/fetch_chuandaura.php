@@ -10,7 +10,7 @@ function fetch($ma_decuong) {
    global $DB, $USER, $CFG, $COURSE;
    
    
-    $all_cdr = $DB->get_records('block_edu_chuandaura', array('ma_decuong' => $ma_decuong));
+    $all_cdr = $DB->get_records('eb_chuandaura', array('ma_decuong' => $ma_decuong));
     $arr_cdr = array();
     $stt = 1;
     foreach ($all_cdr as $icdr) {

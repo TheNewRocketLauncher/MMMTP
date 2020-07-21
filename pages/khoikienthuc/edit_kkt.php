@@ -8,11 +8,19 @@ require_once('../../model/global_model.php');
 require_once('../../js.php');
 
 global $DB, $USER, $CFG, $COURSE;
-define("EDIT_MODE_EDIT", 0);
-define("EDIT_MODE_CLONE", 1);
+define("EDIT_MODE_EDIT", 1);
+define("EDIT_MODE_CLONE", 0);
 
-$ma_khoi = optional_param('ma_khoi', 0, PARAM_ALPHANUMEXT);
-$edit_mode = optional_param('edit_mode', EDIT_MODE_EDIT, PARAM_INT);
+$courseid = optional_param('courseid', SITEID, PARAM_INT);
+$ma_khoi = optional_param('ma_khoi', NULL, PARAM_ALPHANUMEXT);
+$edit_mode = optional_param('edit_mode', EDIT_MODE_CLONE, PARAM_INT);
+
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -22,10 +30,24 @@ $PAGE->set_pagelayout('standard');
 // Navbar.
 $PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_khoikienthuc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php'));
-$PAGE->navbar->add(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/khoikienthuc/add_kkt.php'));
+if($edit_mode == 1){
+    $PAGE->navbar->add('Cập nhật khối kiến thức');
+} else{
+    $PAGE->navbar->add('Thêm khối mới');
+}
 // Title.
-$PAGE->set_title(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
-$PAGE->set_heading(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
+if($edit_mode == 1){
+    $PAGE->set_title('Cập nhật khối kiến thức');
+} else{
+    $PAGE->set_title(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
+}
+if($edit_mode == 1){
+    $PAGE->set_heading('Cập nhật khối kiến thức');
+} else{
+    $PAGE->set_heading(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
+}
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
@@ -41,9 +63,7 @@ if ($mform->is_cancelled()) {
     redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
 } else if ($mform->no_submit_button_pressed()) {
     if($mform->get_submit_value('btn_cancle')){
-        // redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
-        // var_dump($mform->get_submit_value('area_mamonhoc'));
-        echo 'btn_cancle';
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
     } else if ($mform->get_submit_value('btn_review')){
         $arrmamon = $mform->get_submit_value('area_mamonhoc');
         $arr_makhoi = $mform->get_submit_value('area_ma_khoi');
@@ -61,7 +81,6 @@ if ($mform->is_cancelled()) {
 
         if(is_array($arrmamon) || is_array($arr_makhoi)){
             if($mform->get_submit_value('btn_newkkt')){
-                // echo 'EDIT_MODE_CLONE';
                 $fromform->txt_makhoi = $mform->get_submit_value('txt_makhoi');
                 $fromform->select_loaikhoi = $mform->get_submit_value('select_loaikhoi');
                 $fromform->select_xettren = $mform->get_submit_value('select_xettren');
@@ -73,7 +92,6 @@ if ($mform->is_cancelled()) {
                 add_newkkt($fromform);
                 redirect("$CFG->wwwroot/blocks/educationpgrs/pages/khoikienthuc/index.php");
             } else if($mform->get_submit_value('btn_edit')){
-                // echo 'EDIT_MODE_EDIT';
                 $fromform->txt_makhoi = $mform->get_submit_value('txt_makhoi');
                 $fromform->select_loaikhoi = $mform->get_submit_value('select_loaikhoi');
                 $fromform->select_xettren = $mform->get_submit_value('select_xettren');
@@ -123,7 +141,7 @@ if ($mform->is_cancelled()) {
         }
 
         if($khoi->id_loai_kkt == 1){
-            $dieukien = get_dieukien_kkt(NULL, $khoi->ma_dienkien, NULL, NULL, NULL, NULL);
+            $dieukien = get_dieukien_kkt(NULL, $khoi->ma_dieukien, NULL, NULL, NULL, NULL);
             switch ($dieukien->xet_tren) {
                 case 'sotinchi':
                     $xet_tren = 0;
@@ -171,7 +189,7 @@ function get_list_monhoc($ma_khoi){
 }
 
 function get_list_khoicon($ma_khoi){
-    $all_khoi = get_list_kkt_byMaKhoi($ma_khoi);
+    $all_khoi = get_list_khoicon_byMaKhoi($ma_khoi);
 
     $listkkt = array();
     foreach($all_khoi as $item){
@@ -196,7 +214,7 @@ function print_table_Monthuockhoi($arrmamon, $arr_makhoi){
             $listmonthuockhoi = get_monthuockhoi($item);
             if($listmonthuockhoi != NULL){
                 foreach($listmonthuockhoi as $mon){
-                    $imonhoc = (array) $DB->get_record('block_edu_monhoc', ['mamonhoc' => $mon->mamonhoc]);
+                    $imonhoc = (array) $DB->get_record('eb_monhoc', ['mamonhoc' => $mon->mamonhoc]);
                     $table->data[] = [(string) $stt, (string) $imonhoc['mamonhoc'], (string) $imonhoc['tenmonhoc_vi'],
                                         (string) $imonhoc['sotinchi'], (string) $imonhoc['sotietlythuyet'],
                                         (string) $imonhoc['sotietthuchanh'], (string) $imonhoc['sotiet_baitap']];
@@ -215,7 +233,7 @@ function print_table_Monthuockhoi($arrmamon, $arr_makhoi){
         $table->head = array('STT', 'Mã', 'Tên', 'Số TC', 'LT', 'TH', 'BT');
         
         foreach($arrmamon as $key => $item){
-            $imonhoc = (array) $DB->get_record('block_edu_monhoc', ['mamonhoc' => $item]);
+            $imonhoc = (array) $DB->get_record('eb_monhoc', ['mamonhoc' => $item]);
             $table->data[] = [(string) $stt, (string) $imonhoc['mamonhoc'], (string) $imonhoc['tenmonhoc_vi'],
                                 (string) $imonhoc['sotinchi'], (string) $imonhoc['sotietlythuyet'],
                                 (string) $imonhoc['sotietthuchanh'], (string) $imonhoc['sotiet_baitap']];
@@ -267,7 +285,6 @@ function add_newkkt($fromform){
             $id = insert_dieukien_kkt($param_dieukien_kkt);
             $param_khoi->ma_dieukien = get_dieukien_kkt($id)->ma_dieukien;
         } else{
-            echo 'insert_dieukien_kkt NOT NULL';
             $param_khoi->ma_dieukien = $list_dieukien->ma_dieukien;
         }
     } else{ //default
@@ -304,7 +321,6 @@ function edit_kkt($fromform){
         add_newkkt($fromform);
     } else{
         echo 'Không tìm thấy mã khối';
-        echo json_encode($fromform);
     }
 }
 

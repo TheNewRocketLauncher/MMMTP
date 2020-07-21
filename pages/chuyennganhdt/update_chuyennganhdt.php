@@ -29,6 +29,7 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $chuyennganhdt = get_chuyennganhdt_byID($id);
 $navbar_name = 'Chuyên ngành ĐT';
 $title_heading = 'ĐT';
@@ -43,6 +44,8 @@ $PAGE->navbar->add($navbar_name);
 // Title.
 $PAGE->set_title('Cập nhật chuyên ngành ' . $title_heading);
 $PAGE->set_heading('Cập nhật chuyên ngành ' . $title_heading);
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -53,10 +56,11 @@ require_once('../../form/chuyennganhdt/qlchuyennganh_form.php');
 $mform = new qlchuyennganh_form();
 // Form processing
 if ($mform->is_cancelled()) {
-    echo '<h2>Hủy cập nhật</h2>';
-    $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
-    $linktext = get_string('label_chuyennganh', 'block_educationpgrs');
-    echo \html_writer::link($url, $linktext);
+    // echo '<h2>Hủy cập nhật</h2>';
+    // $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
+    // $linktext = get_string('label_chuyennganh', 'block_educationpgrs');
+    // echo \html_writer::link($url, $linktext);
+    redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/chuyennganhdt/index.php?courseid='.$courseid);
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -81,10 +85,11 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Something here
-    echo '<h2>Nhập sai thông tin</h2>';
-    $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
-    $linktext = get_string('label_chuyennganh', 'block_educationpgrs');
-    echo \html_writer::link($url, $linktext);
+    // echo '<h2>Nhập sai thông tin</h2>';
+    // $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
+    // $linktext = get_string('label_chuyennganh', 'block_educationpgrs');
+    // echo \html_writer::link($url, $linktext);
+    $mform->display();
 } else {
     //Set default data from DB
     $toform;
@@ -104,13 +109,13 @@ if ($mform->is_cancelled()) {
     $toform->manganh;
     global $DB;
 
-    $bacdt = $DB->get_record('block_edu_bacdt', ['ma_bac'=> $toform->mabac]);
+    $bacdt = $DB->get_record('eb_bacdt', ['ma_bac'=> $toform->mabac]);
     $toform->bacdt = $bacdt->ten;
-    $hedt = $DB->get_record('block_edu_hedt', ['ma_he'=> $toform->mahe]);
+    $hedt = $DB->get_record('eb_hedt', ['ma_he'=> $toform->mahe]);
     $toform->hedt = $hedt->ten;
-    $nienkhoadt=$DB->get_Record('block_edu_nienkhoa',['ma_nienkhoa'=>$toform->manienkhoa]);
+    $nienkhoadt=$DB->get_Record('eb_nienkhoa',['ma_nienkhoa'=>$toform->manienkhoa]);
     $toform->nienkhoa=$nienkhoadt->ten_nienkhoa;
-    $nganhdt = $DB->get_record('block_edu_nganhdt', ['ma_nganh'=> $toform->manganh]);
+    $nganhdt = $DB->get_record('eb_nganhdt', ['ma_nganh'=> $toform->manganh]);
     $toform->nganhdt = $nganhdt->ten;
     $mform->set_data($toform);
     $mform->display();

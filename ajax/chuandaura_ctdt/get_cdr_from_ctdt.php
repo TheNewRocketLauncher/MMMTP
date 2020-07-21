@@ -3,13 +3,14 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 $ma_ctdt = required_param('ma_ctdt', PARAM_ALPHANUMEXT);
+
 function get_cdr_from_ctdt($ma_ctdt) {
     global $DB, $USER, $CFG, $COURSE;
-    $hdt = $DB->get_records('block_edu_chuandaura_ctdt', array('ma_ctdt' => $ma_ctdt));
+    $hdt = $DB->get_records('eb_chuandaura_ctdt', array());
     return $hdt;
 
 }
-$ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt' => $ma_ctdt]);
+$ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt' => $ma_ctdt]);
 
     $data = array();
     $data['ma_cdr'] = array();

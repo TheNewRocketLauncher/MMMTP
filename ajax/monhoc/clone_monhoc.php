@@ -7,11 +7,11 @@ function clone_monhoc($id)
 {
     global $DB, $USER, $CFG, $COURSE;
     // Clone param
-    $param = $DB->get_record('block_edu_monhoc', array('id' => $id));
+    $param = $DB->get_record('eb_monhoc', array('id' => $id));
     // Config param
     $param->id = null;
     $param->mamonhoc = $param->mamonhoc . '_copy';
-    $DB->insert_record('block_edu_monhoc', $param);
+    $DB->insert_record('eb_monhoc', $param);
 }
 // Clone môn học có id truyền vào
 clone_monhoc($id);

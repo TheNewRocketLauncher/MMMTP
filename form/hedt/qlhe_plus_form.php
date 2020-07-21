@@ -19,7 +19,7 @@ class qlhe_plus_form extends moodleform
 
         // Mã bậc
         $mabac = array();
-        $allbacdts = $DB->get_records('block_edu_bacdt', []);
+        $allbacdts = $DB->get_records('eb_bacdt', []);
         $arr_mabac = array();
         foreach ($allbacdts as $ibacdt) {
             $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
@@ -29,7 +29,7 @@ class qlhe_plus_form extends moodleform
 
         // Ma he
         $mahe = array();
-        $allhedts = $DB->get_records('block_edu_hedt', []);
+        $allhedts = $DB->get_records('eb_hedt', []);
         $arr_mahe = array();
         foreach ($allhedts as $ihedt) {
             $arr_mahe += [$ihedt->ma_he => $ihedt->ma_he];

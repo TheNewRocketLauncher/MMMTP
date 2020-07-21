@@ -8,14 +8,12 @@ require_once('../../model/monhoc_model.php');
 global $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 $id = optional_param('id', 0, PARAM_INT);
 $chitietmh = get_monhoc_by_id_monhoc($id);
 
@@ -25,12 +23,15 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_monhoc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php'));
 $PAGE->navbar->add($chitietmh->tenmonhoc_vi, new moodle_url('/blocks/educationpgrs/pages/monhoc/chitiet_monhoc.php?id=' . $chitietmh->id));
 
 // Title.
 $PAGE->set_title('Chi tiết môn học');
 $PAGE->set_heading('[' . $chitietmh->mamonhoc . ']' . $chitietmh->tenmonhoc_vi);
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -64,7 +65,7 @@ if ($mform->is_cancelled()) {
     $param1 = new stdClass();
     $param1->id = $mform->get_data()->idhe; // The data object must have the property "id" set.
     $index_mabac = $mform->get_data()->mabac;
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
+    $allbacdts = $DB->get_records('eb_bacdt', []);
     $param1->ma_bac = $allbacdts[$index_mabac + 1]->ma_bac;
     $param1->ma_he = $mform->get_data()->mahe;
     $param1->ten = $mform->get_data()->tenhe;

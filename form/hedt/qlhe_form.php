@@ -16,7 +16,7 @@ class qlhe_form extends moodleform
 
         // Mã bậc
         $mabac = array();
-        $allbacdts = $DB->get_records('block_edu_bacdt', []);
+        $allbacdts = $DB->get_records('eb_bacdt', []);
         $arr_mabac = array();
         $arr_mabac += [""=> "Chọn bậc đào tạo"];
 

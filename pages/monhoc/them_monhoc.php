@@ -8,14 +8,12 @@ require_once('../../model/monhoc_model.php');
 global $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/them_monhoc.php', ['courseid' => $courseid]));
@@ -23,11 +21,14 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add('Quản lý thông tin');
 
 // Title.
 $PAGE->set_title('Thêm môn học');
 $PAGE->set_heading('Thêm môn học mới');
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -39,12 +40,13 @@ $mform = new them_monhoc_form();
 
 // Process form
 if ($mform->is_cancelled()) {
-    echo '<h2>Thêm không thành công</h2>';
+    // echo '<h2>Thêm không thành công</h2>';
+    redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php?courseid='.$courseid);
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
     $param1 = new stdClass();
-    $param1->mamonhoc = $mform->get_data()->mamonhoc;
+    $param1->mamonhoc = $mform->get_data()->mamonhoc1;
     $param1->tenmonhoc_vi = $mform->get_data()->tenmonhoc_vi;
     $param1->tenmonhoc_en = $mform->get_data()->tenmonhoc_en;
     $param1->loaihocphan = $mform->get_data()->loaihocphan;
@@ -63,10 +65,11 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Button submit
-    echo '<h2>Nhập sai thông tin</h2>';
-    $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', []);
-    $linktext = get_string('label_monhoc', 'block_educationpgrs');
-    echo \html_writer::link($url, $linktext);
+    // echo '<h2>Nhập sai thông tin</h2>';
+    // $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', []);
+    // $linktext = get_string('label_monhoc', 'block_educationpgrs');
+    // echo \html_writer::link($url, $linktext);
+    $mform->display();
 } else {
     $mform->set_data($toform);
     $mform->display();

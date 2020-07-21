@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../../config.php');
-require_once(__DIR__ . './global_model.php');
+require_once('global_model.php');
 require_once('../../model/global_model.php');
 
 function insert_cay_kkt()
@@ -11,11 +11,11 @@ function insert_cay_kkt()
     $firstNode = new stdClass();
     $firstNode->ma_cay_khoikienthuc = $USER->id . 'caykkt' . time();
     $firstNode->ma_tt = NULL;
-    $firstNode->ma_khoi = 'caykkt' . $time;
+    $firstNode->ma_khoi = 'caykkt';
     $firstNode->ma_khoicha = NULl;
     $firstNode->ten_cay = $global_caykkt['tencay'];
     $firstNode->mota = $global_caykkt['mota'];
-    $DB->insert_record('block_edu_cay_khoikienthuc', $firstNode);
+    $DB->insert_record('eb_cay_khoikienthuc', $firstNode);
 
     foreach($global_caykkt['value'] as $item){
         if($item['level'] == 1){
@@ -26,7 +26,7 @@ function insert_cay_kkt()
             $childNode->ma_khoicha = $firstNode->ma_khoi;
             $childNode->ten_cay = $global_caykkt['tencay'];
             $childNode->mota = $global_caykkt['mota'];
-            $DB->insert_record('block_edu_cay_khoikienthuc', $childNode);
+            $DB->insert_record('eb_cay_khoikienthuc', $childNode);
         } else{
             $childNode = new stdClass();
             $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
@@ -35,7 +35,7 @@ function insert_cay_kkt()
             $childNode->ma_khoicha = $item['fatherName'];
             $childNode->ten_cay = $global_caykkt['tencay'];
             $childNode->mota = $global_caykkt['mota'];
-            $DB->insert_record('block_edu_cay_khoikienthuc', $childNode);
+            $DB->insert_record('eb_cay_khoikienthuc', $childNode);
         }
     }
 }
@@ -43,19 +43,15 @@ function insert_cay_kkt()
 function get_list_caykkt()
 {
     global $DB, $USER, $CFG, $COURSE;
-    if (userIsAdmin()) {
-        $listkkt = $DB->get_records('block_edu_cay_khoikienthuc', []);
-    } else {
-        $listkkt = NULL;
-    }
-    return $listkkt;
+    $listcay = $DB->get_records('eb_cay_khoikienthuc', ['ma_khoi' => 'caykkt', 'ma_tt' => NULL, 'ma_khoicha'=> NULL]);
+    return $listcay;
 }
 
 function get_list_caykkt_byFather($ma_khoi_cha)
 {
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
-        $listkkt = $DB->get_records('block_edu_cay_khoikienthuc', []);
+        $listkkt = $DB->get_records('eb_cay_khoikienthuc', []);
     } else {
         $listkkt = NULL;
     }
@@ -66,7 +62,7 @@ function get_caykkt_byID($id)
 {
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
-        $kkt = $DB->get_record('block_edu_cay_khoikienthuc', ['id' => $id]);
+        $kkt = $DB->get_record('eb_cay_khoikienthuc', ['id' => $id]);
     } else {
         $kkt = NULL;
     }
@@ -77,7 +73,7 @@ function get_list_caykkt_byMaCTDT($ma_ctdt)
 {
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
-        $kkt = $DB->get_records('block_edu_cay_khoikienthuc', array('ma_ctdt' => $ma_ctdt));
+        $kkt = $DB->get_records('eb_cay_khoikienthuc', array('ma_ctdt' => $ma_ctdt));
     } else {
         $kkt = NULL;
     }
@@ -95,23 +91,23 @@ function delete_caykkt($id)
 function delete_caykkt_byMaCay($ma_cay_khoikienthuc){
     global $DB, $USER, $CFG, $COURSE;
 
-    $list_item = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_cay_khoikienthuc' => $ma_cay_khoikienthuc]);
+    $list_item = $DB->get_records('eb_cay_khoikienthuc', ['ma_cay_khoikienthuc' => $ma_cay_khoikienthuc]);
 
     foreach($list_item as $item){
-        $DB->delete_records('block_edu_cay_khoikienthuc', ['id' => $item->id]);
+        $DB->delete_records('eb_cay_khoikienthuc', ['id' => $item->id]);
     }
 }
 
-//Xoá cây khối kiến thức của khối kiến thức
+
 function delete_caykkt_byMaKhoi($ma_khoi)
 {
     global $DB, $USER, $CFG, $COURSE;
 
     if($ma_khoi != 'caykkt'){
-        $kkt = $DB->get_record('block_edu_cay_khoikienthuc', ['ma_khoi' => $ma_khoi, 'ma_tt' => 0]);
+        $kkt = $DB->get_record('eb_cay_khoikienthuc', ['ma_khoi' => $ma_khoi, 'ma_tt' => 0]);
         $list_item = get_list_caykkt_byMaCay($kkt->ma_cay_khoikienthuc);
         foreach($list_item as $item){
-            $DB->delete_records('block_edu_cay_khoikienthuc', ['id' => $item->id]);
+            $DB->delete_records('eb_cay_khoikienthuc', ['id' => $item->id]);
         }
     }
 }
@@ -120,7 +116,7 @@ function get_list_caykkt_byMaKhoi($ma_khoi)
 {
     global $DB, $USER, $CFG, $COURSE;
     if (userIsAdmin()) {
-        $kkt = $DB->get_records('block_edu_cay_khoikienthuc', array('ma_khoi' => $ma_khoi));
+        $kkt = $DB->get_records('eb_cay_khoikienthuc', array('ma_khoi' => $ma_khoi));
     } else {
         $kkt = NULL;
     }
@@ -130,7 +126,7 @@ function get_list_caykkt_byMaKhoi($ma_khoi)
 function get_list_caykkt_byMaCay($ma_cay_khoikienthuc)
 {
     global $DB, $USER, $CFG, $COURSE;
-    $listcay = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_cay_khoikienthuc' => $ma_cay_khoikienthuc]);
+    $listcay = $DB->get_records('eb_cay_khoikienthuc', ['ma_cay_khoikienthuc' => $ma_cay_khoikienthuc]);
     return $listcay;
 }
 
@@ -144,7 +140,6 @@ function can_change_caykkt($ma_cay_khoikienthuc){
     return true;
 }
 
-// Khởi tạo khung sườn cho các chức năng thêm, sửa khối kiến thức!
 function get_adding_list(){
     global $USER;
     $current_global = get_global($USER->id);
@@ -186,4 +181,88 @@ function get_adding_list(){
     }
     $current_global = get_global($USER->id);
     return $current_global['newcaykkt']['value'];
+}
+
+function get_caykkt_firstNode_byMaCaykkt($ma_cay_khoikienthuc){
+    global $DB, $USER, $CFG, $COURSE;
+    $cay = $DB->get_records('eb_cay_khoikienthuc', ['ma_cay_khoikienthuc' => $ma_cay_khoikienthuc, 'ma_khoi' => 'caykkt', 'ma_tt' => NULL, 'ma_khoicha'=> NULL]);
+    return $cay;
+}
+
+function update_caykkt(){
+    global $DB, $USER, $CFG, $COURSE;
+    delete_caykkt_byMaCay($ma_cay_khoikienthuc);
+    $global_caykkt = get_global($USER->id)['newcaykkt'];
+
+    $firstNode = new stdClass();
+    $firstNode->ma_cay_khoikienthuc = $global_caykkt['ma_cay'];
+    $firstNode->ma_tt = NULL;
+    $firstNode->ma_khoi = 'caykkt';
+    $firstNode->ma_khoicha = NULl;
+    $firstNode->ten_cay = $global_caykkt['tencay'];
+    $firstNode->mota = $global_caykkt['mota'];
+    $DB->insert_record('eb_cay_khoikienthuc', $firstNode);
+
+    foreach($global_caykkt['value'] as $item){
+        if($item['level'] == 1){
+            $childNode = new stdClass();
+            $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
+            $childNode->ma_tt = $item['index'];
+            $childNode->ma_khoi = $item['name'];
+            $childNode->ma_khoicha = $firstNode->ma_khoi;
+            $childNode->ten_cay = $global_caykkt['tencay'];
+            $childNode->mota = $global_caykkt['mota'];
+            $DB->insert_record('eb_cay_khoikienthuc', $childNode);
+        } else{
+            $childNode = new stdClass();
+            $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
+            $childNode->ma_tt = $item['index'];
+            $childNode->ma_khoi = $item['name'];
+            $childNode->ma_khoicha = $item['fatherName'];
+            $childNode->ten_cay = $global_caykkt['tencay'];
+            $childNode->mota = $global_caykkt['mota'];
+            $DB->insert_record('eb_cay_khoikienthuc', $childNode);
+        }
+    }
+}
+
+//Sample $data = [0 => ['ma_tt' => '', 'ten_cay' => '', 'mota' => ''], 
+//                1 => ['ma_tt' => '', 'ma_khoi' => '', 'ma_khoicha' => ''] ]
+function insert_import_caykkt($data){
+    global $DB, $USER, $CFG, $COURSE;
+
+    $firstNode = new stdClass();
+    $firstNode->ma_cay_khoikienthuc = $USER->id . 'caykkt' . time();
+    $firstNode->ma_tt = NULL;
+    $firstNode->ma_khoi = 'caykkt';
+    $firstNode->ma_khoicha = NULl;
+    $firstNode->ten_cay = $data[0]['ten_cay'];
+    $firstNode->mota = $data[0]['mota'];
+    $DB->insert_record('eb_cay_khoikienthuc', $firstNode);
+
+    foreach($data as $item){
+        if($item[0]['ma_tt'] != 0){
+            if($item['ma_tt'] == 1){
+                $childNode = new stdClass();
+                $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
+                $childNode->ma_tt = $item['ma_tt'];
+                $childNode->ma_khoi = $item['ma_khoi'];
+                $childNode->ma_khoicha = $firstNode->ma_khoi;
+                $childNode->ten_cay = $firstNode->ten_cay;
+                $childNode->mota = $firstNode->mota;
+
+                $DB->insert_record('eb_cay_khoikienthuc', $childNode);
+            } else{
+                $childNode = new stdClass();
+                $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
+                $childNode->ma_tt = $item['ma_tt'];
+                $childNode->ma_khoi = $item['ma_khoi'];
+                $childNode->ma_khoicha = $item['ma_khoicha'];
+                $childNode->ten_cay = $firstNode->ten_cay;
+                $childNode->mota = $firstNode->mota;
+
+                $DB->insert_record('eb_cay_khoikienthuc', $childNode);
+            }
+        }
+    }
 }

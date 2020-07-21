@@ -65,66 +65,71 @@ class block_educationpgrs extends block_list
 
         // Block content
         if (1) {
-            //Quản lý bậc đào tạo
-            $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_bacdt', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý bậc đào tạo
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_bacdt', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //Quản lý hệ đào tạo
-            $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_hedt', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý hệ đào tạo
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_hedt', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //Quản lý niên khoá
-            // Edit file index.php tương ứng trong thư mục page, link đến đường dẫn
-            $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý niên khoá
+            // // Edit file index.php tương ứng trong thư mục page, link đến đường dẫn
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_nienkhoa', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
 
-            //Quản lý ngành đào tạo
-            $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_nganh', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý ngành đào tạo
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_nganh', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //Quản lý chuyến ngành
-            $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_chuyennganh', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý chuyến ngành
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_chuyennganh', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
                     
-            //Quản lý môn học
-            $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_monhoc', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý môn học
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_monhoc', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
             
-            //Quản lý đề cương môn học
-            $url = new \moodle_url('/blocks/educationpgrs/pages/decuong/index.php');
-            $linktext = get_string('label_quanly_decuong', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý đề cương môn học
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/decuong/index.php');
+            // $linktext = get_string('label_quanly_decuong', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //Quản lớp mở
-            $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_lopmo', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lớp mở
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_lopmo', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //Quản lý khối kiến thức
-            $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_khoikienthuc', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý khối kiến thức
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/khoikienthuc/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_khoikienthuc', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //Quản lý cây khối kiến thức kiến thức
-            $url = new \moodle_url('/blocks/educationpgrs/pages/caykkt/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('head_caykkt', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý cây khối kiến thức kiến thức
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/caykkt/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('head_caykkt', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
 
-            //Quản lý chương trình đào tạo
-            $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['courseid' => $courseid]);
-            $linktext = get_string('label_ctdt', 'block_educationpgrs');
-            $this->content->items[] = \html_writer::link($url, $linktext);
+            // //Quản lý chương trình đào tạo
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/index.php', ['courseid' => $courseid]);
+            // $linktext = get_string('label_ctdt', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
             
-            //Quản lý chuẩn đầu ra ctdt
-            $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php', []);
-            $linktext = get_string('label_chuandauractdt', 'block_educationpgrs');
+            // //Quản lý chuẩn đầu ra ctdt
+            // $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php', []);
+            // $linktext = get_string('label_chuandauractdt', 'block_educationpgrs');
+            // $this->content->items[] = \html_writer::link($url, $linktext);
+
+            //Quản lý chung
+            $url = new \moodle_url('/blocks/educationpgrs/pages/main.php', []);
+            $linktext = 'MOODLE PROJECT';
             $this->content->items[] = \html_writer::link($url, $linktext);
 
 

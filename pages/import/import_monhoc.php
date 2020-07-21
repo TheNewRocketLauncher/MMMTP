@@ -13,14 +13,12 @@ if(!$link){
     $link=null;
 }
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -28,11 +26,14 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
-$PAGE->navbar->add(get_string('label_quanly_decuong', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/decuong/index.php'));
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
+$PAGE->navbar->add(get_string('label_monhoc', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php'));
 
 // Title.
 $PAGE->set_title(get_string('label_quanly_decuong', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
 $PAGE->set_heading('Import môn học');
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -99,7 +100,7 @@ if ($form->is_cancelled()) {
 
     $rex = $form->save_temp_file('userfile');
 
-    redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/decuong/import_monhoc.php?linkto='.$rex);
+    redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/import/import_monhoc.php?linkto='.$rex);
 
     // echo 'rex '. $rex;echo "<br>";
     echo "<br>";echo "<br>";echo "<br>";
@@ -134,13 +135,11 @@ if ($mform2->is_cancelled()) {
             $arr = array();
             
             
-            if($data[0] != 'mamonhoc' &&  $data[1] != 'tenmonhoc_vi' && $data[2] != 'tenmonhoc_vi' && $data[3] != 'lopmo' &&
-            $data[4] != 'loaihocphan' &&  $data[5] != 'sotinchi' && $data[6] != 'sotietlythuyet' && $data[7] != 'sotietthuchanh' &&
-            $data[8] != 'sotiet_baitap' && $data[9] != 'ghichu' && $data[10] != 'mota'){
+            if($data[0] == 1 || $data[0] == '1'){
 
-                $arr[] = ['mamonhoc'=> $data[0], 'tenmonhoc_vi'=>$data[1], 'tenmonhoc_en'=>$data[2], 'lopmo'=>$data[3],
-                'loaihocphan'=> $data[4], 'sotinchi'=>$data[5], 'sotietlythuyet'=>$data[6], 'sotietthuchanh'=>$data[7],
-                'sotiet_baitap'=> $data[8], 'ghichu'=>$data[9], 'mota'=>$data[10]
+                $arr[] = ['mamonhoc'=> $data[1], 'tenmonhoc_vi'=>$data[2], 'tenmonhoc_en'=>$data[3], 'lopmo'=>$data[4],
+                'loaihocphan'=> $data[5], 'sotinchi'=>$data[6], 'sotietlythuyet'=>$data[7], 'sotietthuchanh'=>$data[8],
+                'sotiet_baitap'=> $data[9], 'ghichu'=>$data[10], 'mota'=>$data[11]
                 ];
 
                 
@@ -152,7 +151,7 @@ if ($mform2->is_cancelled()) {
                     $param->mamonhoc = $iarr['mamonhoc'];
                     $param->tenmonhoc_vi = $iarr['tenmonhoc_vi'];
                     $param->tenmonhoc_en = $iarr['tenmonhoc_en'];
-                    // $param->lopmo = $iarr['lopmo'];
+                    $param->lopmo = $iarr['lopmo'];
                     $param->loaihocphan = $iarr['loaihocphan'];
                     $param->sotinchi = $iarr['sotinchi'];
                     $param->sotietlythuyet = $iarr['sotietlythuyet'];
@@ -165,7 +164,7 @@ if ($mform2->is_cancelled()) {
 
                     $check = is_check($param->mamonhoc, $arr_2);
                     
-                    if($check==false){
+                    if($check){
                         
                         insert_cdr($param);
                         
@@ -190,64 +189,52 @@ if ($mform2->is_cancelled()) {
 
     if($link != null){
 
-        $table->head = ['Mã môn học','Tên môn học (Tiếng Việt)', 'Tên môn học (Tiếng Anh)', 'Lớp mở', 'Loại học phần',
-        'Số TC', 'Số tiết lý thuyết', 'Số tiết thực hành', 'Số tiết bài tập', 'Ghi chú', 'Mô tả'];
+        $arr_monhoc = array();
 
         if (($handle = fopen( $link, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 
 
-                $arr = array();
                 
                 
-                if($data[0] != 'mamonhoc' &&  $data[1] != 'tenmonhoc_vi' && $data[2] != 'tenmonhoc_vi' && $data[3] != 'lopmo' &&
-                $data[4] != 'loaihocphan' &&  $data[5] != 'sotinchi' && $data[6] != 'sotietlythuyet' && $data[7] != 'sotietthuchanh' &&
-                $data[8] != 'sotiet_baitap' && $data[9] != 'ghichu' && $data[10] != 'mota'){
+                if($data[0] == 1 || $data[0] == '1'){
 
-                    $arr[] = ['mamonhoc'=> $data[0], 'tenmonhoc_vi'=>$data[1], 'tenmonhoc_en'=>$data[2], 'lopmo'=>$data[3],
-                    'loaihocphan'=> $data[4], 'sotinchi'=>$data[5], 'sotietlythuyet'=>$data[6], 'sotietthuchanh'=>$data[7],
-                    'sotiet_baitap'=> $data[8], 'ghichu'=>$data[9], 'mota'=>$data[10]
+                    $arr_monhoc[] = ['mamonhoc'=> $data[1], 'tenmonhoc_vi'=>$data[2], 'tenmonhoc_en'=>$data[3], 'lopmo'=>$data[4],
+                    'loaihocphan'=> $data[5], 'sotinchi'=>$data[6], 'sotietlythuyet'=>$data[7], 'sotietthuchanh'=>$data[8],
+                    'sotiet_baitap'=> $data[9], 'ghichu'=>$data[10], 'mota'=>$data[11]
                     ];
 
-                    
-
-                    foreach($arr as $iarr){
-                        
-                        $param = new stdClass();
-
-                        $param->mamonhoc = $iarr['mamonhoc'];
-                        $param->tenmonhoc_vi = $iarr['tenmonhoc_vi'];
-                        $param->tenmonhoc_en = $iarr['tenmonhoc_en'];
-                        $param->lopmo = $iarr['lopmo'];
-                        $param->loaihocphan = $iarr['loaihocphan'];
-                        $param->sotinchi = $iarr['sotinchi'];
-                        $param->sotietlythuyet = $iarr['sotietlythuyet'];
-                        $param->sotietthuchanh = $iarr['sotietthuchanh'];
-                        $param->sotiet_baitap = $iarr['sotiet_baitap'];
-                        $param->ghichu = $iarr['ghichu'];
-                        $param->mota = $iarr['mota'];
-                        
-                        $arr_2 = get();
-
-                        $check = is_check($param->mamonhoc, $arr_2);
-
-                        if($check==false){
-                            // insert_cdr($param);
-                            $table->data[] = $param;
-                            
-                        }
-
-                        
-                    }
                 }
+                
             }
             fclose($handle);
         }
-        echo html_writer::table($table);
+        
+
+        
+        $table->head = ['Mã môn học','Tên môn học (Tiếng Việt)', 'Tên môn học (Tiếng Anh)', 'Lớp mở', 'Loại học phần',
+        'Số TC', 'Số tiết lý thuyết', 'Số tiết thực hành', 'Số tiết bài tập', 'Ghi chú', 'Mô tả'];
+
+        foreach($arr_monhoc as $iarr_monhoc){
+            
+            $arr_2 = get();
+            $check = is_check($iarr_monhoc['mamonhoc'], $arr_2);
+                    
+            if($check){
+                $table->data[] = [ $iarr_monhoc['mamonhoc'], $iarr_monhoc['tenmonhoc_vi'],$iarr_monhoc['tenmonhoc_en'],$iarr_monhoc['lopmo'],
+                $iarr_monhoc['loaihocphan'], $iarr_monhoc['sotinchi'], $iarr_monhoc['sotietlythuyet'],$iarr_monhoc['sotietthuchanh'],
+                $iarr_monhoc['sotiet_baitap'], $iarr_monhoc['ghichu'],$iarr_monhoc['mota']];
+            }
+        }
+
+       
+
         if(count($table->data)>0){
-            $mform2->display();    
+            echo html_writer::table($table);
+            $mform2->display();
+            
         }else{
-            echo "<h2 style='color: #1177d1;font-weight: 350; text-decoration: underline;'>Không có chuẩn đầu ra mới để thêm vào</h2>";
+            echo "<h2 style='color: #1177d1;font-weight: 350; text-decoration: underline;'>Không tìm thấy môn học mới</h2>";
         }
         
     }
@@ -256,13 +243,13 @@ if ($mform2->is_cancelled()) {
 
 function insert_cdr($param){
     global $DB, $USER, $CFG, $COURSE;
-    $DB->insert_record('block_edu_monhoc', $param);
+    $DB->insert_record('eb_monhoc', $param);
 }
 
 function get(){
     global $DB, $USER, $CFG, $COURSE;
     $arr = array();
-    $arr = $DB->get_records('block_edu_monhoc', []);
+    $arr = $DB->get_records('eb_monhoc', []);
     return $arr;
 }
 function is_check($mamonhoc, $arr){
@@ -270,10 +257,10 @@ function is_check($mamonhoc, $arr){
     $arr_1 = array();
     foreach($arr as $iarr){
         if($iarr->mamonhoc == $mamonhoc){
-            return true;
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 

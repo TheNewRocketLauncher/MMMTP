@@ -2,15 +2,17 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
+$bdt = trim(required_param('bdt', PARAM_NOTAGS));
 $hdt = trim(required_param('hdt', PARAM_NOTAGS));
 $courseid = required_param('course', PARAM_INT);
-function get_nienkhoadt_from_hdt($ma_he) {
+function get_nienkhoadt_from_hdt($ma_bac, $ma_he) {
     global $DB, $USER, $CFG, $COURSE;
-    $nienkhoadt = $DB->get_records('block_edu_nienkhoa', array('ma_he' => $ma_he));
+    $nienkhoadt = $DB->get_records('eb_nienkhoa', array('ma_bac' => $ma_bac, 'ma_he' => $ma_he));
     return $nienkhoadt;
 }
+
     $data = array();
-    $allnienkhoadts = get_nienkhoadt_from_hdt($hdt);
+    $allnienkhoadts = get_nienkhoadt_from_hdt($bdt, $hdt);
     
     $data['nienkhoadt']=array();
     $data['nienkhoadt'][0]="";
@@ -18,7 +20,7 @@ function get_nienkhoadt_from_hdt($ma_he) {
       $data['nienkhoadt'][] =& $inienkhoadt->ma_nienkhoa;
       }
 
-    $tenhe = $DB->get_record('block_edu_hedt', ['ma_he' =>$hdt]);
+    $tenhe = $DB->get_record('eb_hedt', ['ma_he' =>$hdt]);
     $data['tenhe'] =& $tenhe->ten;
     // Trả về kết quả với json_encode
     echo json_encode($data);

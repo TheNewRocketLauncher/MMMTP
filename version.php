@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_educationpgrs';
-$plugin->release = '0.1.0';
-$plugin->version = 2020070800;
+$plugin->release = '1.0.1';
+$plugin->version = 2020072100;
 $plugin->requires = 2019052000;
 $plugin->maturity = MATURITY_ALPHA;

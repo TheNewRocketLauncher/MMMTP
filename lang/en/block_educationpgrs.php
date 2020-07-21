@@ -252,6 +252,11 @@ $string['themkkt_btn_xoakhoicon'] = 'Xoá khối con';
 $string['themkkt_btn_complete'] = 'Hoàn tất';
 $string['themkkt_btn_cancel'] = 'Huỷ bỏ';
 $string['themkkt_btn_themkhoimoi'] = 'Thêm khối mới';
+//Chi tiết khối kiến thúc
+$string['chitietkkt_lbl'] = 'Chi tiết khối kiến thức';
+//Chi tiết CTDT
+$string['chitietctdt_lbl'] = 'Chi tiết chương trình đào tạo';
+
 
 
 // Khoá học

@@ -6,7 +6,7 @@ $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
 function delete_tainguyenmonhoc($id) {
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_tainguyenmonhoc', array('id' => $id));
+    $DB->delete_records('eb_tainguyenmonhoc', array('id' => $id));
 }
     delete_tainguyenmonhoc($id);
     // return

@@ -2,30 +2,22 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
-$id = required_param('id', PARAM_INT);
-$courseid = required_param('course', PARAM_INT);
+require_once('../../model/chuandaura_ctdt_model.php');
 
-function delete_chuandaura_ctdt($id) {
-    
-    global $DB, $USER, $CFG, $COURSE;
-    $current_cdr = $DB->get_record('block_edu_chuandaura_ctdt', ['id' => $id]);    
-    $ma_cdr = $current_cdr->ma_cdr;
-    $All_ctdt = $DB->get_records('block_edu_chuandaura_ctdt', []);
+$id = required_param('id', PARAM_NOTAGS);
 
-    foreach($All_ctdt as $item){
-        if(startsWith( $item->ma_cdr, $ma_cdr)){
-                $DB->delete_records('block_edu_chuandaura_ctdt', ['ma_cdr' => $item->ma_cdr]);        
-        };
-    }
+$cdr = get_chuandaura_ctdt_byID($id);
+
+if(can_edit_cdr($cdr->ma_cay_cdr)){
+    delete_cdr_byMaCayCRT($cdr->ma_cay_cdr);
+    echo json_encode(['error' => 0]);
+} else{
+    echo json_encode(['error' => 1, 'errorMess' => 'Chuẩn đầu ra đang được sử dụng']);
 }
-delete_chuandaura_ctdt($id);
 
-function startsWith($haystack, $needle) // kiem tra trong chuỗi hastack có đưuọc bắt đầu bằng chuỗi needle ko
-{
-    $length = strlen($needle);
-    return (substr($haystack, 0, $length) === $needle);
-}
-    exit;
+
+
+exit;
 
 
 

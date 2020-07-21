@@ -5,29 +5,26 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
-// require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/tcpdf/tcpdf.php");
 require_once('../../js.php');
 
 global $COURSE, $USER;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-$ma_decuong = optional_param('ma_decuong', '', PARAM_ALPHANUMEXT);
-$ma_ctdt = optional_param('ma_ctdt', '', PARAM_ALPHANUMEXT);
+$ma_decuong = optional_param('ma_decuong', '', PARAM_NOTAGS);
+$ma_ctdt = optional_param('ma_ctdt', '', PARAM_NOTAGS);
 $mamonhoc = optional_param('mamonhoc', '', PARAM_ALPHANUMEXT);
 
-// $id = optional_param('id', 0, PARAM_INT);
+
 $chitietmh = get_monhoc_by_mamonhoc($mamonhoc);
 
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['courseid' => $courseid]));
@@ -35,12 +32,15 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_quanly_decuong', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/decuong/index.php'));
 $PAGE->navbar->add('Thêm đề cương môn học');
 
 // Title.
 $PAGE->set_title(get_string('label_decuong', 'block_educationpgrs'));
 $PAGE->set_heading(get_string('head_decuong', 'block_educationpgrs'));
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -73,21 +73,29 @@ if ($mform8->is_cancelled()) {
 ///===========================================================================
 function get_name_khoikienthuc($ma_ctdt, $mamonhoc){
     global $DB;
-    $listkhoi = $DB->get_records('block_edu_monthuockhoi', ['mamonhoc' => $mamonhoc]);
+    
+    $ma_cay = $DB->get_record('eb_ctdt',['ma_ctdt'=>$ma_ctdt])->ma_cay_khoikienthuc;
+    
+    $kkt = $DB->get_records('eb_cay_khoikienthuc',['ma_cay_khoikienthuc'=>$ma_cay]);
 
-    foreach($listkhoi as $ikhoi){
-        $listcay = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_khoi' => $ikhoi->ma_khoi]);
-
-        foreach($listcay as $icay){
-            $ctdt_ss =  $DB->get_record('block_edu_ctdt', ['ma_cay_khoikienthuc' => $icay->ma_cay_khoikienthuc]);
-            if($ctdt_ss->ma_ctdt == $ma_ctdt){
-                
-                $khoikienthuc = $DB->get_record('block_edu_khoikienthuc', ['ma_khoi' => $ikhoi->ma_khoi]);
-
-                return $khoikienthuc->ten_khoi;
+    foreach($kkt as $ikhoi)
+    {
+        $a=$ikhoi->ma_khoi;
+        $monthuockhoi = $DB->get_records('eb_monthuockhoi',['ma_khoi'=>$a]);
+        
+        foreach($monthuockhoi as $mon)
+        {   
+            
+            if($mon->mamonhoc == $mamonhoc)
+            {
+                $khoi = $ikhoi->ma_khoi;
+                return $DB->get_record('eb_khoikienthuc',['ma_khoi'=>$khoi])->ten_khoi;
             }
         }
+
     }
+
+    return "";
 
 }
 //THONG TIN CHUNG
@@ -104,7 +112,7 @@ if ($mform1->is_cancelled()) {
     $param1 = new stdClass();
     $param1->id = $mform1->get_data()->idhe; // The data object must have the property "id" set.
     $index_mabac = $mform1->get_data()->mabac;
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
+    $allbacdts = $DB->get_records('eb_bacdt', []);
     $param1->ma_bac = $allbacdts[$index_mabac + 1]->ma_bac;
     $param1->ma_he = $mform1->get_data()->mahe;
     $param1->ten = $mform1->get_data()->tenhe;
@@ -121,18 +129,23 @@ if ($mform1->is_cancelled()) {
     // Button submit
 } else {
     //Set default data from DB
-
-    $chitietmonhoc = get_monhoc_by_mamonhoc($mamonhoc);
-
-    $toform;
     
-    // $toform->ma_decuong_1 = $ma_decuong;
-    // $toform->ma_ctdt_1 = $ma_ctdt;
+    $chitietmonhoc = get_monhoc_by_mamonhoc($mamonhoc);
+    
+    if($chitietmonhoc->loaihocphan == 0)
+    {
+        $tenloaihocphan = "Bắt buộc";
+    }
+    else {
+        $tenloaihocphan = "Tự chọn";
+    }
+    $toform;
 
     $toform->masomonhoc_thongtinchung = $chitietmonhoc->mamonhoc;
     $toform->tenmonhoc1_thongtinchung = $chitietmonhoc->tenmonhoc_vi;
     $toform->tenmonhoc2_thongtinchung = $chitietmonhoc->tenmonhoc_en;
-    $toform->loaihocphan = $chitietmonhoc->loaihocphan;
+    $toform->loaihocphan = $tenloaihocphan;
+    $toform->thuoc_khoikienthuc_thongtinchung = get_name_khoikienthuc($ma_ctdt, $chitietmonhoc->mamonhoc);
     $toform->sotinchi_thongtinchung = $chitietmonhoc->sotinchi;
     $toform->tietlythuyet_thongtinchung = $chitietmonhoc->sotietlythuyet;
     $toform->tietthuchanh_thongtinchung = $chitietmonhoc->sotietthuchanh;
@@ -164,7 +177,7 @@ if ($mform0->is_cancelled()) {
     
     $index_mabac = $mform->get_data()->mabac;    
     
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
+    $allbacdts = $DB->get_records('eb_bacdt', []);
     $param1->ma_bac = $allbacdts[$index_mabac + 1 ]->ma_bac;
     
     $param1->ma_he = $mform->get_data()->mahe;
@@ -178,7 +191,6 @@ if ($mform0->is_cancelled()) {
     $url = new \moodle_url('/blocks/educationpgrs/pages/hedt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_hedt', 'block_educationpgrs');
     echo \html_writer::link($url, $linktext);
-    // $mform->display();
 
 
 } else if ($mform0->is_submitted()) {
@@ -226,15 +238,22 @@ if ($mform2->is_cancelled()) {
 
     $param2->mota = $fromform->mota_muctieu_muctieumonhoc;
     
-    // $param2->danhsach_cdr = $fromform->chuandaura_cdio_muctieumonhoc;
     $danhsach_cdr = $mform2->get_submit_value('chuandaura_cdio_muctieumonhoc');
 
     $str = '';
     foreach($danhsach_cdr as $item){
         $str .= $item . ', ';
     }
-    $param2->danhsach_cdr = substr($str, 0, -1);
+    if($str==''){
 
+        $str=NULL;
+        $param2->danhsach_cdr = $str;
+    }else{
+        $param2->danhsach_cdr = substr($str, 0, -2);
+    }
+    
+    
+    
     insert_muctieumonhoc_table($param2);
 
     $table2 = get_muctieu_monmhoc_by_madc($param2->ma_decuong, $ma_ctdt, $mamonhoc);
@@ -251,7 +270,7 @@ if ($mform2->is_cancelled()) {
     
     
 }else if ($mform2->is_submitted()) {
-    echo 'xin chao viet nam';
+    echo 'Lỗi';
 } else {    
     //Set default data from DB
     $toform;
@@ -341,7 +360,7 @@ function startsWith($haystack, $needle)
 function get_allmuctieu($ma_decuong,$ma_chuandaura) {
     global $DB, $USER, $CFG, $COURSE;
     
-    $all_CDR = $DB->get_records('block_edu_chuandaura', array('ma_decuong' => $ma_decuong));
+    $all_CDR = $DB->get_records('eb_chuandaura', array('ma_decuong' => $ma_decuong));
     $arr_muctieu = array(); $arr = array();  $result;
 
     $stt = 1;
@@ -390,8 +409,15 @@ if ($mform4->is_cancelled()) {
     foreach($danhsach_cdr as $item){
         $str .= $item . ', ';
     }
-    $param2->danhsach_cdr = substr($str, 0, -1);
+    if($str==''){
 
+        $str=NULL;
+        $param2->danhsach_cdr = $str;
+    }else{
+        $param2->danhsach_cdr = substr($str, 0, -2);
+    }
+
+    
     
     insert_kehoachgiangday_LT_table($param2);
 
@@ -451,8 +477,14 @@ if ($mform5->is_cancelled()) {
     foreach($danhsach_cdr as $item){
         $str .= $item . ', ';
     }
-    $param2->chuandaura_danhgia = substr($str, 0, -2);
+    if($str==''){
 
+        $str=NULL;
+        $param2->chuandaura_danhgia = $str;
+    }else{
+        $param2->chuandaura_danhgia = substr($str, 0, -2);
+    }
+    
     insert_danhgiamonhoc_table($param2);
 
     $table5 = get_danhgiamonhoc_by_ma_decuong($fromform->ma_decuong, $ma_ctdt, $mamonhoc);
@@ -596,7 +628,7 @@ echo '<br>';
 
 class MYPDF extends TCPDF
 {
-   
+
     public function Header()
     {
         $this->setJPEGQuality(90);
@@ -654,7 +686,7 @@ $pdf->SetSubject('TCPDF Tutorial');
 $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set orientation
-$pdf->setPageOrientation('',1,200);
+$pdf->setPageOrientation('', 1, 200);
 
 // set header and footer fonts
 $pdf->setHeaderFont(array('times', '', PDF_FONT_SIZE_MAIN));
@@ -758,14 +790,14 @@ $pdf->Ln(6);
 // 3. MỤC TIÊU MÔN HỌC
 function fetch_data_muctieu()
 {
-    GLOBAL $DB;
+    global $DB;
     $output = '';
-    $data_record = $DB->get_records('block_edu_muctieumonhoc', array());  
+    $data_record = $DB->get_records('eb_muctieumonhoc', array());
     foreach ($data_record as $row) {
-       $output .= '
+        $output .= '
                <tr>
-                   <td style = "text-align: center">' . $row->muctieu. '</td>
-                   <td>' . $row->mota. '</td>
+                   <td style = "text-align: center">' . $row->muctieu . '</td>
+                   <td>' . $row->mota . '</td>
                    <td>' . $row->danhsach_cdr . '</td>
                 </tr>
                 ';
@@ -793,14 +825,14 @@ $pdf->writeHTML($table_content, true, false, true, false, '');
 // 4. CHUẨN ĐẦU RA MÔN HỌC 
 function fetch_data_cdr()
 {
-    GLOBAL $DB;
+    global $DB;
     $output = '';
-    $data_record = $DB->get_records('block_edu_chuandaura', array());  
+    $data_record = $DB->get_records('eb_chuandaura', array());
     foreach ($data_record as $row) {
-       $output .= '
+        $output .= '
                <tr>
-                   <td style = "text-align: center">' . $row->ma_cdr. '</td>
-                   <td>' . $row->mota. '</td>
+                   <td style = "text-align: center">' . $row->ma_cdr . '</td>
+                   <td>' . $row->mota . '</td>
                    <td style = "text-align: center">' . $row->mucdo_utilize . '</td>
                 </tr>
                 ';
@@ -826,18 +858,18 @@ $pdf->writeHTML($table_content, true, false, true, false, '');
 // 5. KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT
 function fetch_data_lt()
 {
-    GLOBAL $DB;
+    global $DB;
     $output = '';
-    $data_record = $DB->get_records('block_edu_kh_giangday_lt', []);
-    $stt = 1;   
+    $data_record = $DB->get_records('eb_kh_giangday_lt', []);
+    $stt = 1;
     foreach ($data_record as $row) {
-       $output .= '
+        $output .= '
                <tr>
-                   <td style = "text-align: center">' . $stt . '</td>
+                   <td style = "text-align: center">' . $stt++ . '</td>
                    <td>' . $row->ten_chude . '</td>
                    <td>' . $row->danhsach_cdr . '</td>
-                   <td>' . $row->hoatdong_gopy. '</td>
-                   <td>' . $row->hoatdong_danhgia. '</td>
+                   <td>' . $row->hoatdong_gopy . '</td>
+                   <td>' . $row->hoatdong_danhgia . '</td>
                 </tr>
                 ';
     }
@@ -864,18 +896,17 @@ $pdf->writeHTML($table_content, true, false, true, false, '');
 // 6. ĐÁNH GIÁ
 function fetch_data_dg()
 {
-    GLOBAL $DB;
+    global $DB;
     $output = '';
-    $data_record = $DB->get_records('block_edu_danhgiamonhoc', []);
-    $stt = 1;   
+    $data_record = $DB->get_records('eb_danhgiamonhoc', []);
     foreach ($data_record as $row) {
-       $output .= '
+        $output .= '
                <tr>
                    <td style = "text-align: center">' . $madanhgia . '</td>
                    <td>' . $row->tendanhgia . '</td>
                    <td>' . $row->motadanhgia . '</td>
-                   <td>' . $row->chuandaura_danhgia. '</td>
-                   <td>' . $row->tile_danhgia. '</td>
+                   <td>' . $row->chuandaura_danhgia . '</td>
+                   <td>' . $row->tile_danhgia . '</td>
                 </tr>
                 ';
     }
@@ -899,10 +930,104 @@ $pdf->SetFont('times', '', 12, '', false);
 $pdf->setCellHeightRatio(2); //Tạo khoảng cách giữa các dòng trong 1 đoạn text
 $pdf->writeHTML($table_content, true, false, true, false, '');
 
+// 7. TÀI NGUYÊN MÔN HỌC
+function fetch_data_tn()
+{
+    global $DB;
+    $output = '';
+    $data_record = $DB->get_records('eb_tainguyenmonhoc', ['loaitainguyen' => 'Internet']);
+    $stt = 1;
+    foreach ($data_record as $row) {
+        $output .= '
+               <tr>
+                   <td style = "text-align: center">' . $stt++ . '</td>
+                   <td>' . $row->ten_tainguyen . '</td>
+                   <td>' . $row->mota_tainguyen . '</td>
+                   <td>' . $row->link_tainguyen . '</td>
+                </tr>
+                ';
+    }
+    return $output;
+}
+$pdf->SetFont('timesbd', '', 13, '', false);
+$part_header = '7. TÀI NGUYÊN MÔN HỌC';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+// Phần 7.1: Tài nguyên sách
+$pdf->SetFont('timesbd', '', 12, '', false);
+$part_header = 'Tài liệu tham khảo';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$pdf->SetFont('times', '', 12, '', false);
+$data_record = $DB->get_records('eb_tainguyenmonhoc', ['loaitainguyen' => 'Book']);
+$html = '';
+$index = 0;
+foreach ($data_record as $row) {
+    if ($index != 0) {
+        $html .= '<br>';
+        $index++;
+    }
+    $html .= ' ' . $row->mota_tainguyen;
+}
+$table_content = '<table>
+    <tr>
+    <th width = "5%" style = "display: flex; align-items: center;"></th>
+    <th width = "95%" style = "display: flex; align-items: center;">' . $html . '</th>
+    </tr></table>';
+$pdf->writeHTML($table_content, true, false, true, false, '');
+// Phần 7.2: Tài nguyên internet
+$pdf->SetFont('timesbd', '', 12, '', false);
+$part_header = 'Danh sách các video tham khảo';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$table_content = '<table border = "1" cellspacing = "0" cellpadding ="5">
+                    <tr style = "font-family: timesbd; text-align:center">
+                        <th width = "10%"><b>STT</b></th>
+                        <th width = "35%"><b>Tên video</b></th>
+                        <th width = "10%"><b>Mô tả</b></th>
+                        <th width = "45%"><b>Link liên kết</b></th>
+                    </tr>';
+$table_content .= fetch_data_tn();
+$table_content .= '</table>';
+$pdf->Ln(1);
+$pdf->SetFont('times', '', 12, '', false);
+$pdf->setCellHeightRatio(2); //Tạo khoảng cách giữa các dòng trong 1 đoạn text
+$pdf->writeHTML($table_content, true, false, true, false, '');
+// Phần 7.3: Tài nguyên khác
+$pdf->SetFont('timesbd', '', 12, '', false);
+$part_header = 'Tài nguyên khác';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$pdf->SetFont('times', '', 12, '', false);
+$data_record = $DB->get_records('eb_tainguyenmonhoc', ['loaitainguyen' => 'Other']);
+$html = '';
+$index = 0;
+foreach ($data_record as $row) {
+    if ($index != 0) {
+        $html .= '<br>';
+        $index++;
+    }
+    $html .= ' <br>' . $row->mota_tainguyen;
+}
+$table_content = '<table>
+    <tr>
+    <th width = "5%" style = "display: flex; align-items: center;"></th>
+    <th width = "95%" style = "display: flex; align-items: center;">' . $html . '</th>
+    </tr></table>';
+$pdf->writeHTML($table_content, true, false, true, false, '');
 
-// output the HTML content
-$pdf->writeHTML($html, true, false, true, false, '');
-
+// 8.   QUY ĐỊNH CHUNG
+$pdf->SetFont('timesbd', '', 13, '', false);
+$part_header = '8. CÁC QUY ĐỊNH CHUNG';
+$pdf->writeHTML($part_header, true, false, true, false, '');
+$pdf->SetFont('times', '', 12, '', false);
+$data_record = $DB->get_records('eb_quydinhchung', []);
+$html = '';
+foreach ($data_record as $row) {
+    $html .= ' • &nbsp;&nbsp;' . $row->mota_quydinhchung . '<br>';
+}
+$table_content = '<table>
+    <tr>
+    <th width = "5%" style = "display: flex; align-items: center;"></th>
+    <th width = "95%" style = "display: flex; align-items: center;">' . $html . '</th>
+    </tr></table>';
+$pdf->writeHTML($table_content, true, false, true, false, '');
 
 // reset font stretching
 $pdf->setFontStretching(10);
@@ -917,4 +1042,132 @@ echo "<button style='border: none;width: auto; height:40px; background-color: #1
 
 ////////////////////////////////////////////////////////////////////////////////
 // Print footer
-echo $OUTPUT->footer();?>
+echo $OUTPUT->footer();
+
+
+function get_muctieu_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Mục tiêu', 'Mô tả', 'Chuẩn đầu ra');
+   $alldatas = $DB->get_records('eb_muctieumonhoc', array('ma_decuong' => $ma_decuong));
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_muctieu_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->muctieu);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'muctieumonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'muctieumonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_muctieumonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->mota, (string) $idata->danhsach_cdr];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+
+
+function get_chuandaura_monmhoc_by_madc($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Chuẩn đầu ra', 'Mô tả(Mức chi tiết-hành động)', 'Mức độ(I/T/U)');
+   $alldatas = $DB->get_records('eb_chuandaura', ['ma_decuong' => $ma_decuong]);
+
+   usort($alldatas, function($a, $b)
+   {
+      return strcmp($a->ma_cdr, $b->ma_cdr);
+   });
+
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_chuan_daura.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->ma_cdr);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'chuandaura_monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'chuandaura_monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_chuandaura_monhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->mota, (string) $idata->mucdo_utilize];
+      $stt = $stt + 1;
+   }
+
+  
+   return $table;
+}
+
+
+function get_kehoachgiangday_LT_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Chủ đề', 'Chuẩn đầu ra', 'Hoạt động giảng dạy/Hoạt động học (gợi ý)', 'Hoạt động đánh giá');
+   $alldatas = $DB->get_records('eb_kh_giangday_lt', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_kehoach_giangday_lt.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->ten_chude);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'kehoachgiangday_LT_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'kehoachgiangday_LT' . $idata->id, 'value' => '0', 'onclick' => "changecheck_kehoachgiangday_LT($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $idata->danhsach_cdr, (string) $idata->hoatdong_gopy, (string) $idata->hoatdong_danhgia];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+
+function get_danhgiamonhoc_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Mã', 'Tên', 'Mô tả (gợi ý)', 'Các chuẩn', 'Tỷ lệ (%)');
+   $alldatas = $DB->get_records('eb_danhgiamonhoc', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_danhgia_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->madanhgia);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'danhgiamonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'danhgiamonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_danhgiamonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url, (string)$idata->tendanhgia, (string) $idata->motadanhgia, (string) $idata->chuandaura_danhgia, (string) $idata->tile_danhgia];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+
+function get_tainguyenmonhoc_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT',  'Mô tả (gợi ý)','Loại tài nguyên', 'Link đính kèm');
+   $alldatas = $DB->get_records('eb_tainguyenmonhoc', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_tainguyen_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->mota_tainguyen);
+
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'tainguyenmonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'tainguyenmonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_tainguyenmonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt,  $ten_url, (string) $idata->loaitainguyen, (string) $idata->link_tainguyen];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+
+function get_quydinhchung_by_ma_decuong($ma_decuong, $ma_ctdt, $mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Nội dung');
+   $alldatas = $DB->get_records('eb_quydinhchung', ['ma_decuong' => $ma_decuong]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_quydinh_monhoc.php', ['id' => $idata->id, 'ma_decuong'=>$ma_decuong, 'ma_ctdt'=>$ma_ctdt, 'mamonhoc'=>$mamonhoc]);
+      $ten_url = \html_writer::link($url, $idata->mota_quydinhchung);
+
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'quydinhchung_monhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'quydinhchung_monhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_quydinhchung_monhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, $ten_url];
+      $stt = $stt + 1;
+   }
+   return $table;
+}
+
+
+
+
+
+
+
+
+
+
+
+?>

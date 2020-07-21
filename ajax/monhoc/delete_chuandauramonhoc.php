@@ -6,7 +6,7 @@ $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
 function delete_chuandauramonhoc($id) {
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_chuandaura', array('id' => $id));
+    $DB->delete_records('eb_chuandaura', array('id' => $id));
 }
     delete_chuandauramonhoc($id);
     // return

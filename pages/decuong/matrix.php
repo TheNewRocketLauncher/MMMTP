@@ -13,14 +13,12 @@ if(!$ma_ctdt){
     $ma_ctdt=0;
 }
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -28,11 +26,14 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_quanly_decuong', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/decuong/index.php'));
 
 // Title.
 $PAGE->set_title(get_string('label_quanly_decuong', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
-$PAGE->set_heading('Môn học By Chuẩn đầu ra CTDT');
+$PAGE->set_heading('Sơ đồ MATRIX');
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -43,13 +44,6 @@ require_once("$CFG->libdir/formslib.php");
 global $DB; $arr = array();
 
 ////////////////////////NEW RECORDs HERE///////////////////////////
-
-// $arr = $DB->get_records('block_edu_chuandaura_ctdt', ['ma_ctdt'=> 'CTDT2020'], '', 'ma_cdr');
-
-// foreach($arr as $iarr){
-//     echo $iarr->ma_cdr;
-//     echo "<br>";
-// }
 
 ////////////////////////NEW RECORDs HERE///////////////////////////
 
@@ -65,16 +59,16 @@ class mform1 extends moodleform{
         $arr_ctdt = array();
         $arr_ctdt += ["0" => "Chọn chương trình đào tạo"];
 
-        $all_ctdt = $DB->get_records('block_edu_ctdt', array(), '');
+        $all_ctdt = $DB->get_records('eb_ctdt', array(), '');
         foreach ($all_ctdt as $ictdt) {
-            $arr_ctdt += ['ma_ctdt' => $ictdt->ma_ctdt];
+            $arr_ctdt += [$ictdt->ma_ctdt => $ictdt->ma_ctdt];
             // , 'ma_bac'=> $ictdt->ma_bac, 'ma_he'=> $ictdt->ma_he , 'ma_nienkhoa'=> $ictdt->ma_nienkhoa, 'ma_nganh'=> $ictdt->ma_nganh , 'ma_chuyennganh'=> $ictdt->ma_chuyennganh];
         }
     
 
         $eGroup = array();
         $eGroup[] = &$mform->createElement('select', 'sort_ctdt', 'Chọn chương trình đào tạo', $arr_ctdt );
-        $eGroup[] = &$mform->createElement('submit', 'fetch_ctdt_1', 'Show Data',['style'=>"border-radius: 3px; width: 100px; height:40px; background-color: #1177d1; color: #fff"]);
+        $eGroup[] = &$mform->createElement('submit', 'fetch_ctdt_1', 'Show Data',['style'=>"border-radius: 3px; width: 130px; height:40px; padding: 0; background-color: #1177d1; color: #fff"]);
         $mform->addGroup($eGroup, 'thongtinchung_group133',  'Chương trình đào tạo', array(' '),  false);
 
         $eGroup = array();
@@ -102,6 +96,11 @@ class mform1 extends moodleform{
         $eGroup[] = &$mform->createElement('text', 'ma_chuyennganh', '', 'size=50');
         $mform->addGroup($eGroup, 'ma_chuyennganh', 'Thuộc chuyên ngành đào tạo', [], false);
         $mform->disabledIf('ma_chuyennganh', '');
+
+        $eGroup = array();
+        $eGroup[] = &$mform->createElement('text', 'ten_chuandaura', '', 'size=50');
+        $mform->addGroup($eGroup, 'ten_chuandaura', 'Chuẩn đầu ra', [], false);
+        $mform->disabledIf('ten_chuandaura', '');
     }
     function validation($data, $files)
     {
@@ -123,8 +122,12 @@ if ($mform->is_cancelled()) {
 } else if ($mform->no_submit_button_pressed()) {
     
 } else if ($fromform = $mform->get_data()) {
+    $ma_ctdt = $mform->get_submit_value('sort_ctdt');
+    if($ma_ctdt != 0 && $ma_ctdt != '0'){
+
+        redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/decuong/matrix.php?ma_ctdt='.$ma_ctdt);
+    }
     
-    redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/decuong/test_table_of_cdr.php?ma_ctdt='.$mform->get_submit_value('sort_ctdt'));
 
 } else if ($mform->is_submitted()) {
     
@@ -134,7 +137,7 @@ if ($mform->is_cancelled()) {
     $toform;
     
 
-    $all_ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt'=>$ma_ctdt]);
+    $all_ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt'=>$ma_ctdt]);
     
 
     $toform->ma_bac = $all_ctdt->ma_bac;
@@ -144,15 +147,17 @@ if ($mform->is_cancelled()) {
     $toform->ma_chuyennganh = $all_ctdt->ma_chuyennganh;
 
     $toform->sort_ctdt = $all_ctdt->ma_ctdt;
+    
+    // $toform->ten_chuandaura = $DB->get_record('eb_chuandaura_ctdt',['ma_cdr' => $all_ctdt->chuandaura])->ten;
 
     $mform->set_data($toform);
     
-    $mform->display();
+    // $mform->display();
 }
 
 ////////////////////////FORM///////////////////////////
 
-$arr = $DB->get_records('block_edu_chuandaura_ctdt', ['ma_ctdt'=> $ma_ctdt], '', 'ma_cdr');
+$arr = $DB->get_records('eb_chuandaura_ctdt', [], '');
 
 
 usort($arr, function($a,$b){
@@ -166,19 +171,30 @@ $table->head[] = ' ';
 $list_monhoc = get_list_monhoc($ma_ctdt);
 
 
+
 //header
+
+$link_cdr = $CFG->wwwroot.'/blocks/educationpgrs/pages/chuandauractdt/index.php';
+$arr_head = array();
+$arr_head[] = ' ';
 foreach($arr as $iarr){
-    $table->head[] = $iarr->ma_cdr;
+    if($iarr->level_cdr != '1' && $iarr->level_cdr != 1){
+        $table->head[] = "<a href='$link_cdr'>".$iarr->ma_cdr. "</a>";
+        $arr_head[] = ['ma_cdr'=>$iarr->ma_cdr, 'level_cdr'=>$iarr->level_cdr];
+    }
+    
+    
 }
 
 //data row
 $len = count($table->head)-1;
 
-
-
 foreach($list_monhoc as $iarr_1){
+    $link = $CFG->wwwroot.'/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php?ma_ctdt='.$iarr_1['ma_ctdt'] . '&ma_decuong='. $iarr_1['ma_decuong'] . '&mamonhoc='. $iarr_1['mamonhoc'];
     $row = array();
-    $row[] = "<a href='#'>$iarr_1</a>";
+    $row[] = "<a href='$link'>"
+        .$iarr_1['mamonhoc'].
+    "</a>";
 
     for($i=0;$i<$len;$i++){ //contructor
     
@@ -186,16 +202,25 @@ foreach($list_monhoc as $iarr_1){
        
     }
 
-    $cdr_monhoc_arr =  get_cdr($iarr_1);
+    $cdr_monhoc_arr =  get_cdr($iarr_1['mamonhoc']);
 
     $len_1 = count($cdr_monhoc_arr);
     
     for($i=0;$i<$len_1;$i++){
             
-        for($j=1;$j<$len; $j++){
-            if($cdr_monhoc_arr[$i] == $table->head[$j]){
+        for($j=1;$j<=$len; $j++){
+            
+            if($cdr_monhoc_arr[$i] == $arr_head[$j]['ma_cdr']){
                 
                 $row[$j] = 'x';
+                for($k = $j + 1; $k <= $len; $k++){
+                    
+                    if($arr_head[$k]['level_cdr'] > $arr_head[$j]['level_cdr']){
+                        $row[$k] = 'x';
+                    }
+                    
+                }
+
             }
         }
         
@@ -203,12 +228,35 @@ foreach($list_monhoc as $iarr_1){
     $table->data[] = $row;
 }
 
+$rsx_ctdt = $mform->get_submit_value('sort_ctdt');
+if($ma_ctdt){
+    $toform;
+    
+
+    $all_ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt'=>$ma_ctdt]);
+    
+
+    $toform->ma_bac = $all_ctdt->ma_bac;
+    $toform->ma_he = $all_ctdt->ma_he;
+    $toform->ma_nienkhoa = $all_ctdt->ma_nienkhoa;
+    $toform->ma_nganh = $all_ctdt->ma_nganh;
+    $toform->ma_chuyennganh = $all_ctdt->ma_chuyennganh;
+
+    $toform->sort_ctdt = $all_ctdt->ma_ctdt;
+      
+    $toform->ten_chuandaura = $DB->get_record('eb_chuandaura_ctdt',['ma_cdr' => $all_ctdt->chuandaura])->ten;
+
+    $mform->set_data($toform);
+
+    $mform->display();
+    echo "<h2 style='color: #1177d1;font-weight: 350; text-decoration: underline;'>Biểu đồ</h2>";
+    echo html_writer::table($table);    
+}else{
+    $mform->display();
+    echo "<h2 style='color: #1177d1;font-weight: 350; text-decoration: underline;'>KHÔNG TÌM THẤY CHƯƠNG TRÌNH ĐÀO TẠO</h2>";
+}
 
 
-//print table
-
-echo "<h2 style='color: #1177d1;font-weight: 350; text-decoration: underline;'>Biểu đồ</h2>";
-echo html_writer::table($table);    
 
 
 
@@ -221,12 +269,12 @@ function get_cdr($mamonhoc){
     //find de cuong cua tung mon
     // find chuan dau ra cdtd cua de cuong do
     
-    $list_ma_decuong =  $DB->get_records('block_edu_decuong', ['mamonhoc'=>$mamonhoc], '', 'ma_decuong');
+    $list_ma_decuong =  $DB->get_records('eb_decuong', ['mamonhoc'=>$mamonhoc], '', 'ma_decuong');
     $arr = array();
 
     foreach($list_ma_decuong as $i){
         
-        $danhsach_cdr = $DB->get_records('block_edu_muctieumonhoc', ['ma_decuong'=>$i->ma_decuong, 'mamonhoc'=>$mamonhoc], '', 'danhsach_cdr');
+        $danhsach_cdr = $DB->get_records('eb_muctieumonhoc', ['ma_decuong'=>$i->ma_decuong, 'mamonhoc'=>$mamonhoc], '', 'danhsach_cdr');
         
         foreach($danhsach_cdr as $i){
 
@@ -262,19 +310,29 @@ function get_list_monhoc($ma_ctdt){
     global $DB, $USER, $CFG, $COURSE; $arr= array();
     
 
-    $ctdt = $DB->get_record('block_edu_ctdt', ['ma_ctdt'=>$ma_ctdt]);
+    $ctdt = $DB->get_record('eb_ctdt', ['ma_ctdt'=>$ma_ctdt]);
+
     
-    $cay_khoikienthuc = $DB->get_record('block_edu_cay_khoikienthuc', ['ma_cay_khoikienthuc'=>$ctdt->ma_cay_khoikienthuc]);
+    
+    $cay_khoikienthuc = $DB->get_record('eb_cay_khoikienthuc', ['ma_cay_khoikienthuc'=>$ctdt->ma_cay_khoikienthuc]);
+    
     
 
-    $list_khoikienthuc = $DB->get_records('block_edu_cay_khoikienthuc', ['ma_khoi'=>$cay_khoikienthuc->ma_khoi]);
+    $list_khoikienthuc = $DB->get_records('eb_khoikienthuc', ['ma_khoi'=>$cay_khoikienthuc->ma_khoi]);
+
+    
 
     foreach($list_khoikienthuc as $ikhoikienthuc){
-        $list_monhoc = $DB->get_records('block_edu_monthuockhoi', ['ma_khoi'=>$ikhoikienthuc->ma_khoi]);
+        $list_monhoc = $DB->get_records('eb_monthuockhoi', ['ma_khoi'=>$ikhoikienthuc->ma_khoi]);
+        
 
         foreach($list_monhoc as $imonhoc){
-            
-            $arr[] = $imonhoc->mamonhoc;
+            $item = $DB->get_record('eb_decuong', ['mamonhoc'=>$imonhoc->mamonhoc]);
+            // if($item){
+                $arr[] = ['mamonhoc' => $imonhoc->mamonhoc, 'ma_ctdt' => $ma_ctdt, 'ma_decuong'=> $item->ma_decuong];
+            // }else{
+                // echo "<h4>Môn học <strong> $imonhoc->mamonhoc </strong>chưa có đề cương môn học </h4>";
+            // }
         }
     }
 

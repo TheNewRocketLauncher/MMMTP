@@ -26,6 +26,8 @@ $PAGE->navbar->add(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'),
 // Title.
 $PAGE->set_title(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
 $PAGE->set_heading(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
@@ -44,8 +46,21 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
     // Submit form này làm cho page reload nhưng vẫn chạy setDefault ở bên dưới -> Mất sạch toàn bộ form data trước, 
     // Có lẽ data mất mát này được truyền sang page mới dưới dạng $_SESSION hoặc bằng $_POST ?!
-    $id = 7;
-    delete_kkt_byID($id);
+    // $id = 7;
+    // delete_kkt_byID($id);
+    // $mform->display();
+
+    // $ma_khoi = 'KTT_DC';
+
+    // echo json_encode(get_tong_TC_BB($ma_khoi));
+
+
+
+
+    for ($i=0; $i < 150; $i++) { 
+        echo '<br>';
+        echo time();
+    }
     $mform->display();
 } else {
     $mform->display();

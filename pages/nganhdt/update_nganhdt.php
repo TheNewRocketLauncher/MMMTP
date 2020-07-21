@@ -14,14 +14,12 @@ if (optional_param('id', 0, PARAM_INT)) {
 }
 $courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/nganhdt/update_nganhdt.php', ['courseid' => $courseid, 'id' => $id]));
@@ -29,6 +27,7 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $nganhdt = get_nganhdt_byID($id);
 $navbar_name = 'Ngành ĐT';
 $title_heading = 'ĐT';
@@ -43,6 +42,8 @@ $PAGE->navbar->add($navbar_name);
 // Title.
 $PAGE->set_title('Cập nhật ngành ' . $title_heading);
 $PAGE->set_heading('Cập nhật ngành ' . $title_heading);
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -54,10 +55,11 @@ $mform = new qlnganh_form();
 
 // Form processing
 if ($mform->is_cancelled()) {
-    echo '<h2>Hủy cập nhật</h2>';
-    $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
-    $linktext = get_string('label_nganh', 'block_educationpgrs');
-    echo \html_writer::link($url, $linktext);
+    // echo '<h2>Hủy cập nhật</h2>';
+    // $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
+    // $linktext = get_string('label_nganh', 'block_educationpgrs');
+    // echo \html_writer::link($url, $linktext);
+    redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/nganhdt/index.php?courseid='.$courseid);
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
@@ -81,10 +83,11 @@ if ($mform->is_cancelled()) {
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
     // Button submit
-    echo '<h2>Nhập sai thông tin</h2>';
-    $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
-    $linktext = get_string('label_nganh', 'block_educationpgrs');
-    echo \html_writer::link($url, $linktext);
+    // echo '<h2>Nhập sai thông tin</h2>';
+    // $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]);
+    // $linktext = get_string('label_nganh', 'block_educationpgrs');
+    // echo \html_writer::link($url, $linktext);
+    $mform->display();
 } else {
     //Set default data from DB
     $toform;global $DB;
@@ -104,11 +107,11 @@ if ($mform->is_cancelled()) {
     
     //echo($toform->mabac);
 
-    $bacdt = $DB->get_record('block_edu_bacdt', ['ma_bac'=> $toform->mabac]);
+    $bacdt = $DB->get_record('eb_bacdt', ['ma_bac'=> $toform->mabac]);
     $toform->bacdt = $bacdt->ten;
-    $hedt = $DB->get_record('block_edu_hedt', ['ma_he'=> $toform->mahe]);
+    $hedt = $DB->get_record('eb_hedt', ['ma_he'=> $toform->mahe]);
     $toform->hedt = $hedt->ten;
-    $nienkhoadt=$DB->get_Record('block_edu_nienkhoa',['ma_nienkhoa'=>$toform->manienkhoa]);
+    $nienkhoadt=$DB->get_Record('eb_nienkhoa',['ma_nienkhoa'=>$toform->manienkhoa]);
     $toform->nienkhoa=$nienkhoadt->ten_nienkhoa;
     $mform->set_data($toform);
     $mform->display();

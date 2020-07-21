@@ -29,7 +29,7 @@
 		alert("Js imported!");
     }
 
-    // C�c h�m x? l� s? ki?n khi check v�o checkbox
+    // Các hàm xử lí sự kiện khi check vào checkbox
     function changecheck(check_id)
     {            
         var check_idplus = check_id;

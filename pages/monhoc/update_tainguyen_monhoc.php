@@ -4,18 +4,17 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
+require_once('../../js.php');
 
 global $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
@@ -23,6 +22,7 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_decuong', 'block_educationpgrs'));
 
 // Title.
@@ -85,3 +85,19 @@ if ($mform->is_cancelled()) {
 
 // Print footer
 echo $OUTPUT->footer();
+
+
+function get_tainguyenmonhoc_by_mamonhoc($mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Loại tài nguyên', 'Mô tả (gợi ý)', 'Link đính kèm');
+   $alldatas = $DB->get_records('eb_tainguyenmonhoc', ['mamonhoc' => $mamonhoc]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'tainguyenmonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'tainguyenmonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_tainguyenmonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, (string) $idata->loaitainguyen, (string) $idata->mota_tainguyen, (string) $idata->link_tainguyen];
+      $stt = $stt + 1;
+   }
+   return $table;
+}

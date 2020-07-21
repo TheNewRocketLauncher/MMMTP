@@ -10,7 +10,7 @@ function fetch($ma_decuong) {
    global $DB, $USER, $CFG, $COURSE;
    
    
-    $allmuctieu = $DB->get_records('block_edu_muctieumonhoc', array('ma_decuong' => $ma_decuong));
+    $allmuctieu = $DB->get_records('eb_muctieumonhoc', array('ma_decuong' => $ma_decuong));
     $arr_muctieu = array();
     $stt = 1;
     foreach ($allmuctieu as $imuctieu) {

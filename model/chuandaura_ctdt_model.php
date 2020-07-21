@@ -1,48 +1,18 @@
 <?php
 require_once(__DIR__ . '/../../../config.php');
-require_once('../../js.php');
+require_once('../../controller/support.php');
 
-
-function vn_to_str($str)
-{
-   $unicode = array(
-      'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ|Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
-      'd' => 'đ|Đ',
-      'e' => 'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ|É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
-      'i' => 'í|ì|ỉ|ĩ|ị|Í|Ì|Ỉ|Ĩ|Ị',
-      'o' => 'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ|Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
-      'u' => 'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự|Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
-      'y' => 'ý|ỳ|ỷ|ỹ|ỵ|Ý|Ỳ|Ỷ|Ỹ|Ỵ',
-   );
-   foreach ($unicode as $nonUnicode => $uni) {
-      $str = preg_replace("/($uni)/i", $nonUnicode, $str);
-   }
-   $str = str_replace(' ', '_', $str);
-   return strtolower($str);
-}
-
-function findContent($str, $key)
-{
-   $result = false;
-   $_str = vn_to_str($str);
-   $_key = vn_to_str($key);
-   if (strstr($_str, $_key)) {
-      $result = true;
-   } else {
-      $result = false;
-   }
-   return $result;
-}
+ 
 
 function insert_chuandaura_ctdt($param)
 {   
    global $DB, $USER, $CFG, $COURSE;
-   $DB->insert_record('block_edu_chuandaura_ctdt', $param);
-}  
+   $DB->insert_record('eb_chuandaura_ctdt', $param);
+}
 function update_chuandaura_ctdt($param)
 {   
    global $DB, $USER, $CFG, $COURSE;
-   $DB->update_record('block_edu_chuandaura_ctdt', $param, $bulk = false);
+   $DB->update_record('eb_chuandaura_ctdt', $param, $bulk = false);
    
 }
 
@@ -50,7 +20,7 @@ function update_chuandaura_ctdt($param)
 function get_chuandaura_ctdt_byID($id)
 {
    global $DB;
-   $result = $DB->get_record('block_edu_chuandaura_ctdt', ['id' => $id]);
+   $result = $DB->get_record('eb_chuandaura_ctdt', ['id' => $id]);
    return $result;
 
 }
@@ -58,7 +28,7 @@ function get_chuandaura_ctdt_byID($id)
 function get_chuandaura_ctdt()
 {
    global $DB;
-   $result = $DB->get_records('block_edu_chuandaura_ctdt', []);
+   $result = $DB->get_records('eb_chuandaura_ctdt', []);
    $arr = array();
    foreach($result as $iresult){
       $arr[] = $iresult->ma_cdr;
@@ -68,49 +38,137 @@ function get_chuandaura_ctdt()
 }
 
 
-function get_chuandaura_ctdt_checkbox($key_search = '', $page = 0)
-{
+
+function insert_cdr($param){
    global $DB, $USER, $CFG, $COURSE;
-   $table = new html_table();
-   $table->head = array('', 'STT','Mã chuẩn đầu ra', 'Trạng thái(CTĐT)', 'Tên chuẩn đầu ra',  'Mô tả', );
-   $allchuandaura_ctdts = $DB->get_records('block_edu_chuandaura_ctdt', []);
-   usort($allchuandaura_ctdts, function($a, $b)
-   {
-      return strcmp($a->ma_cdr, $b->ma_cdr);
-   });
-   $stt = 1 + $page * 20;
-   $pos_in_table = 1;
-
-   foreach ($allchuandaura_ctdts as $item) {
-      if (findContent($item->ten, $key_search) || $key_search == '') {
-
-      $checkbox = html_writer::tag('input', ' ', array('class' => 'chuandauractdtcheckbox', 'type' => "checkbox", 'name' => $item->id, 'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
-      
-      $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/update.php', [ 'id' => $item->id]);
-      $ten_url = \html_writer::link($url, $item->ten);
-      if ($item->have_ctdt == 0 ){
-         $have_ctdt = "Chưa";
-         $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/update.php', [ 'id' => $item->id]);
-         $ten_url = \html_writer::link($url, $item->ten);
-      }
-      else{
-         $have_ctdt = "Có";
-         $ten_url = $item->ten;
-         $checkbox = " ";
-
-      }
-      if ($page < 0) { // Get all data without page
-         
-         $table->data[] = [$checkbox, (string) $stt, (string) $item->ma_cdr, (string)$have_ctdt, $ten_url, (string) $item->mota];
-         $stt = $stt + 1;
-      } else if ($pos_in_table > $page * 20 && $pos_in_table <= $page * 20 + 20) {
-         $table->data[] = [$checkbox, (string) $stt, (string) $item->ma_cdr, (string)$have_ctdt, $ten_url, (string) $item->mota];
-         $stt = $stt + 1;
-      }
-      $pos_in_table = $pos_in_table + 1;
-
-      }
-   }
-   return $table;
+   $DB->insert_record('eb_chuandaura_ctdt', $param);
 }
 
+function get_node_cdr_byMaCDR($ma_cay_cdr){
+   global $DB, $USER, $CFG, $COURSE;
+   $list_cdr = $DB->get_records('eb_chuandaura_ctdt', ['ma_cay_cdr' => $ma_cay_cdr]);
+   return $list_cdr;
+}
+
+function get_chuandaura_ctdt_byMaCayCDR($ma_cay_cdr)
+{
+   global $DB;
+   $result = $DB->get_record('eb_chuandaura_ctdt', ['ma_cay_cdr' => $ma_cay_cdr, 'level_cdr' => 0]);
+   return $result;
+
+}
+
+function get_list_cdr_byMaCayCDR($ma_cay_cdr){
+   global $DB;
+   $result = $DB->get_records('eb_chuandaura_ctdt', ['ma_cay_cdr' => $ma_cay_cdr]);
+   return $result;
+}
+
+function get_node_cdr($ma_cay_cdr, $ma_cdr){
+   global $DB, $USER, $CFG, $COURSE;
+   $cdr = $DB->get_record('eb_chuandaura_ctdt', ['ma_cay_cdr' => $ma_cay_cdr, 'ma_cdr' => $ma_cdr]);
+   return $cdr;
+}
+
+function can_edit_cdr($ma_cay_cdr){
+   $cdr = get_chuandaura_ctdt_byMaCayCDR($ma_cay_cdr);
+   return !$cdr->is_used;
+}
+
+function lock_cdr($ma_cay_cdr){
+   global $DB, $USER, $CFG, $COURSE;
+   $cdr = get_chuandaura_ctdt_byMaCayCDR($ma_cay_cdr);
+   $cdr->is_used = 1;
+   update_chuandaura_ctdt($cdr);
+}
+
+function delete_node_cdr($ma_cay_cdr, $id)
+{
+   // Hàm kiểm tra $p là cdr cùng cha nằm phía sau $q hay không
+   function sameFather($p, $q)
+   {
+      // Khởi tạo các biến
+      $result = true;
+      $level = $p->level_cdr;
+      $arrIndex1 = explode('.', $p->ma_cdr);
+      $arrIndex2 = explode('.', $q->ma_cdr);
+
+      // Trả về false nếu 2 cdr khác cấp hoặc không nằm trong cùng một cây
+      if ($p->level_cdr != $q->level_cdr || $p->ma_cay_cdr != $q->ma_cay_cdr)
+         return false;
+
+      // Trả về true nếu 2 cdr có cùng cấp là 1 và $p nằm sau $q
+      if ($p->level_cdr == 1 && $arrIndex1[0] > $arrIndex2[0])
+         return true;
+
+      // Kiểm tra nếu 2 cdr có cùng cha      
+      for ($i = 0; $i < $level - 1; $i++) {
+         if ($arrIndex1[$i] != $arrIndex2[$i])
+            $result = false;
+      }
+
+      // Nếu $p nằm trước hoặc ngang $q thì trả về false
+      if ($arrIndex1[$level - 1] <= $arrIndex2[$level - 1])
+         $result = false;
+
+      // Trả về kết quả kiểm tra
+      return $result;
+   }   
+   global $DB;
+   $list_cdr = get_node_cdr_byMaCDR($ma_cay_cdr);
+   $cdr = get_chuandaura_ctdt_byID($id);
+
+   // Xóa các cdr-con của cdr cần xóa
+   foreach ($list_cdr as $item) {
+      if ($item->level_cdr > $cdr->level_cdr && strpos($item->ma_cdr, $cdr->ma_cdr) === 0) {
+         $DB->delete_records('eb_chuandaura_ctdt', ['id' => $item->id]);
+      }
+   }
+
+   // Xóa cdr
+   $DB->delete_records('eb_chuandaura_ctdt', ['id' => $cdr->id]);
+
+   /* Cập nhật mã cdr - các nội dung ảnh hưởng là các node cùng cây, cùng node cha, cùng level với $cdr */
+   $same_level_in_tree = $DB->get_records('eb_chuandaura_ctdt', ['ma_cay_cdr' => $cdr->ma_cay_cdr, 'level_cdr' => $cdr->level_cdr]);
+   foreach ($same_level_in_tree as $item) {
+
+      // Xử lí các $cdr cùng cha nằm ở sau $cdr
+      if (sameFather($item, $cdr)) {
+
+         // Cập nhật các cdr con của item trước
+         foreach ($list_cdr as $child) {
+            if ($child->level_cdr > $item->level_cdr && strpos($child->ma_cdr, $item->ma_cdr) === 0) {
+
+               // Cập nhật lại mã cdr
+               $arrIndex = explode('.', $child->ma_cdr);
+               $arrIndex[$item->level_cdr - 1]--;
+               $newCode = '';
+               foreach ($arrIndex as $index) {
+                  ($newCode == '') ? $newCode .= $index : $newCode .= '.' . $index;
+               }
+               $child->ma_cdr = $newCode;
+               $DB->update_record('eb_chuandaura_ctdt', $child, $bulk = false);
+            }
+         }
+
+         // Cập nhật lại mã cdr
+         $arrIndex = explode('.', $item->ma_cdr);
+         $arrIndex[$item->level_cdr - 1]--;
+         $newCode = '';
+         foreach ($arrIndex as $index) {
+            ($newCode == '') ? $newCode .= $index : $newCode .= '.' . $index;
+         }
+         $item->ma_cdr = $newCode;
+         $DB->update_record('eb_chuandaura_ctdt', $item, $bulk = false);         
+      }
+   }
+}
+
+function delete_cdr_byMaCayCRT($ma_cay_cdr){
+   global $DB, $USER, $CFG, $COURSE;
+   $list = get_list_cdr_byMaCayCDR($ma_cay_cdr);
+
+   foreach($list as $item){
+      $DB->delete_records('eb_chuandaura_ctdt', ['id' => $item->id]);
+   }
+}

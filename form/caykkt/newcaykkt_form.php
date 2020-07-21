@@ -24,7 +24,7 @@ class newcaykkt_form_final extends moodleform
         $mform->addElement('select', 'select_ma_khoi', 'Khối thuộc cây', $this->get_listkkt(), $options);
 
         $eGroup = array();
-        $eGroup[] = $mform->createElement('button', 'btn_addcaykkt_add_khoi', 'Thêm thành khối cùng cấp', ['style'=>"border-radius: 3px; width: auto; height:40px; background-color: #32d96f; color: #fff"]);
+        $eGroup[] = $mform->createElement('button', 'btn_addcaykkt_add_khoi', 'Thêm khối', ['style'=>"border-radius: 3px; width: auto; height:40px; background-color: #32d96f; color: #fff"]);
         $eGroup[] = $mform->createElement('button', 'btn_addcaykkt_addkhoi_asChild', 'Thêm thành khối con', ['style'=>"border-radius: 3px; width: auto; height:40px; background-color: #32d96f; color: #fff"]);
         $mform->addGroup($eGroup, 'gbtn', '', array(' '), false);
         $mform->disable_form_change_checker();

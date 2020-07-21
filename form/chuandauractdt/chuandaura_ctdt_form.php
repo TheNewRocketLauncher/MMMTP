@@ -17,7 +17,7 @@ class chuandaura_ctdt_form extends moodleform
 
 
         $ma_cdr_cha = array();
-        $rows = $DB->get_records('block_edu_chuandaura_ctdt', []);
+        $rows = $DB->get_records('eb_chuandaura_ctdt', []);
 
         usort($rows, function($a, $b)
         {

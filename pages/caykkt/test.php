@@ -27,6 +27,8 @@ $PAGE->navbar->add(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'),
 // Title.
 $PAGE->set_title(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
 $PAGE->set_heading(get_string('themkkt_btn_themkhoimoi', 'block_educationpgrs'));
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();

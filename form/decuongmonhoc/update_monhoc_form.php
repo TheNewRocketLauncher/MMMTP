@@ -15,8 +15,8 @@ class update_monhoc_form extends moodleform
         $mform->addElement('hidden', 'idmonhoc', '');
 
         
-        $mform->addElement('text', 'mamonhoc',  get_string('mamonhoc_chitiet', 'block_educationpgrs'), 'size=50');
-        $mform->addRule('mamonhoc', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        $mform->addElement('text', 'mamonhoc1',  get_string('mamonhoc_chitiet', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('mamonhoc1', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         $mform->addElement('text', 'tenmonhoc_vi', get_string('tenmonhoc1_thongtinchung', 'block_educationpgrs'), 'size=50');
         $mform->addRule('tenmonhoc_vi', get_string('error'), 'required', 'extraruledata', 'server', false, false);
@@ -24,7 +24,7 @@ class update_monhoc_form extends moodleform
         $mform->addElement('text', 'tenmonhoc_en', get_string('tenmonhoc2_thongtinchung', 'block_educationpgrs'), 'size=50');
         $mform->addRule('tenmonhoc_en', get_string('error'), 'required', 'extraruledata', 'server', false, false);
         
-        $mform->addElement('text', 'loaihocphan', get_string('loaihocphan', 'block_educationpgrs'), 'size=50');
+        $mform->addElement('select', 'loaihocphan', get_string('loaihocphan', 'block_educationpgrs'), array('BB', 'TC'));
         $mform->addRule('loaihocphan', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         $mform->addElement('text', 'sotinchi', get_string('sotinchi', 'block_educationpgrs'), 'size=10');

@@ -17,7 +17,7 @@ class qlchuyennganh_form extends moodleform
 
     // Mã bậc
     $mabac = array();
-    $allbacdts = $DB->get_records('block_edu_bacdt', []);
+    $allbacdts = $DB->get_records('eb_bacdt', []);
     $arr_mabac = array();
     $arr_mabac += [""=> "Chọn bậc đào tạo"];
 
@@ -34,7 +34,7 @@ class qlchuyennganh_form extends moodleform
 
     // Mã hệ
     $mahe = array();
-    $allhedts = $DB->get_records('block_edu_hedt', []);
+    $allhedts = $DB->get_records('eb_hedt', []);
     $arr_mahe = array();
     $arr_mahe += [""=> "Chọn hệ đào tạo"];
 
@@ -51,7 +51,7 @@ class qlchuyennganh_form extends moodleform
 
     // Mã niên khóa
     $manienkhoa = array();
-    $allnienkhoadts = $DB->get_records('block_edu_nienkhoa', []);
+    $allnienkhoadts = $DB->get_records('eb_nienkhoa', []);
     $arr_manienkhoa = array();
     $arr_manienkhoa += [""=> "Chọn niên khóa đào tạo"];
 
@@ -68,7 +68,7 @@ class qlchuyennganh_form extends moodleform
 
     //Mã ngành
     $manganh = array();
-    $allnganhdts = $DB->get_records('block_edu_nganhdt', []);
+    $allnganhdts = $DB->get_records('eb_nganhdt', []);
     $arr_manganh = array();
     $arr_manganh += [""=> "Chọn ngành đào tạo"];
 

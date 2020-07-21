@@ -4,18 +4,17 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/monhoc_model.php');
+require_once('../../js.php');
 
 global $COURSE;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
@@ -23,11 +22,15 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_decuong', 'block_educationpgrs'));
 
 // Title.
 $PAGE->set_title(get_string('label_decuong', 'block_educationpgrs') . ' - Course ID: ' .$COURSE->id);
 $PAGE->set_heading(get_string('head_decuong', 'block_educationpgrs'));
+global $CFG;
+$CFG->cachejs = false;
+$PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
 echo $OUTPUT->header();
@@ -54,8 +57,26 @@ if ($mform->is_cancelled()) {
     $param1->madanhgia = $fromform->madanhgia;
     $param1->tendanhgia = $fromform->tendanhgia;
     $param1->motadanhgia = $fromform->motadanhgia;
-    $param1->chuandaura_danhgia = $fromform->cacchuandaura_danhgia;
+    // $param1->chuandaura_danhgia = $fromform->cacchuandaura_danhgia;
     $param1->tile_danhgia = $fromform->tile_danhgia;
+    $tem = $fromform->cacchuandaura_danhgia;
+    $tem1;
+    if(count($tem) == 1){
+        $param1->chuandaura_danhgia = $tem[0];
+    }elseif (count($tem)==0) {
+        $param1->chuandaura_danhgia = null;
+    }
+    else{
+        
+        foreach($tem as $item){
+            
+            $tem1 .= $item . ', ';
+            
+        }
+        $param1->chuandaura_danhgia = substr($tem1, 0, -2);
+    }
+
+
     update_danhgiamonhoc_table($param1);
     echo '<h2>Cập nhật thành công!</h2>';
     echo '<br>';
@@ -66,6 +87,8 @@ if ($mform->is_cancelled()) {
 } else if ($mform->is_submitted()) {
     // Button submit
 } else {
+    $list_cdr=get_list_cdr($id);
+
     //Set default data from DB
     $toform;
     $toform->id = $chitietmh->id;
@@ -76,7 +99,8 @@ if ($mform->is_cancelled()) {
     $toform->madanhgia = $chitietmh->madanhgia;
     $toform->tendanhgia = $chitietmh->tendanhgia;
     $toform->motadanhgia = $chitietmh->motadanhgia;
-    $toform->cacchuandaura_danhgia = $chitietmh->chuandaura_danhgia;
+    $toform->cacchuandaura_danhgia = $list_cdr;
+    //echo json_encode($toform->cacchuandaura_danhgia);
     $toform->tile_danhgia = $chitietmh->tile_danhgia;
     $mform->set_data($toform);
     $mform->display();
@@ -84,3 +108,41 @@ if ($mform->is_cancelled()) {
 
 // Print footer
 echo $OUTPUT->footer();
+function get_list_cdr($id) {
+    global $DB, $USER, $CFG, $COURSE;
+    $list_cdr = $DB->get_records('eb_danhgiamonhoc', ['id'=>$id]);
+
+    $list_cdr1 = array();
+    foreach ($list_cdr as $item) {
+        $arr = explode(', ', $item->chuandaura_danhgia);
+        if(!empty($arr)){
+            if(count($arr) == 1){
+                $list_cdr1[] = $item->chuandaura_danhgia;
+            } else{
+                foreach ($arr as $i) {
+                    $list_cdr1[] = $i;
+                }
+            }
+        }
+    }
+    //echo json_encode($list_cdr1); echo "<br>";
+    return $list_cdr1;
+}
+
+
+function get_danhgiamonhoc_by_mamonhoc($mamonhoc)
+{
+   global $DB, $USER, $CFG, $COURSE;
+   $table = new html_table();
+   $table->head = array(' ', 'STT', 'Mã', 'Tên', 'Mô tả (gợi ý)', 'Các chuẩn', 'Tỷ lệ (%)');
+   $alldatas = $DB->get_records('eb_danhgiamonhoc', ['mamonhoc' => $mamonhoc]);
+   $stt = 1;
+   foreach ($alldatas as $idata) {
+      $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/update_danhgiamonhoc.php', ['id' => $idata->id]);
+      $ten_url = \html_writer::link($url, $idata->tendanhgia);
+      $checkbox = html_writer::tag('input', ' ', array('class' => 'danhgiamonhoc_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'danhgiamonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_danhgiamonhoc($idata->id)"));
+      $table->data[] = [$checkbox, (string) $stt, (string) $idata->madanhgia, $ten_url, (string) $idata->motadanhgia, (string) $idata->chuandaura_danhgia, (string) $idata->tile_danhgia];
+      $stt = $stt + 1;
+   }
+   return $table;
+}

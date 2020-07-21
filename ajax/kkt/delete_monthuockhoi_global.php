@@ -30,7 +30,6 @@ function delete_monthuockhoi_global($mamonhoc) {
     }
 }
 
-// Xóa b?c dào t?o có id truy?n vào
 delete_monthuockhoi_global($mamonhoc);
 // return
 echo $mamonhoc;

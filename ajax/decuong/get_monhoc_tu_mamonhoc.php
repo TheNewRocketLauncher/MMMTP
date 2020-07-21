@@ -9,7 +9,7 @@ $mamonhoc = optional_param('mamonhoc','', PARAM_ALPHANUMEXT);
 function getMonhocByMaMonhoc($mamonhoc) {
     global $DB, $USER, $CFG, $COURSE;
     
-    $monhoc = $DB->get_record('block_edu_monhoc', array('mamonhoc' => $mamonhoc));
+    $monhoc = $DB->get_record('eb_monhoc', array('mamonhoc' => $mamonhoc));
     
     return $monhoc;
 }

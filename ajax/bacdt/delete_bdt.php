@@ -6,7 +6,7 @@ $id = required_param('id', PARAM_INT);
 function delete_hedt($id)
 {
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_bacdt', array('id' => $id));
+    $DB->delete_records('eb_bacdt', array('id' => $id));
 }
 // Xóa bậc đào tạo có id truyền vào
 delete_hedt($id);

@@ -11,14 +11,12 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
 $search = trim(optional_param('search', '', PARAM_NOTAGS));
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -27,11 +25,14 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add(get_string('label_ctdt', 'block_educationpgrs'), new moodle_url('/blocks/educationpgrs/pages/ctdt/index.php'));
 
 // Title.
 $PAGE->set_title(get_string('label_ctdt', 'block_educationpgrs') . ' - Course ID: ' . $COURSE->id);
 $PAGE->set_heading(get_string('label_ctdt', 'block_educationpgrs'));
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -96,19 +97,19 @@ $action_form =
     . html_writer::tag(
         'button',
         'Xóa ',
-        array('id' => 'btn_delete_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 100px; height:35px; background-color: white; color: black;')
+        array('id' => 'btn_delete_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 130px; height:35px; padding: 0; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
-        'Clone ',
-        array('id' => 'btn_clone_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:100px; height:35px; background-color: white; color:black;')
+        'Sao chép',
+        array('id' => 'btn_clone_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width:130px; height:35px; padding: 0; background-color: white; color:black;')
     )
     . '<br>'
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_ctdt', 'onClick' => "window.location.href='newctdt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 100px; height:35px; background-color: white; color: black;')
+        array('id' => 'btn_add_ctdt', 'onClick' => "window.location.href='newctdt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 130px; height:35px; padding: 0; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
@@ -122,3 +123,21 @@ echo html_writer::table($table);
 
 // Footer
 echo $OUTPUT->footer();
+
+
+function get_ctdt_checkbox($courseid)
+{
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('', 'STT', 'Tên đầy đủ', 'Mã niên khóa', 'Mã ngành', 'Mã chuyên ngành', 'Thời gian đào tạo', 'Khối lượng kiến thức', 'Đối tượng tuyển sinh');
+    $allctdts = $DB->get_records('eb_ctdt', []);
+    $stt = 1;
+    foreach ($allctdts as $ictdt) {
+        $checkbox = html_writer::tag('input', ' ', array('class' => 'ctdtcheckbox', 'type' => "checkbox", 'name' => $ictdt->id, 'id' => 'bdt' . $ictdt->id, 'value' => '0', 'onclick' => "changecheck($ictdt->id)"));
+        $url = new \moodle_url('/blocks/educationpgrs/pages/ctdt/chitiet_ctdt.php', ['id' => $ictdt->id]);
+        $ten_url = \html_writer::link($url, $ictdt->mota);
+        $table->data[] = [$checkbox, (string) $stt, $ten_url, (string) $ictdt->ma_nienkhoa, (string) $ictdt->ma_nganh, (string) $ictdt->ma_chuyennganh, (string) $ictdt->thoigian_daotao, (string) $ictdt->khoiluong_kienthuc, (string) $ictdt->doituong_tuyensinh];
+        $stt = $stt + 1;
+    }
+    return $table;
+}

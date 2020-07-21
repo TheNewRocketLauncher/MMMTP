@@ -6,7 +6,7 @@ $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
 function delete_kehoachgiangday($id) {
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_kh_giangday_lt', array('id' => $id));
+    $DB->delete_records('eb_kh_giangday_lt', array('id' => $id));
 }
     delete_kehoachgiangday($id);
     // return

@@ -38,15 +38,15 @@ function insert_bacdt() {
     $dataObj3->ten = 'Đại học';
     $dataObj3->mota = 'Bậc Đại học HCMUS';
     
-    $DB->insert_record('block_edu_bacdt', $dataObj1);
-    $DB->insert_record('block_edu_bacdt', $dataObj2);
-    $DB->insert_record('block_edu_bacdt', $dataObj3);
+    $DB->insert_record('eb_bacdt', $dataObj1);
+    $DB->insert_record('eb_bacdt', $dataObj2);
+    $DB->insert_record('eb_bacdt', $dataObj3);
  }
  function get_bacdt() {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
     $table->head = array('ID', 'Mã bậc', 'Tên bậc', 'Mô tả');
-    $allbacdts = $DB->get_records('block_edu_bacdt', ['mota' => 'Bậc Đại học HCMUS']);
+    $allbacdts = $DB->get_records('eb_bacdt', ['mota' => 'Bậc Đại học HCMUS']);
     foreach ($allbacdts as $ibacdt) {
         $table->data[] = [(string)$ibacdt->id_bac, $ibacdt->ma_bac,(string)$ibacdt->ten,(string)$ibacdt->mota];
     }

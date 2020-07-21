@@ -7,11 +7,11 @@ function clone_chuyennganhdt($id)
 {
     global $DB, $USER, $CFG, $COURSE;
     // Clone param
-    $param = $DB->get_record('block_edu_chuyennganhdt', array('id' => $id));
+    $param = $DB->get_record('eb_chuyennganhdt', array('id' => $id));
     // Config param
     $param->id = null;
     $param->ma_chuyennganh = $param->ma_chuyennganh . '_copy';
-    $DB->insert_record('block_edu_chuyennganhdt', $param);
+    $DB->insert_record('eb_chuyennganhdt', $param);
 }
 // Clone bậc đào tạo có id truyền vào
 clone_chuyennganhdt($id);

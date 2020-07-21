@@ -6,7 +6,7 @@ $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
 function delete_nganhdt($id) {    
     global $DB, $USER, $CFG, $COURSE;
-    $DB->delete_records('block_edu_nganhdt', array('id' => $id));
+    $DB->delete_records('eb_nganhdt', array('id' => $id));
 }
     // Xóa ngành đào tạo có id truyền vào
     delete_nganhdt($id);

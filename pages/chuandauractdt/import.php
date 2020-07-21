@@ -13,14 +13,12 @@ if(!$link){
     $link=null;
 }
 
-// Force user login in course (SITE or Course).
-if ($courseid == SITEID) {
-    require_login();
-    $context = \context_system::instance();
-} else {
-    require_login($courseid);
-    $context = \context_course::instance($courseid); // Create instance base on $courseid
-}
+// Check permission.
+require_login();
+$context = \context_system::instance();
+require_once('../../controller/auth.php');
+$list = [1, 2, 3];
+require_permission($list);
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -28,13 +26,15 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 // Navbar.
-
+$PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
 $PAGE->navbar->add("Danh sách chuẩn đầu ra ctđt", new moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php'));
 
 // Title.
 
 $PAGE->set_title("Import chuẩn đầu ra ctđt");
 $PAGE->set_heading("Import chuẩn đầu ra ctđt");
+global $CFG;
+$CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 
 // Print header
@@ -239,13 +239,13 @@ if ($mform2->is_cancelled()) {
 
 function insert_cdr($param){
     global $DB, $USER, $CFG, $COURSE;
-    $DB->insert_record('block_edu_chuandaura_ctdt', $param);
+    $DB->insert_record('eb_chuandaura_ctdt', $param);
 }
 
 function get(){
     global $DB, $USER, $CFG, $COURSE;
     $arr = array();
-    $arr = $DB->get_records('block_edu_chuandaura_ctdt', []);
+    $arr = $DB->get_records('eb_chuandaura_ctdt', []);
     return $arr;
 }
 function is_check($ma_cdr, $arr){

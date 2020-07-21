@@ -9,7 +9,7 @@ function userIsAdmin()
 function get_global($id_user)
 {
     global $CFG, $DB;
-    $datatemp = $DB->get_record('block_edu_global', ['id_user' => $id_user]);
+    $datatemp = $DB->get_record('eb_global', ['id_user' => $id_user]);
     if (empty($datatemp)) {
         return array();
     }
@@ -19,20 +19,20 @@ function get_global($id_user)
 function set_global($id_user, $arr)
 {
     global $CFG, $DB;
-    $datatemp = $DB->get_record('block_edu_global', ['id_user' => $id_user]);
+    $datatemp = $DB->get_record('eb_global', ['id_user' => $id_user]);
     if (empty($datatemp)) {
         $dataobject = new stdClass();
         $dataobject->id_user = $id_user;
         $dataobject->timestamp = time();
         $dataobject->string = json_encode($arr);
-        $DB->insert_record('block_edu_global', $dataobject);
+        $DB->insert_record('eb_global', $dataobject);
     } else {
         $param = new stdClass();
         $param->id = $datatemp->id;
         $param->id_user = $id_user;
         $param->timestamp = time();
         $param->string = json_encode($arr);
-        $DB->update_record('block_edu_global', $param, $bulk = false);
+        $DB->update_record('eb_global', $param, $bulk = false);
     }
 }
 
@@ -43,14 +43,14 @@ function test_set_global($id_user, $arr)
     $dataobject->id_user = $id_user;
     $dataobject->timestamp = time();
     $dataobject->string = $arr;
-    $DB->insert_record('block_edu_global', $dataobject);
+    $DB->insert_record('eb_global', $dataobject);
 }
 
 function test_get_global($id_user)
 {
     global $CFG, $DB;
     echo 'test_get_global';
-    $datatemp = $DB->get_record('block_edu_global', array('id_user' => $id_user));
+    $datatemp = $DB->get_record('eb_global', array('id_user' => $id_user));
     return global_decode($datatemp->string);
 }
 
