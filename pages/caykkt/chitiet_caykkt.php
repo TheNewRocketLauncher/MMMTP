@@ -15,8 +15,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("caykkt", "edit");
+
 $ma_cay_khoikienthuc = optional_param('ma_cay', NULL,  PARAM_NOTAGS);
 
 
@@ -81,7 +81,7 @@ if($ma_cay_khoikienthuc != NULL){
 
 
 
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 ///----------------------------------------------------------------------------------------------------------------------///        

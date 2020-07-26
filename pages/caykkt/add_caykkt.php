@@ -16,8 +16,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("caykkt", "edit");
+
 
 
 
@@ -114,7 +114,7 @@ if ($updateTableForm->is_cancelled()) {
 $updateTableForm->display();
 
 
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 

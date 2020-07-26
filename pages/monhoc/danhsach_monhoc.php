@@ -15,8 +15,8 @@ $search = trim(optional_param('search', '', PARAM_NOTAGS));
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "view");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['courseid' => $courseid]));

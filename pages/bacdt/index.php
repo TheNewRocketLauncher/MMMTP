@@ -4,6 +4,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/bacdt_model.php');
 require_once('../../js.php');
+require_once('../../controller/auth.php');
 
 global $COURSE, $GLOBALS;
 var_dump($_REQUEST);
@@ -14,9 +15,7 @@ $search = trim(optional_param('search', '', PARAM_NOTAGS));
 // Check permission.
 require_login();
 $context = \context_system::instance();
-require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("bacdt","view");
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', []));
@@ -92,7 +91,6 @@ $action_form =
     . '<br>'
     . html_writer::end_tag('div');
 echo $action_form;
-require_permission($list);
 
 
 echo '<br>';

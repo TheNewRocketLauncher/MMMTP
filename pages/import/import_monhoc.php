@@ -17,8 +17,8 @@ if(!$link){
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("import", "");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -47,11 +47,11 @@ class form1 extends moodleform{
         global $CFG;
         $mform = $this->_form;
         
-        $mform->addElement('filepicker', 'userfile', 'CSV chuẩn đầu ra chương trình đào tạo', null, array('maxbytes' => $maxbytes, 'accepted_types' => '.csv'));
+        $mform->addElement('filepicker', 'userfile', 'File .CSV nhập vào môn học', null, array('maxbytes' => $maxbytes, 'accepted_types' => '.csv'));
         $mform->addRule('userfile', 'Khong phai file csv', 'required', 'extraruledata', 'server', false, false);
 
         $eGroup = array();
-        $eGroup[] = &$mform->createElement('submit', 'btn_get_content', 'GET');
+        $eGroup[] = &$mform->createElement('submit', 'btn_get_content', 'HIỂN THỊ DỮ LIỆU');
         $mform->addGroup($eGroup, 'thongtinchung_group15', '', array(' '),  false);
     }
 
@@ -68,7 +68,7 @@ class form2 extends moodleform{
         $mform->addElement('hidden', 'link');
 
         $eGroup = array();
-        $eGroup[] = &$mform->createElement('submit', 'btn_get_content', 'insert to DB');
+        $eGroup[] = &$mform->createElement('submit', 'btn_get_content', 'Tạo mới môn học');
         $mform->addGroup($eGroup, 'thongtinchung_group15', '', array(' '),  false);
     }
     function validation($data, $files)

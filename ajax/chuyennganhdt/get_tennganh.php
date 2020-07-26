@@ -3,6 +3,8 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 //$search = trim(optional_param('search', '', PARAM_NOTAGS));
+require_once('../../controller/auth.php');
+require_permission("chuyennganhdt", "edit");
 $nganhdt = trim(required_param('nganhdt', PARAM_NOTAGS));
 $courseid = required_param('course', PARAM_INT);
 

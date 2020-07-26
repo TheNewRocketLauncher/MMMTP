@@ -373,3 +373,37 @@ function is_monhoc_exist($mamonhoc){
    return $DB->record_exists('eb_monhoc', ['mamonhoc' => $mamonhoc]);
 }
 
+function get_madc_from_mamonhoc($mamonhoc)
+{
+   $DB;
+   return $DB->get_record('eb_decuong',['mamonhoc'=>$mamonhoc])->ma_decuong;
+}
+
+// //===========================================================================
+// function get_name_khoikienthuc($ma_ctdt, $mamonhoc){
+//    global $DB;
+   
+//    $ma_cay = $DB->get_record('eb_ctdt',['ma_ctdt'=>$ma_ctdt])->ma_cay_khoikienthuc;
+   
+//    $kkt = $DB->get_records('eb_cay_khoikienthuc',['ma_cay_khoikienthuc'=>$ma_cay]);
+
+//    foreach($kkt as $ikhoi)
+//    {
+//        $a=$ikhoi->ma_khoi;
+//        $monthuockhoi = $DB->get_records('eb_monthuockhoi',['ma_khoi'=>$a]);
+       
+//        foreach($monthuockhoi as $mon)
+//        {   
+           
+//            if($mon->mamonhoc == $mamonhoc)
+//            {
+//                $khoi = $ikhoi->ma_khoi;
+//                return $DB->get_record('eb_khoikienthuc',['ma_khoi'=>$khoi])->ten_khoi;
+//            }
+//        }
+
+//    }
+
+//    return "";
+
+// }

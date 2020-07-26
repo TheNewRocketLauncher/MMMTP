@@ -297,6 +297,18 @@
         }
     }
    
-    
+    function changecheck_quyen(check_id) {
+        var check_idplus = check_id;
+        var id2 = check_idplus;
+        if (document.getElementById(id2).checked == false) {
+            // document.getElementById(id2).checked = true;
+            document.getElementById(id2).value = '0';
+
+        } else {
+            // document.getElementById(id2).checked = false;
+            document.getElementById(id2).value = '1';
+
+        }
+    }
 </script>
 

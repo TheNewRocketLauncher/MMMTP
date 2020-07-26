@@ -19,8 +19,8 @@ $edit_mode = optional_param('edit_mode', EDIT_MODE_CLONE, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("khoikienthuc", "edit");
+
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -172,7 +172,7 @@ if ($mform->is_cancelled()) {
     }
 }
 
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 ///----------------------------------------------------------------------------------------------------------------------///        

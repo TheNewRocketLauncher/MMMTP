@@ -16,8 +16,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("caykkt", "edit");
+
 
 
 
@@ -47,14 +47,13 @@ require_once('../../form/caykkt/newcaykkt_form.php');
 $mform = new newcaykkt_form_editable();
 if ($mform->is_cancelled()) {
 } else if ($mform->no_submit_button_pressed()) {
-
 } else if ($fromform = $mform->get_data()) {
     $caykkt_global = get_newcaykkt_global();
     $caykkt_global['tencay'] = $fromform->txt_tencay;
     $caykkt_global['mota'] = $fromform->txt_mota;
     update_newcaykkt_global($caykkt_global);
     redirect("$CFG->wwwroot/blocks/educationpgrs/pages/caykkt/add_caykkt.php");
-} else{
+} else {
     $toform = new stdClass();
     $data = get_newcaykkt_info();
     $toform->txt_tencay = $data->tencay;
@@ -62,14 +61,15 @@ if ($mform->is_cancelled()) {
     $mform->set_data($toform);
 }
 $mform->display();
- // Footere
+// Footer
 echo $OUTPUT->footer();
 
 
 ///-------------------------------------------------------------------------------------------------------///
 //FUNCTION
 
-function get_newcaykkt_info(){
+function get_newcaykkt_info()
+{
     global $USER;
     get_adding_list();
     $current_data = get_global($USER->id)['newcaykkt'];
@@ -79,13 +79,15 @@ function get_newcaykkt_info(){
     return $result;
 }
 
-function get_newcaykkt_global(){
+function get_newcaykkt_global()
+{
     global $USER;
     get_adding_list();
     return $current_data = get_global($USER->id)['newcaykkt'];
 }
 
-function update_newcaykkt_global($newdata){
+function update_newcaykkt_global($newdata)
+{
     global $USER;
     $current_global = get_global($USER->id);
     $current_global['newcaykkt']['tencay'] = $newdata['tencay'];
@@ -93,7 +95,8 @@ function update_newcaykkt_global($newdata){
     set_global($USER->id, $current_global);
 }
 
-function reset_global(){
+function reset_global()
+{
     global $USER;
     $arr = get_global($USER->id);
     $arr['newcaykkt'] = array();

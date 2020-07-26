@@ -4,7 +4,8 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once('../../model/khoikienthuc_model.php');
 $id = required_param('id', PARAM_INT);
-
+require_once('../../controller/auth.php');
+require_permission("khoikienthuc", "edit");
 function clone_hedt($id)
 {
     global $DB, $USER, $CFG, $COURSE;

@@ -1,436 +1,457 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/educationpgrs/db" VERSION="20200525" COMMENT="XMLDB file for Moodle blocks/educationpgrs"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
->
-  <TABLES>
-    <TABLE NAME="eb_bacdt" COMMENT="eb_bacdt table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_hedt" COMMENT="eb_hedt table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_nienkhoa" COMMENT="eb_nienkhoa table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten_nienkhoa" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_nganhdt" COMMENT="eb_nganh_daotao table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_chuyennganhdt" COMMENT="eb_chuyennganh_daotao table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_chuyennganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_loaidieukien_kkt" COMMENT="eb_loaidieukien_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_loaidieukien" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_dieukien_kkt" COMMENT="eb_dieukien_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_dieukien" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_loaidieukien" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="xet_tren" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="giatri_dieukien" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten_dieukien" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_loai_kkt" COMMENT="eb_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_loai" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten_loai" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_khoikienthuc" COMMENT="eb_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="id_loai_kkt" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="co_dieukien" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_dieukien" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ten_khoi" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_monhoc" COMMENT="eb_monhoc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="tenmonhoc_vi" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="tenmonhoc_en" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="lopmo" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>  
-        <FIELD NAME="loaihocphan" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="sotinchi" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="sotietlythuyet" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="sotietthuchanh" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="sotiet_baitap" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ghichu" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_monthuockhoi" COMMENT="eb_monthuockhoi table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_muctieumonhoc" COMMENT="eb_muctieumonhoc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="muctieu" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_chuandaura" COMMENT="eb_chuandaura table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_cdr" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mucdo_introduce" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mucdo_teach" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mucdo_utilize" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_loaigiangday" COMMENT="eb_chuandaura table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten_loai" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_kh_giangday_lt" COMMENT="eb_chuandaura table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_khgd" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten_chude" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="hoatdong_gopy" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="hoatdong_danhgia" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_kh_giangday_th" COMMENT="eb_chuandaura table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="tuan" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_khgd" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ten_chude" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="hoatdong_gopy" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="hoatdong_danhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_danhgiamonhoc" COMMENT="eb_chuandaura table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="madanhgia" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="tendanhgia" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="chuandaura_danhgia" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="motadanhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="tile_danhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_tainguyenmonhoc" COMMENT="eb_chuandaura table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" SEQUENCE="true"/>
-        <FIELD NAME="ma_tainguyen" TYPE="char" LENGTH="128" SEQUENCE="false"/>
-        <FIELD NAME="ten_tainguyen" TYPE="char" LENGTH="128" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" SEQUENCE="false"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" SEQUENCE="false"/>
-        <FIELD NAME="loaitainguyen" TYPE="char" LENGTH="128" SEQUENCE="false"/>
-        <FIELD NAME="link_tainguyen" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mota_tainguyen" TYPE="text" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_quydinhchung" COMMENT="eb_chuandaura table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_quydinhchung" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mota_quydinhchung" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_cay_khoikienthuc" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_cay_khoikienthuc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_tt" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_khoicha" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ten_cay" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_ctdt" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_chuyennganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="muctieu_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="muctieu_cuthe" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="chuandaura" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="cohoi_nghenghiep" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="thoigian_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="khoiluong_kienthuc" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="doituong_tuyensinh" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="quytrinh_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="dieukien_totnghiep" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_cay_khoikienthuc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_quyen_decuong" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_quyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_quyen_dc_user" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_user" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_quyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_quyen_dc_role" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_role" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_quyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_share_decuong" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_user_nguon" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="id_user_duocshare" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="id_decuong" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="id_quyen_decuong" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_binhluan_dc" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_decuong" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="id_user" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="id_binhluan_cha" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_binhluan" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="binhluan" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="time" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="is_visible" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_quytrinh_ctdt" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_ctdt" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="id_quytrinh_cha" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="noidung" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_global" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="id_user" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="timestamp" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="string" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_lop_mo" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="full_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="short_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="nam_hoc" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="hoc_ky" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="course_id" TYPE="char" LENGTH="15" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="start_date" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="end_date" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="assign_to" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="eb_decuong" COMMENT="eb_decuong table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>       
-        <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    
-    <TABLE NAME="eb_chuandaura_ctdt" COMMENT="eb_chuandaura_ctdt table retrofitted from MySQL">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="ma_cay_cdr" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="ma_cdr" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
-		<FIELD NAME="is_used" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="ten" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>       
-        <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="level_cdr" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-  </TABLES>
+<?xml version="1.0" encoding="UTF-8"?>
+<XMLDB PATH="blocks/educationpgrs/db" VERSION="20200525" COMMENT="XMLDB file for Moodle blocks/educationpgrs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+    <TABLES>
+        <TABLE NAME="eb_bacdt" COMMENT="eb_bacdt table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_bac" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_hedt" COMMENT="eb_hedt table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_he_thuoc_bac" COMMENT="eb_he_thuoc_bac table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_bac" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_he" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="eb_nienkhoa" COMMENT="eb_nienkhoa table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten_nienkhoa" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_nienkhoa_thuoc_he" COMMENT="eb_nienkhoa_thuoc_he table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_he" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>        
+        <TABLE NAME="eb_nganhdt" COMMENT="eb_nganhdt table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_nganh_goc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="level" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_nganh_thuoc_nienkhoa" COMMENT="eb_nganh_thuoc_nienkhoa table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_nganh" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_loaidieukien_kkt" COMMENT="eb_loaidieukien_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_loaidieukien" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_dieukien_kkt" COMMENT="eb_dieukien_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_dieukien" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_loaidieukien" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="xet_tren" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="giatri_dieukien" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten_dieukien" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_loai_kkt" COMMENT="eb_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_loai" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten_loai" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_khoikienthuc" COMMENT="eb_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="id_loai_kkt" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="co_dieukien" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_dieukien" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ten_khoi" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_monhoc" COMMENT="eb_monhoc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="tenmonhoc_vi" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="tenmonhoc_en" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="loaihocphan" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="sotinchi" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="sotietlythuyet" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="sotietthuchanh" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="sotiet_baitap" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ghichu" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_monthuockhoi" COMMENT="eb_monthuockhoi table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_muctieumonhoc" COMMENT="eb_muctieumonhoc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="muctieu" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_chuandaura" COMMENT="eb_chuandaura table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_cdr" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mucdo_introduce" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mucdo_teach" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mucdo_utilize" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_loaigiangday" COMMENT="eb_chuandaura table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten_loai" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_kh_giangday_lt" COMMENT="eb_chuandaura table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_khgd" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten_chude" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="hoatdong_gopy" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="hoatdong_danhgia" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_kh_giangday_th" COMMENT="eb_chuandaura table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="tuan" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_khgd" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_loaigiangday" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten_chude" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="danhsach_cdr" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="hoatdong_gopy" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="hoatdong_danhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_danhgiamonhoc" COMMENT="eb_chuandaura table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="madanhgia" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="tendanhgia" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="chuandaura_danhgia" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="motadanhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="tile_danhgia" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_tainguyenmonhoc" COMMENT="eb_chuandaura table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" SEQUENCE="true"/>
+                <FIELD NAME="ma_tainguyen" TYPE="char" LENGTH="128" SEQUENCE="false"/>
+                <FIELD NAME="ten_tainguyen" TYPE="char" LENGTH="128" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" SEQUENCE="false"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" SEQUENCE="false"/>
+                <FIELD NAME="loaitainguyen" TYPE="char" LENGTH="128" SEQUENCE="false"/>
+                <FIELD NAME="link_tainguyen" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mota_tainguyen" TYPE="text" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_quydinhchung" COMMENT="eb_chuandaura table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_quydinhchung" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mota_quydinhchung" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_cay_khoikienthuc" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_cay_khoikienthuc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_tt" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_khoicha" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ten_cay" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_ctdt" COMMENT="eb_ctdt table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="muctieu_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="muctieu_cuthe" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="cohoi_nghenghiep" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="thoigian_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="khoiluong_kienthuc" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="doituong_tuyensinh" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="quytrinh_daotao" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="dieukien_totnghiep" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_cay_khoikienthuc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="eb_ctdt_thuoc_nganh" COMMENT="eb_ctdt_thuoc_nganh">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="eb_quyen_decuong" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_quyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_quyen_dc_user" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="id_user" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_quyen" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="eb_binhluan_dc" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="id_decuong" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="id_user" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="id_binhluan_cha" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_binhluan" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="binhluan" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="time" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="is_visible" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_quytrinh_ctdt" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="id_ctdt" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="id_quytrinh_cha" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="noidung" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_global" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="id_user" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="timestamp" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="string" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_lop_mo" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_nienkhoa" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_nganh" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="full_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="short_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="nam_hoc" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="hoc_ky" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="course_id" TYPE="char" LENGTH="15" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="start_date" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="end_date" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="assign_to" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_decuong" COMMENT="eb_decuong table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_decuong" TYPE="char" LENGTH="18" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="mamonhoc" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ma_khoi" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="mota" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_chuandaura_ctdt" COMMENT="eb_chuandaura_ctdt table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_cdr" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_cdr_cha" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ten" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="level" TYPE="text" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_loai" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_cdr_thuoc_ctdt" COMMENT="eb_chuandaura_ctdt table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_ctdt" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ma_cdr" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_loai_cdr" COMMENT="eb_chuandaura_ctdt table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="ma_loai" TYPE="char" LENGTH="18" NOTNULL="false" SEQUENCE="false"/>
+                <FIELD NAME="ten" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="eb_quyen" COMMENT="eb_cay_khoikienthuc table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="19" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="page" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="chucnang" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="ten" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="list_role" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+    </TABLES>
 </XMLDB>

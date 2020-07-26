@@ -5,6 +5,8 @@ require_once(__DIR__ . '/../../../../config.php');
 $bdt = trim(required_param('bdt', PARAM_NOTAGS));
 $hdt = trim(required_param('hdt', PARAM_NOTAGS));
 $courseid = required_param('course', PARAM_INT);
+require_once('../../controller/auth.php');
+require_permission("nienkhoa", "edit");
 function get_nienkhoadt_from_hdt($ma_bac, $ma_he) {
     global $DB, $USER, $CFG, $COURSE;
     $nienkhoadt = $DB->get_records('eb_nienkhoa', array('ma_bac' => $ma_bac, 'ma_he' => $ma_he));

@@ -4,8 +4,11 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/chuandaura_ctdt_model.php');
+require_once('../../js.php');
 
 global $COURSE, $USER;
+
+$id = optional_param('id', NULL, PARAM_INT);
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -24,7 +27,8 @@ $CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
-
+require_once('../../controller/auth.php');
+require_permission("chuandauractdt", "edit");
 ///-------------------------------------------------------------------------------------------------------///
 // Form
 require_once('../../form/chuandauractdt/add_chuandaura_form.php');
@@ -37,27 +41,56 @@ if ($mform->is_cancelled()) {
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
-    $param = new stdClass();
-    $param->ten = $fromform->txt_ten;
-    $param->mota = $fromform->mota;
-    $param->level_cdr = 0;
-    $param->is_used = 0;
-    $param->ma_cdr = NULL;
-    $param->ma_cay_cdr = $USER->id . time();
     
-    while(get_chuandaura_ctdt_byMaCayCDR($param->ma_cay_cdr) != NULL){
-        $param->ma_cay_cdr++;
-    }
-    insert_cdr($param);
-    
-    echo '<h2>Thêm mới thành công!</h2>';
-    echo '<br>';
-    $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/chitiet_cdr.php?ma_cay_cdr=' .$param->ma_cay_cdr);
-    $linktext = 'Tiếp tục thêm node con';
-    echo \html_writer::link($url, $linktext);
 } else {
+    if($id != NULL){
+        $cdr = $DB->get_record('eb_chuandaura_ctdt', ['id' => $id]);
+        $defaultData->txt_ten_cdr = $cdr->ten;
+        $defaultData->cdr = $cdr->id;
+        $defaultData->loai_cdr = $cdr->ma_loai;
+        $mform->set_data($defaultData);
+    } else{
+        redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/chuandauractdt/index.php');
+    }
     $mform->display();
 }
 
+print_review_cdr($id);
+
+// Action
+$action_form =
+    html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-start;'))
+    . '<br>'
+    . html_writer::tag(
+        'button',
+        'Xoá chuẩn đầu ra được chọn',
+        array('id' => 'btn_del_node_cdr', 'style' => 'margin:0 10px;border: 0px solid #333; width: auto; height:35px; background-color: #fa4b1b; color:#fff;')
+    )
+    . '<br>'
+    . html_writer::end_tag('div');
+echo $action_form;
+echo '<br>';
+
+
 // Footer
 echo $OUTPUT->footer();
+
+
+function print_review_cdr($id){
+    global $DB;
+    $cdr = $DB->get_record('eb_chuandaura_ctdt', ['id' => $id]);
+    $list_cdr_lv1 = $DB->get_records('eb_chuandaura_ctdt', ['ma_cdr_cha' => $cdr->ma_cdr]);
+
+    $table = new html_table();
+    $table->head = array('', 'Tên');
+
+    foreach($list_cdr_lv1 as $ilv1){
+        $checkbox = html_writer::tag(
+            'input', ' ', array('class' => 'cdr_checkbox', 'type' => "checkbox",
+            'name' => $ilv1->id, 'id' => 'bdt' . $ilv1->id, 'value' => '0', 'onclick' => "changecheck($ilv1->id)"));
+
+        $table->data[] = [$checkbox, (string) $ilv1->ten];
+    }
+
+    echo html_writer::table($table);
+}

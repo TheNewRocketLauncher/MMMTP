@@ -13,8 +13,8 @@ class them_monhoc_form extends moodleform
 
         $mform->addElement('hidden', 'idmonhoc', '');
 
-        $mform->addElement('text', 'mamonhoc1',  get_string('mamonhoc_chitiet', 'block_educationpgrs'), 'size=50');
-        $mform->addRule('mamonhoc1', get_string('error'), 'required', 'extraruledata', 'server', false, false);
+        $mform->addElement('text', 'mamonhoc',  get_string('mamonhoc_chitiet', 'block_educationpgrs'), 'size=50');
+        $mform->addRule('mamonhoc', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         $mform->addElement('text', 'tenmonhoc_vi', get_string('tenmonhoc1_thongtinchung', 'block_educationpgrs'), 'size=50');
         $mform->addRule('tenmonhoc_vi', get_string('error'), 'required', 'extraruledata', 'server', false, false);

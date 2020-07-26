@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/chuyennganhdt_model.php');
 
-global $COURSE;
+global $COURSE, $DB;
 $id = 1;
 $founded_id = false;
 if (optional_param('id', 0, PARAM_INT)) {
@@ -39,6 +39,8 @@ if ($founded_id == true) {
 } else {
     // Something here
 }
+$PAGE->navbar->add("Quản lý chuyên ngành dt", new moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php'));
+
 $PAGE->navbar->add($navbar_name);
 
 // Title.
@@ -75,10 +77,21 @@ if ($mform->is_cancelled()) {
     $param1->ma_chuyennganh = $mform->get_data()->machuyennganh;
     $param1->ten = $mform->get_data()->tenchuyennganh;
     $param1->mota = $mform->get_data()->mota;
-    update_chuyennganhdt($param1);
-    // Hiển thị thêm thành côngz
-    echo '<h2>Cập nhật thành công!</h2>';
-    echo '<br>';
+
+
+    $current_data = $DB->get_record('eb_chuyennganhdt', [
+        'ma_bac' => $param1->ma_bac, 'ma_he' => $param1->ma_he,
+        'ma_nienkhoa' => $param1->ma_nienkhoa, 'ma_nganh' => $param1->ma_nganh, 'ma_chuyennganh' => $param1->ma_chuyennganh
+    ]);
+    if ($current_data->id == $param1->id || !$current_data) {
+        update_chuyennganhdt($param1);
+        // Hiển thị thêm thành công
+        echo '<h2>Cập nhật thành công!</h2>';
+        echo '<br>';
+    } else {
+        echo "<strong>Dữ liệu đã tồn tại</strong>";
+        echo '<br>';
+    }
     // Edit file index.php tương ứng trong thư mục page, link đến đường dẫn
     $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_chuyennganh', 'block_educationpgrs');

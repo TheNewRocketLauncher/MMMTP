@@ -14,8 +14,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("caykkt", "view");
+
 
 
 
@@ -70,7 +70,7 @@ echo html_writer::table($table);
 
 ///END Table
 
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 function get_cay_kkt_table()

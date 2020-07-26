@@ -233,16 +233,21 @@ function insert_import_caykkt($data){
 
     $firstNode = new stdClass();
     $firstNode->ma_cay_khoikienthuc = $USER->id . 'caykkt' . time();
+    
+    while($DB->record_exists('eb_cay_khoikienthuc', ['ma_cay_khoikienthuc' => $firstNode->ma_cay_khoikienthuc])){
+        $firstNode->ma_cay_khoikienthuc++;
+    }
+    
     $firstNode->ma_tt = NULL;
     $firstNode->ma_khoi = 'caykkt';
     $firstNode->ma_khoicha = NULl;
     $firstNode->ten_cay = $data[0]['ten_cay'];
     $firstNode->mota = $data[0]['mota'];
     $DB->insert_record('eb_cay_khoikienthuc', $firstNode);
-
+    
     foreach($data as $item){
-        if($item[0]['ma_tt'] != 0){
-            if($item['ma_tt'] == 1){
+        if($item['ma_tt'] != 0){
+            if(count( explode(".", $item['ma_tt']) ) == 1){
                 $childNode = new stdClass();
                 $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
                 $childNode->ma_tt = $item['ma_tt'];
@@ -250,8 +255,8 @@ function insert_import_caykkt($data){
                 $childNode->ma_khoicha = $firstNode->ma_khoi;
                 $childNode->ten_cay = $firstNode->ten_cay;
                 $childNode->mota = $firstNode->mota;
-
                 $DB->insert_record('eb_cay_khoikienthuc', $childNode);
+
             } else{
                 $childNode = new stdClass();
                 $childNode->ma_cay_khoikienthuc = $firstNode->ma_cay_khoikienthuc;
@@ -265,4 +270,7 @@ function insert_import_caykkt($data){
             }
         }
     }
+
+
+    return $firstNode->ma_cay_khoikienthuc;
 }

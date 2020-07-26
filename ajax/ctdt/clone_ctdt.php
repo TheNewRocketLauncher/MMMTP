@@ -4,15 +4,30 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once('../../model/ctdt_model.php');
 $id = required_param('id', PARAM_INT);
+require_once('../../controller/auth.php');
+require_permission("ctdt", "edit");
 
-$ctdt = get_ctdt_byID($id);
-$new_ma_ctdt = $ctdt->ma_ctdt . '1';
-while(get_ctdt_byMa($new_ma_ctdt)){
-    $new_ma_ctdt++;
+function clone_ctdt($id)
+{
+    global $DB;
+    // Clone param
+    $param = $DB->get_record('eb_ctdt', array('id' => $id));
+    // Config param
+    $ma_ctdt = $param->ma_ctdt . '_copy';
+    $stt = 1;
+    while ($DB->count_records('eb_ctdt', array('ma_ctdt' => $ma_ctdt . (string) $stt))) {
+        $stt++;
+    }
+    $ma_ctdt .= (string) $stt;
+    // Insert clone record
+    $param->id = null;
+    $param->ma_ctdt = $ma_ctdt;
+    $DB->insert_record('eb_ctdt', $param);
+
 }
-$ctdt->ma_ctdt = $new_ma_ctdt;
-unset($ctdt->id);
-
-insert_ctdt($ctdt);
-
+// Clone ngành dào t?o có id truy?n vào
+clone_ctdt($id);
+// return
+$output = "Clone CTÐT có ID = " . $id . "thành công!";
+echo $output;
 exit;

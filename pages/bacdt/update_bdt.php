@@ -2,8 +2,8 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/bacdt_model.php');
-
-global $COURSE;
+require_once('../../controller/validate.php');
+global $COURSE, $DB;
 
 // Course ID, item ID
 $id = 1;
@@ -12,14 +12,14 @@ if (optional_param('id', 0, PARAM_INT)) {
     $id = optional_param('id', 0, PARAM_INT);
     $founded_id = true;
 }
-$courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
+$courseid = optional_param('courseid', SITEID, PARAM_INT);
 
 // Check permission.
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("bacdt", "edit");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/update_bdt.php', ['courseid' => $courseid, 'id' => $id]));
@@ -28,6 +28,7 @@ $PAGE->set_pagelayout('standard');
 
 // Navbar.
 $PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
+$PAGE->navbar->add('Quản lý bậc đào tạo', new moodle_url('/blocks/educationpgrs/pages/bacdt/index.php'));
 $bacdt = get_bacdt_byID($id);
 $navbar_name = 'Bậc ĐT';
 $title_heading = 'ĐT';
@@ -69,13 +70,30 @@ if ($mform->is_cancelled()) {
     $param1->ma_bac = $mform->get_data()->mabac;
     $param1->ten = $mform->get_data()->tenbac;
     $param1->mota = $mform->get_data()->mota;
-    
-    update_bacdt($param1);
 
-    // Hiển thị thêm thành côngz
-    echo '<h2>Cập nhật thành công!</h2>';
-    echo '<br>';
+    $data = array();
+    $data['ma_bac'] = $param1->ma_bac;
+    $arr_bacdt = array();
+    $arr_bacdt = $DB->get_records('eb_bacdt', []);
 
+    $current_bacdt = $DB->get_record('eb_bacdt', ['id' => $param1->id]);
+
+    $check_current_bacdt;
+    if ($current_bacdt->ma_bac == $param1->ma_bac) {
+        $check_current_bacdt = 1;
+    } else {
+        $check_current_bacdt = 0;
+    }
+
+    if (is_check($arr_bacdt, $data['ma_bac'], '', '', '', '') == true || $check_current_bacdt == 1) {
+        update_bacdt($param1);
+        // Hiển thị cập nhật thành công
+        echo '<h2>Cập nhật thành công!</h2>';
+        echo '<br>';
+    } else {
+        echo "<strong>Dữ liệu đã tồn tại</strong>";
+        echo '<br>';
+    }
     // Link đến trang danh sách
     $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_bacdt', 'block_educationpgrs');

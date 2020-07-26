@@ -4,7 +4,10 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once('../../model/global_model.php');
 $mamonhoc = required_param('mamonhoc', PARAM_ALPHA);
-function delete_monthuockhoi_global($mamonhoc) {
+require_once('../../controller/auth.php');
+require_permission("khoikienthuc", "edit");
+function delete_monthuockhoi_global($mamonhoc)
+{
     global $DB, $USER;
 
     // $global_string = get_global($USER->id);

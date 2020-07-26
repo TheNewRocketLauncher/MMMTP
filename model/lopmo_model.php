@@ -16,29 +16,27 @@ function insert_lopmo($param)
    $monhoc = $DB->get_record('eb_monhoc', ['mamonhoc' => $param->mamonhoc]);
    $monhoc->lopmo = 1;
    $DB->update_record('eb_monhoc', $monhoc, $bulk = false);
-   $param->ma_nienkhoa = $ctdt->ma_nienkhoa;
-   $param->ma_nganh = $ctdt->ma_nganh;
-
    $data = new stdClass();
    $category_id= 1;
    $data->category = $category_id;
    $data->fullname = $param->full_name;
-   $data->shortname = $param->short_name;
+   $data->shortname = $param->ma_ctdt . $param->short_name;
+   $data->summary = '<p>Đây là môn toán</p>';
    // Params
    $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
+   // $coursecontext = context_course::instance($course->id);
    $catcontext = context_coursecat::instance( $category_id);
    $editoroptions['context'] = $catcontext; //
+   // $editoroptions['subdirs'] = file_area_contains_subdirs($coursecontext, 'course', 'summary', 0);
+
    $editoroptions['subdirs'] = 0;
    // Insert course
    // if(Db->count_records)
    $course = create_course($data, $editoroptions);
 
-   echo "courseId";
-   echo $course->id;
    $param->course_id = $course->id;
       $DB->insert_record('eb_lop_mo', $param);
 }
-
 
 function get_lopmo_byID($id)
 {
@@ -171,8 +169,8 @@ function get_danhmuc_lopmo()
       // Thêm vào danh sách
 
       $isExist = false;
-      foreach($arr_danhmuc as $item) {
-         if ($item->nam_hoc == $data->nam_hoc || $item->hoc_ky == $data->hoc_ky)
+      foreach ($arr_danhmuc as $item) {
+         if ($item->nam_hoc == $data->nam_hoc && $item->hoc_ky == $data->hoc_ky)
             $isExist = true;
       }
       if (!$isExist)

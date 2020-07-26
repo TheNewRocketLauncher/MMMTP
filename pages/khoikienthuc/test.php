@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/khoikienthuc_model.php');
 require_once('../../model/global_model.php');
+require_once('../../model/chuandaura_ctdt_model.php');
 require_once('../../js.php');
 
 global $DB, $USER, $CFG, $COURSE;
@@ -31,7 +32,8 @@ $CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
-
+require_once('../../controller/auth.php');
+require_permission("khoikienthuc", "edit");
 ///-------------------------------------------------------------------------------------------------------///
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 require_once('../../form/khoikienthuc/newkkt_form.php');
@@ -44,29 +46,15 @@ if ($mform->is_cancelled()) {
 } else if ($mform->no_submit_button_pressed()) {
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
-    // Submit form này làm cho page reload nhưng vẫn chạy setDefault ở bên dưới -> Mất sạch toàn bộ form data trước, 
-    // Có lẽ data mất mát này được truyền sang page mới dưới dạng $_SESSION hoặc bằng $_POST ?!
-    // $id = 7;
-    // delete_kkt_byID($id);
-    // $mform->display();
-
-    // $ma_khoi = 'KTT_DC';
-
-    // echo json_encode(get_tong_TC_BB($ma_khoi));
-
-
-
-
-    for ($i=0; $i < 150; $i++) { 
-        echo '<br>';
-        echo time();
-    }
+    get_loai_cdr();
+    generate_default_loai_cdr();
     $mform->display();
 } else {
     $mform->display();
 }
 
- // Footere
+
+ // Footer
 echo $OUTPUT->footer();
 
 ///----------------------------------------------------------------------------------------------------------------------///        

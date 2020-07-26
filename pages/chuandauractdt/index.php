@@ -16,8 +16,7 @@ global $COURSE;
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("chuandauractdt", "view");
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php', []));
@@ -29,7 +28,8 @@ $PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/e
 $PAGE->navbar->add(get_string('label_chuandauractdt', 'block_educationpgrs'));
 
 // Title.
-$PAGE->set_title(get_string('label_chuandauractdt', 'block_educationpgrs') . ' - Course ID: ' );
+$PAGE->set_title(get_string('label_chuandauractdt', 'block_educationpgrs') . ' - Course ID: ');
+$PAGE->set_heading('Quản lý chuẩn đầu ra chương trình đào tạo');
 global $CFG;
 $CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
@@ -37,7 +37,7 @@ $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
 // Search
-require_once('../../form/chuandauractdt/chuandaura_ctdt_form.php');
+require_once('../../form/chuandauractdt/create_cdr_form.php');
 $form_search = new chuandaura_ctdt_search();
 
 // Process form
@@ -68,12 +68,6 @@ $action_form =
     . '<br>'
     . html_writer::tag(
         'button',
-        'Import',
-        array('onClick'=>"window.location.href='/moodle/blocks/educationpgrs/pages/chuandauractdt/import.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 130px; height:35px; padding: 0; background-color: white; color: black;')
-    )
-    . '<br>'
-    . html_writer::tag(
-        'button',
         'Xóa ',
         array('id' => 'btn_delete_chuandaura_ctdt', 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px; width: 130px; height:35px; padding: 0; background-color: white; color: black;')
     )
@@ -87,7 +81,7 @@ $action_form =
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_chuandaura_ctdt', 'onClick' => "window.location.href='add_cdr.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 130px; height:35px; padding: 0; background-color: white; color: black;')
+        array('id' => 'btn_add_chuandaura_ctdt', 'onClick' => "window.location.href='create.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 130px; height:35px; padding: 0; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
@@ -103,17 +97,14 @@ echo $OUTPUT->paging_bar(count(get_chuandaura_ctdt_checkbox($search, -1)->data),
 
 
 $count = 1;
-if(array_key_exists('mmmy',$_SESSION)){
+if (array_key_exists('mmmy', $_SESSION)) {
     echo 'the s';
     echo 'the end';
 
 
     foreach ($table->data as $data) {
-      
     }
-        
-    
- }
+}
 
 // Footer
 echo $OUTPUT->footer();
@@ -121,42 +112,41 @@ echo $OUTPUT->footer();
 
 function get_chuandaura_ctdt_checkbox($key_search = '', $page = 0)
 {
-   global $DB, $USER, $CFG, $COURSE;
-   $table = new html_table();
-   $table->head = array('', 'STT','Tên chuẩn đầu ra', 'Trạng thái(CTĐT)',  'Mô tả', );
-   $allchuandaura_ctdts = $DB->get_records('eb_chuandaura_ctdt', ['level_cdr' => 0]);
-   usort($allchuandaura_ctdts, function($a, $b)
-   {
-      return strcmp($a->ma_cdr, $b->ma_cdr);
-   });
-   $stt = 1 + $page * 20;
-   $pos_in_table = 1;
+    global $DB, $USER, $CFG, $COURSE;
+    $table = new html_table();
+    $table->head = array('', 'STT', 'Tên chuẩn đầu ra', 'Trạng thái', 'Loại', 'Mô tả',);
+    $allchuandaura_ctdts = $DB->get_records('eb_chuandaura_ctdt', ['level' => 1]);
+    usort($allchuandaura_ctdts, function ($a, $b) {
+        return strcmp($a->ma_cdr, $b->ma_cdr);
+    });
+    $stt = 1 + $page * 20;
+    $pos_in_table = 1;
 
-   foreach ($allchuandaura_ctdts as $item) {
-      if (findContent($item->ten, $key_search) || $key_search == '') {
+    foreach ($allchuandaura_ctdts as $item) {
+        if (findContent($item->ten, $key_search) || $key_search == '') {
 
-         if($item->level_cdr == 0){
-            $checkbox = html_writer::tag('input', ' ', array('class' => 'chuandauractdtcheckbox', 'type' => "checkbox", 'name' => $item->id, 'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
-      
-            $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/chitiet_cdr.php', [ 'ma_cay_cdr' => $item->ma_cay_cdr]);
-            $ten_url = \html_writer::link($url, $item->ten);
-            if ($item->is_used == 0 ){
-               $is_used = "Chưa được sử dụng";
+            if ($item->level == 1) {
+                $checkbox = html_writer::tag('input', ' ', array('class' => 'chuandauractdtcheckbox', 'type' => "checkbox", 'name' => $item->id, 'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
+
+                $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/add_cdr.php', ['id' => $item->id]);
+                $ten_url = \html_writer::link($url, $item->ten);
+                if (can_edit_cdr($item->ma_cdr)) {
+                    $is_used = "Chưa được sử dụng";
+                } else {
+                    $is_used = "Đã được sử dụng";
+                }
+                $loaicdr = $DB->get_record('eb_loai_cdr', ['ma_loai' => $item->ma_loai]);
+                if ($page < 0) { // Get all data without page
+
+                    $table->data[] = [$checkbox, (string) $stt, (string) $ten_url, (string)$is_used, (string) $loaicdr->ten, (string) $item->mota];
+                    $stt = $stt + 1;
+                } else if ($pos_in_table > $page * 20 && $pos_in_table <= $page * 20 + 20) {
+                    $table->data[] = [$checkbox, (string) $stt, (string) $ten_url, (string)$is_used, (string) $loaicdr->ten, (string) $item->mota];
+                    $stt = $stt + 1;
+                }
+                $pos_in_table = $pos_in_table + 1;
             }
-            else{
-               $is_used = "Đã được sử dụng";
-            }
-            if ($page < 0) { // Get all data without page
-               
-               $table->data[] = [$checkbox, (string) $stt, (string) $ten_url, (string)$is_used, (string) $item->mota];
-               $stt = $stt + 1;
-            } else if ($pos_in_table > $page * 20 && $pos_in_table <= $page * 20 + 20) {
-               $table->data[] = [$checkbox, (string) $stt, (string) $ten_url, (string)$is_used, (string) $item->mota];
-               $stt = $stt + 1;
-            }
-            $pos_in_table = $pos_in_table + 1;
-         }
-      }
-   }
-   return $table;
+        }
+    }
+    return $table;
 }

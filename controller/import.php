@@ -18,7 +18,7 @@ function insertDatabase()
     $param->ma_he = 'DHCQ';
     $param->ten = 'Chính quy';
     if (!$DB->count_records('eb_hedt', ['ma_he' => 'DHCQ'])) $DB->insert_record('eb_hedt', $param);
-    // $Niên khóa
+    // $khóa tuyển
     $param = new stdClass();
     $param->ma_bac = 'DH';
     $param->ma_he = 'DHCQ';

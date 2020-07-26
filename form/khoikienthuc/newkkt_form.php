@@ -266,6 +266,8 @@ class test_form extends moodleform
     {
         global $CFG, $DB;
         $mform = $this->_form;
+
+        $mform->addElement('text', 'text', 'text');
         
         $mform->addElement('submit', 'btn_submit', 'submit');
         $mform->addElement('submit', 'btn_noSubmit', 'noSubmit');

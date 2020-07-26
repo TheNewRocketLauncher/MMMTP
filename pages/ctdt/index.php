@@ -15,8 +15,8 @@ $search = trim(optional_param('search', '', PARAM_NOTAGS));
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("ctdt", "view");
+
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -129,7 +129,7 @@ function get_ctdt_checkbox($courseid)
 {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
-    $table->head = array('', 'STT', 'Tên đầy đủ', 'Mã niên khóa', 'Mã ngành', 'Mã chuyên ngành', 'Thời gian đào tạo', 'Khối lượng kiến thức', 'Đối tượng tuyển sinh');
+    $table->head = array('', 'STT', 'Tên đầy đủ', 'Mã khóa tuyển', 'Mã ngành', 'Mã chuyên ngành', 'Thời gian đào tạo', 'Khối lượng kiến thức', 'Đối tượng tuyển sinh');
     $allctdts = $DB->get_records('eb_ctdt', []);
     $stt = 1;
     foreach ($allctdts as $ictdt) {

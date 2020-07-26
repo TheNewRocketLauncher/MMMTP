@@ -10,64 +10,12 @@ class qlnganh_form extends moodleform
     $mform = $this->_form;
 
     // Header
-    $mform->addElement('header', 'general', 'Quản lý thông tin');
+    // $mform->addElement('header', 'createuserandpass', '');
 
-    $mform->addElement('hidden', 'idnganh', '');
-
-    // Mã bậc
-    $mabac = array();
-    $allbacdts = $DB->get_records('eb_bacdt', []);
-    $arr_mabac = array();
-    $arr_mabac += [""=> "Chọn bậc đào tạo"];
-
-    foreach ($allbacdts as $ibacdt) {
-      $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
-    }
-    $mform->addElement('select', 'mabac', 'Mã bậc đào tạo:', $arr_mabac, array());
-    $mform->addRule('mabac', get_string('error'), 'required', 'extraruledata', 'server', false, false);
-    
-    $eGroup = array();
-    $eGroup[] = &$mform->createElement('text', 'bacdt', '', 'size=50');
-    $mform->addGroup($eGroup, 'bacdt', '', array(' '), false);
-    $mform->disabledIf('bacdt', '');
-
-    // Mã hệ
-    $mahe = array();
-    $allhedts = $DB->get_records('eb_hedt', []);
-    $arr_mahe = array();
-    $arr_mahe += [""=> "Chọn hệ đào tạo"];
-
-    foreach ($allhedts as $ihedt) {
-      $arr_mahe += [$ihedt->ma_he => $ihedt->ma_he];
-    }
-    $mform->addElement('select', 'mahe', 'Mã hệ đào tạo:', $arr_mahe, array());
-    $mform->addRule('mahe', get_string('error'), 'required', 'extraruledata', 'server', false, false);
-
-    $eGroup = array();
-    $eGroup[] = &$mform->createElement('text', 'hedt', '', 'size=50');
-    $mform->addGroup($eGroup, 'hedt', '', array(' '), false);
-    $mform->disabledIf('hedt', '');
-
-    // Mã niên khóa
-    $manienkhoa = array();
-    $allnienkhoadts = $DB->get_records('eb_nienkhoa', []);
-    $arr_manienkhoa = array();
-    $arr_manienkhoa += [""=> "Chọn niên khóa đào tạo"];
-
-    foreach ($allnienkhoadts as $inienkhoadt) {
-      $arr_manienkhoa += [$inienkhoadt->ma_nienkhoa => $inienkhoadt->ma_nienkhoa];
-    }
-    $mform->addElement('select', 'manienkhoa', 'Mã niên khóa đào tạo:', $arr_manienkhoa, array());
-    $mform->addRule('manienkhoa', get_string('error'), 'required', 'extraruledata', 'server', false, false);
-
-    $eGroup = array();
-    $eGroup[] = &$mform->createElement('text', 'nienkhoa', '', 'size=50');
-    $mform->addGroup($eGroup, 'nienkhoa', '', array(' '), false);
-    $mform->disabledIf('nienkhoa', '');
-    
+    $mform->addElement('hidden', 'idnganh', '');    
     
     // Mã ngành
-    $mform->addElement('text', 'manganh', 'Mã ngành đào tạo', 'size="10"');
+    $mform->addElement('text', 'manganh', 'Mã ngành đào tạo', 'size="70"');
     $mform->addRule('manganh', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
     // Tên ngành
@@ -76,7 +24,7 @@ class qlnganh_form extends moodleform
 
     // Mô tả
     $mota = array();
-    $mota[] = &$mform->createElement('textarea', 'mota', '', 'wrap="virtual" rows="7" cols="100"');
+    $mota[] = &$mform->createElement('textarea', 'mota', '', 'wrap="virtual" rows="7" cols="75"');
     $mform->addGroup($mota, 'mota', 'Mô tả', array(' '), false);
 
     // Button
@@ -110,5 +58,38 @@ class nganhdt_search extends moodleform
     function validation($data, $files)
     {
         return array();
+    }
+}
+
+class them_ctdt_vao_form extends moodleform
+{
+    public function definition()
+    {
+        global $CFG, $DB;
+        $mform = $this->_form;
+        
+        // Select CTDT
+        $ctdt_select = array();
+        $allctdts = $DB->get_records('eb_ctdt', []);
+        $arr_mactdt = array();
+        $arr_mactdt += ['' => 'Chọn chương trình đào tạo...'];
+
+        foreach ($allctdts as $ictdt) {
+            $arr_mactdt += [$ictdt->ma_ctdt => $ictdt->ma_ctdt . ' ('.$ictdt->mota. ')'];
+        }
+        $ctdt_select[] = &$mform->createElement('select', 'mactdt', 'select:', $arr_mactdt, array());
+        $ctdt_select[] = &$mform->createElement('submit', 'btn_ctdt_select', 'Thêm vào ngành đào tạo', array('style' => 'background-color: #1177d1;color: #fff'));
+        $mform->addGroup($ctdt_select, 'ctdt_select_group', ' ', ' ', false);
+    }
+
+    function validation($data, $files)
+    {
+        return array();
+    }
+
+    function get_value() {
+        $mform = & $this->_form;
+        $data = $mform->exportValues();
+        return (object)$data;
     }
 }

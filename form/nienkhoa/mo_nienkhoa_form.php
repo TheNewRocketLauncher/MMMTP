@@ -10,51 +10,19 @@ class mo_nienkhoa_form extends moodleform
         $mform = $this->_form;
 
         // Header
-        $mform->addElement('header', 'general', 'Quản lý thông tin');
+        // $mform->addElement('header', 'general', 'Quản lý thông tin');
 
         $mform->addElement('hidden', 'idnienkhoa', '');
 
-        // Mã bậc            
-        $mabac = array();
-        $allbacdts = $DB->get_records('eb_bacdt', []);
-        $arr_mabac = array();
-        $arr_mabac += [""=> "Chọn bậc đào tạo"];
-
-        foreach ($allbacdts as $ibacdt) {
-          $arr_mabac += [$ibacdt->ma_bac => $ibacdt->ma_bac];
-        }
-        $mform->addElement('select', 'mabac', 'Mã bậc đào tạo:', $arr_mabac, array());
-        $mform->addRule('mabac', get_string('error'), 'required', 'extraruledata', 'server', false, false);
-    
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'bacdt', '', 'size=50');
-        $mform->addGroup($eGroup, 'bacdt', '', array(' '), false);
-        $mform->disabledIf('bacdt', '');
-
-        // Mã hệ
-        $mahe = array();
-        $allhedts = $DB->get_records('eb_hedt', []);
-        $arr_mahe = array();
-        $arr_mahe += [""=> "Chọn hệ đào tạo"];
-
-        foreach ($allhedts as $ihedt) {
-            $arr_mahe += [$ihedt->ma_he => $ihedt->ma_he];
-        }
-        $mform->addElement('select', 'mahe', 'Mã hệ đào tạo:', $arr_mahe, array());
-        $mform->addRule('mahe', get_string('error'), 'required', 'extraruledata', 'server', false, false);
-
-        $eGroup = array();
-        $eGroup[] = &$mform->createElement('text', 'hedt', '', 'size=50');
-        $mform->addGroup($eGroup, 'hedt', '', array(' '), false);
-        $mform->disabledIf('hedt', '');
+        
 
 
-        //Mã niên khóa
-        $mform->addElement('text', 'ma_nienkhoa', 'Mã niên khóa', 'size=50');
+        //Mã khóa tuyển
+        $mform->addElement('text', 'ma_nienkhoa', 'Mã khóa tuyển', 'size=50');
         $mform->addRule('ma_nienkhoa', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
-        //Tên niên khóa
-        $mform->addElement('text', 'ten_nienkhoa', 'Tên niên khóa', 'size="100"');
+        //Tên khóa tuyển
+        $mform->addElement('text', 'ten_nienkhoa', 'Tên khóa tuyển', 'size="100"');
         $mform->addRule('ten_nienkhoa', get_string('error'), 'required', 'extraruledata', 'server', false, false);
 
         // Mô tả
@@ -96,5 +64,38 @@ class nienkhoa_search extends moodleform
     function validation($data, $files)
     {
         return array();
+    }
+}
+
+class them_nganh_vao_nienkhoa_form extends moodleform
+{
+    public function definition()
+    {
+        global $CFG, $DB;
+        $mform = $this->_form;
+        
+        // Select ngành
+        $nganh_select = array();
+        $allnganhs = $DB->get_records('eb_nganhdt', []);
+        $arr_manganh = array();
+        $arr_manganh += ['' => 'Chọn Ngành đào tạo...'];
+
+        foreach ($allnganhs as $inganh) {
+            $arr_manganh += [$inganh->ma_nganh => $inganh->ma_nganh . ' ('.$inganh->ma_nganh_goc. ' - '.$inganh->ten.')'];
+        }
+        $nganh_select[] = &$mform->createElement('select', 'manganh', 'select:', $arr_manganh, array());
+        $nganh_select[] = &$mform->createElement('submit', 'btn_ctdt_select', 'Thêm vào khóa tuyển', array('style' => 'background-color: #1177d1;color: #fff'));
+        $mform->addGroup($nganh_select, 'nganh_select_group', ' ', ' ', false);
+    }
+
+    function validation($data, $files)
+    {
+        return array();
+    }
+
+    function get_value() {
+        $mform = & $this->_form;
+        $data = $mform->exportValues();
+        return (object)$data;
     }
 }

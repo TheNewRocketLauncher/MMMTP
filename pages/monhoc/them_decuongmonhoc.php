@@ -23,8 +23,8 @@ $chitietmh = get_monhoc_by_mamonhoc($mamonhoc);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "edit");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['courseid' => $courseid]));
@@ -63,6 +63,7 @@ if ($mform8->is_cancelled()) {
     $toform;
     $toform->ma_decuong_1 = $ma_decuong;
     $toform->ma_ctdt_1 = $ma_ctdt;
+    $toform->ma_ctdt_2 = $ma_ctdt;
     
     $mform8->set_data($toform);
 
@@ -70,34 +71,7 @@ if ($mform8->is_cancelled()) {
     $mform8->display();
 }
 
-///===========================================================================
-function get_name_khoikienthuc($ma_ctdt, $mamonhoc){
-    global $DB;
-    
-    $ma_cay = $DB->get_record('eb_ctdt',['ma_ctdt'=>$ma_ctdt])->ma_cay_khoikienthuc;
-    
-    $kkt = $DB->get_records('eb_cay_khoikienthuc',['ma_cay_khoikienthuc'=>$ma_cay]);
 
-    foreach($kkt as $ikhoi)
-    {
-        $a=$ikhoi->ma_khoi;
-        $monthuockhoi = $DB->get_records('eb_monthuockhoi',['ma_khoi'=>$a]);
-        
-        foreach($monthuockhoi as $mon)
-        {   
-            
-            if($mon->mamonhoc == $mamonhoc)
-            {
-                $khoi = $ikhoi->ma_khoi;
-                return $DB->get_record('eb_khoikienthuc',['ma_khoi'=>$khoi])->ten_khoi;
-            }
-        }
-
-    }
-
-    return "";
-
-}
 //THONG TIN CHUNG
 $mform1 = new thongtinchung_decuongmonhoc_form();
 
@@ -140,17 +114,16 @@ if ($mform1->is_cancelled()) {
         $tenloaihocphan = "Tự chọn";
     }
     $toform;
-
     $toform->masomonhoc_thongtinchung = $chitietmonhoc->mamonhoc;
     $toform->tenmonhoc1_thongtinchung = $chitietmonhoc->tenmonhoc_vi;
     $toform->tenmonhoc2_thongtinchung = $chitietmonhoc->tenmonhoc_en;
     $toform->loaihocphan = $tenloaihocphan;
-    $toform->thuoc_khoikienthuc_thongtinchung = get_name_khoikienthuc($ma_ctdt, $chitietmonhoc->mamonhoc);
+    // $toform->thuoc_khoikienthuc_thongtinchung = get_name_khoikienthuc($ma_ctdt, $chitietmonhoc->mamonhoc);
     $toform->sotinchi_thongtinchung = $chitietmonhoc->sotinchi;
     $toform->tietlythuyet_thongtinchung = $chitietmonhoc->sotietlythuyet;
     $toform->tietthuchanh_thongtinchung = $chitietmonhoc->sotietthuchanh;
 
-    $thuoc_khoikienthuc_thongtinchung = get_name_khoikienthuc($ma_ctdt, $chitietmonhoc->mamonhoc);
+    // $thuoc_khoikienthuc_thongtinchung = get_name_khoikienthuc($ma_ctdt, $chitietmonhoc->mamonhoc);
     $toform->thuoc_khoikienthuc_thongtinchung = $thuoc_khoikienthuc_thongtinchung;
 
 
@@ -217,6 +190,7 @@ $mform2 = new muctieumonhoc_decuongmonhoc_form();
 if ($mform2->is_cancelled()) {
 } else if ($mform2->no_submit_button_pressed()) {
     // Button no_submit
+    $mform2->display();
 } else if ($fromform = $mform2->get_data()) {
     $param2 = new stdClass();
     $param2->mamonhoc = $fromform->mamonhoc;
@@ -252,9 +226,11 @@ if ($mform2->is_cancelled()) {
         $param2->danhsach_cdr = substr($str, 0, -2);
     }
     
-    
-    
     insert_muctieumonhoc_table($param2);
+    // if($param2->danhsach_cdr != null){
+    //     insert_muctieumonhoc_table($param2);
+    // }
+    
 
     $table2 = get_muctieu_monmhoc_by_madc($param2->ma_decuong, $ma_ctdt, $mamonhoc);
 
@@ -270,7 +246,14 @@ if ($mform2->is_cancelled()) {
     
     
 }else if ($mform2->is_submitted()) {
-    echo 'Lỗi';
+    $mform2->display();
+    echo html_writer::table($table2);
+    echo \html_writer::tag(
+        'button',
+        'Xóa Mục Tiêu',
+        array('id' => 'btn_delete_muctieumonhoc', 'style'=>"border: none;width: auto; height:40px; background-color: #1177d1; color: #fff")
+    );
+    echo '<br>';
 } else {    
     //Set default data from DB
     $toform;
@@ -316,9 +299,24 @@ if ($mform3->is_cancelled()) {
 
 
     $param2->mota = $fromform->mota_chuandaura;
-    $param2->mucdo_utilize = $fromform->mucdo_itu_chuandaura;
+    // $param2->mucdo_utilize = $fromform->mucdo_itu_chuandaura;
     $param2->mucdo_teach = 1;
     $param2->mucdo_introduce = 1;
+
+    $danhsach_mucdo_utilize = $mform3->get_submit_value('mucdo_itu_chuandaura');
+
+    $str = '';
+    foreach($danhsach_mucdo_utilize as $item){
+        
+        $str .= $item . ', ';
+    }
+    if($str==''){
+
+        $str=NULL;
+        $param2->mucdo_utilize = $str;
+    }else{
+        $param2->mucdo_utilize = substr($str, 0, -2);
+    }
 
     
     insert_chuandaura_table($param2);
@@ -658,7 +656,7 @@ class MYPDF extends TCPDF
 
 
         $this->Ln(5);
-        $name = 'Các chủ đề nâng cao trong Công nghệ phần mềm';
+        $name = '';
 
         $this->Cell(30, 5, 'Đề cương môn học ');
         $this->SetFont('freeserif', 'BI', 11);
@@ -667,7 +665,7 @@ class MYPDF extends TCPDF
         $titulos = explode("|", bottom_info);
 
         $num = $this->getAliasNumPage();
-        $pagin = 'Trang ' . $this->getPage() . '/' . $this->getNumPages();
+        $pagin = 'Trang ' . $this->getPage();
         $this->Cell(0, 5, $pagin, 0, 0, 'R');
 
         $this->Ln(15);
@@ -725,8 +723,6 @@ $pdf->SetFont('timesbd', 'B', 13, '', false);
 
 // add a page
 $pdf->AddPage();
-
-$ttc_body = $chitietmh->tenmonhoc_vi;
 
 // 1. THÔNG TIN CHUNG
 $ttc_header = '1. THÔNG TIN CHUNG:';

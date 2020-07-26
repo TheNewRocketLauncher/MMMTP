@@ -12,8 +12,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "edit");
+
 $id = optional_param('id', 0, PARAM_INT);
 $chitietmh = get_monhoc_by_id_monhoc($id);
 

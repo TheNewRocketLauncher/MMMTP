@@ -12,8 +12,7 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "edit");
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/them_monhoc.php', ['courseid' => $courseid]));
@@ -55,20 +54,34 @@ if ($mform->is_cancelled()) {
     $param1->sotietthuchanh = $mform->get_data()->sotiet_TH;
     $param1->sotiet_baitap = $mform->get_data()->sotiet_BT;
     $param1->ghichu = $mform->get_data()->ghichu;
-    $param1->mota = $mform->get_data()->mota;    
-    insert_monhoc_table($param1);
-    echo '<h2>Thêm môn học thành công!</h2>';
-    echo '<br>';
+    $param1->mota = $mform->get_data()->mota;
+
+
+    $sotiet_TH = is_numeric($param1->sotietthuchanh);
+    $sotiet_LT = is_numeric($param1->sotietlythuyet);
+    $sotinchi = is_numeric($param1->sotinchi);
+    $sotiet_BT = is_numeric($param1->sotiet_baitap);
+    if ($sotiet_TH == 1 && $sotiet_LT == 1 && $sotinchi == 1 && $sotiet_BT == 1) {
+        insert_monhoc_table($param1);
+        echo '<h2>Thêm môn học thành công!</h2>';
+        echo '<br>';
+    } else {
+        echo "<h2 style ='color:red;' ><b>Thêm mới thất bại! </b></h2>";
+        echo '<br>';
+        echo 'Số tín chỉ phải là số';
+        echo '<br>';
+        echo 'Số tiết lý thuyết phải là số';
+        echo '<br>';
+        echo 'Số tiết thực hành phải là số';
+        echo '<br>';
+        echo 'Số tiêt bài tập phải là số';
+        echo '<br>';
+    }
     // Link đến trang danh sách
     $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['courseid' => $courseid]);
     $linktext = get_string('label_monhoc', 'block_educationpgrs');
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
-    // Button submit
-    // echo '<h2>Nhập sai thông tin</h2>';
-    // $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', []);
-    // $linktext = get_string('label_monhoc', 'block_educationpgrs');
-    // echo \html_writer::link($url, $linktext);
     $mform->display();
 } else {
     $mform->set_data($toform);

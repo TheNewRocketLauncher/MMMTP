@@ -8,7 +8,6 @@ require_once('../../js.php');
 
 
 global $COURSE;
-$courseid = optional_param('courseid', SITEID, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
 $search = trim(optional_param('search', '', PARAM_NOTAGS));
 
@@ -16,11 +15,11 @@ $search = trim(optional_param('search', '', PARAM_NOTAGS));
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("nganhdt", "view");
+
 
 // Setting up the page.
-$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/nganhdt/index.php'));
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
@@ -86,7 +85,7 @@ $action_form =
     . html_writer::tag(
         'button',
         'Thêm mới',
-        array('id' => 'btn_add_nganhdt', 'onClick' => "window.location.href='add_nganhdt.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 130px; height:35px; padding: 0; background-color: white; color: black;')
+        array('id' => 'btn_add_nganhdt', 'onClick' => "window.location.href='create.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 130px; height:35px; padding: 0; background-color: white; color: black;')
     )
     . '<br>'
     . html_writer::end_tag('div');
@@ -110,23 +109,23 @@ echo $OUTPUT->footer();
 
 function get_nganhdt_checkbox($key_search = '', $page = 0)
 {
-   global $DB, $USER, $CFG, $COURSE;
+   global $DB;
    $count = 20;
    $table = new html_table();
-   $table->head = array('', 'STT','Bậc đào tạo','Hệ đào tạo','Niên khóa đào tạo', 'Mã ngành đào tạo','Tên ngành đào tạo', 'Mô tả');
+   $table->head = array('', 'STT', 'Mã ngành đào tạo','Tên ngành đào tạo', 'Mô tả');
    $allnganhdts = $DB->get_records('eb_nganhdt', []);
    $stt = 1 + $page * $count;
    $pos_in_table = 1;
    foreach ($allnganhdts as $inganhdt) {
       if (findContent($inganhdt->ten, $key_search) || $key_search == '') {
          $checkbox = html_writer::tag('input', ' ', array('class' => 'nganhdtcheckbox', 'type' => "checkbox", 'name' => $inganhdt->id, 'id' => 'nganhdt' . $inganhdt->id, 'value' => '0', 'onclick' => "changecheck_nganhdt($inganhdt->id)"));
-         $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/update_nganhdt.php', ['id' => $inganhdt->id]);
+         $url = new \moodle_url('/blocks/educationpgrs/pages/nganhdt/detail.php', ['id' => $inganhdt->id]);
          $ten_url = \html_writer::link($url, $inganhdt->ten);
          if ($page < 0) { // Get all data without page
-            $table->data[] = [$checkbox, (string) $stt,(string)$inganhdt->ma_bac,(string)$inganhdt->ma_he,(string)$inganhdt->ma_nienkhoa,(string)$inganhdt->ma_nganh, $ten_url, (string) $inganhdt->mota];
+            $table->data[] = [$checkbox, (string) $stt,(string)$inganhdt->ma_nganh, $ten_url, (string) $inganhdt->mota];
             $stt = $stt + 1;
          } else if ($pos_in_table > $page * $count && $pos_in_table <= $page * $count + $count) {
-            $table->data[] = [$checkbox, (string) $stt,(string)$inganhdt->ma_bac,(string)$inganhdt->ma_he,(string)$inganhdt->ma_nienkhoa,(string)$inganhdt->ma_nganh, $ten_url, (string) $inganhdt->mota];
+            $table->data[] = [$checkbox, (string) $stt,(string)$inganhdt->ma_nganh, $ten_url, (string) $inganhdt->mota];
             $stt = $stt + 1;
          }
          $pos_in_table = $pos_in_table + 1;

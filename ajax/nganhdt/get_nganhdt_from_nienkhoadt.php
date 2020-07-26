@@ -6,6 +6,8 @@ $bdt = trim(required_param('bdt', PARAM_NOTAGS));
 $hdt = trim(required_param('hdt', PARAM_NOTAGS));
 $nienkhoadt = trim(required_param('nienkhoadt', PARAM_NOTAGS));
 $courseid = required_param('course', PARAM_INT);
+require_once('../../controller/auth.php');
+require_permission("nganhdt", "edit");
 function get_nganhdt_from_nienkhoadt($ma_bac, $ma_he, $ma_nienkhoa) {
     global $DB, $USER, $CFG, $COURSE;
     $nganhdt = $DB->get_records('eb_nganhdt', array('ma_bac' => $ma_bac, 'ma_he' => $ma_he, 'ma_nienkhoa' => $ma_nienkhoa));

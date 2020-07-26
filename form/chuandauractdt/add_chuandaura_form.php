@@ -13,7 +13,7 @@ class chitiet_cdr_form extends moodleform
         $mform = $this->_form;
         $mform->addElement('header', 'general_thongtinchung', get_string('group_thongtinchung', 'block_educationpgrs'));
 
-        $mform->addElement('select', 'select_cdr', 'Chuẩn đầu ra', $this->get_all_list_cdr());
+        $mform->addElement('select', 'select_cdr', 'Chuẩn đầu ra', []);
         $mform->disabledIf('select_cdr', '');
 
         $eGroup = array();
@@ -23,7 +23,7 @@ class chitiet_cdr_form extends moodleform
         $mform->disabledIf('txt_ten_cdr', '');
 
         $eGroup = array();
-        $eGroup[] = $mform->createElement('select', 'select_cdr_node', '', $this->get_list_ma_cdr());
+        $eGroup[] = $mform->createElement('select', 'select_cdr_node', '', []);
         $eGroup[] = $mform->createElement('button', 'btn_refresh_chitiet_cdr', 'Làm mới', ['style'=>"border: 1px; border-color: #1177d1; width: auto; height:40px; background-color: #1177d1; color: #fff"]);
         $mform->addGroup($eGroup, 'group_selectnode', 'Chọn node', ' ', false);
 
@@ -35,12 +35,13 @@ class chitiet_cdr_form extends moodleform
       
         $buttonarray = array();
         $buttonarray[] = $mform->createElement('submit', 'btn_add_node_cdr', 'Thực hiện', ['style'=>"border: 1px; border-color: #1177d1; width: auto; height:40px; background-color: #1177d1; color: #fff"]);
-        $buttonarray[] = $mform->createElement('cancel', null, 'Trở về');
+        $buttonarray[] = $mform->createElement('cancel', 'btn_cancel', 'Trở về');
         $mform->addGroup($buttonarray, 'buttonar', '', ' ', false);
 
         $mform->addElement('hidden', 'ma_cay_cdr', '');
 
         $mform->registerNoSubmitButton('btn_add_node_cdr');
+        $mform->registerNoSubmitButton('btn_cancel');
 
         $mform->addElement('hidden', 'is_used', 0);
         
@@ -65,7 +66,7 @@ class chitiet_cdr_form extends moodleform
 
     function get_all_list_cdr(){
         global $DB;
-        $allchuandaura = $DB->get_records('eb_chuandaura_ctdt', ['level_cdr' => 1]);
+        $allchuandaura = $DB->get_records('eb_chuandaura_ctdt', ['level_cdr' => 0]);
 
         $arr_cdr = array();
         foreach($allchuandaura as $item){
@@ -105,21 +106,26 @@ class add_cdr_form extends moodleform
         //Group thong tin chung
         $mform = $this->_form;
         $mform->addElement('header', 'general_thongtinchung', get_string('group_thongtinchung', 'block_educationpgrs'));
+        
+        $mform->addElement('select', 'loai_cdr', 'Loại chuẩn đầu ra', get_loai_cdr());
+        $mform->disabledIf('loai_cdr', '');
+        $eGroup = array();
+        $eGroup[] = $mform->createElement('select', 'cdr', 'Chuẩn đầu ra', $this->get_all_cdr());
+        $eGroup[] = $mform->createElement('button', 'btn_edit_cdr', 'Chỉnh sửa', ['style'=>"border: 1px; border-color: #1177d1; width: auto; height:40px; background-color: #1177d1; color: #fff"]);
+        $mform->addGroup($eGroup, 'group_', 'Tên', ' ', false);
+        $mform->disabledIf('cdr', '');
 
-
-        $mform->addElement('text', 'txt_ten', 'Tên chuẩn đầu ra', 'size="200"');
+        $mform->addElement('text', 'txt_ten', 'Tên chuẩn đầu ra mới', 'size="200"');
         $mform->addRule('txt_ten', 'Tên chuẩn đầu ra không được trống', 'required', 'extraruledata', 'server', false, false);
         $mform->setType('txt_ten', PARAM_TEXT);
+        $mform->disabledIf('txt_ten', 'select_cdr', 'neq', 0);
 
-        $mform->addElement('textarea', 'mota', 'Mô tả', 'wrap="virtual" rows="7" cols="200"');
-        $mform->addRule('mota', 'Tên chuẩn đầu ra không được trống', 'required', 'extraruledata', 'server', false, false);
-      
         $buttonarray = array();
-        $buttonarray[] = $mform->createElement('submit', 'submitbutton', 'Thêm mới');
-        $buttonarray[] = $mform->createElement('cancel', null, 'Hủy');
-        
-        $mform->addElement('hidden', 'ma_cay_cdr', '');
+        $buttonarray[] = $mform->createElement('button', 'btn_add_node_cdr', 'Thêm', ['style'=>"border: 1px; border-color: #1177d1; width: auto; height:40px; background-color: #1177d1; color: #fff"]);
+        $buttonarray[] = $mform->createElement('submit', null, 'Trở về');
         $mform->addGroup($buttonarray, 'buttonar', '', ' ', false);
+        $mform->addElement('hidden', 'id', 0);
+        $mform->disable_form_change_checker();
     }
     
     function validation($data, $files)
@@ -137,5 +143,32 @@ class add_cdr_form extends moodleform
         $mform = & $this->_form;
         $data = $mform->exportValues();
         return (object)$data;
+    }
+
+    function get_all_cdr(){
+        global $DB;
+        $allchuandaura = $DB->get_records('eb_chuandaura_ctdt', ['level' => 1]);
+
+        $arr_cdr = array();
+        foreach($allchuandaura as $item){
+            $arr_cdr += [$item->id => $item->ten];
+        }
+
+        return $arr_cdr;
+    }
+
+    function get_all_cdr_lv2(){
+        global $DB;
+        $allchuandaura = $DB->get_records('eb_chuandaura_ctdt', ['level' => 2]);
+
+        $arr_cdr = array();
+        $arr_cdr += [0 => 'Chọn chuẩn đầu ra'];
+        foreach($allchuandaura as $item){
+            if($item->ma_cdr != NULL){
+                $arr_cdr += [$item->ma_cdr => $item->ten];
+            }
+        }
+
+        return $arr_cdr;
     }
 }

@@ -15,8 +15,8 @@ $search = trim(optional_param('search', '', PARAM_NOTAGS));
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("decuong", "view");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -115,7 +115,7 @@ function get_decuong_table($key_search = '', $page = 0)
       if (findContent($idata->ma_decuong, $key_search) || $key_search == '') {
       
          $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php',  ['ma_ctdt'=>$idata->ma_ctdt, 'mamonhoc'=>$idata->mamonhoc, 'ma_decuong'=>$idata->ma_decuong]);
-         $ten_url = \html_writer::link($url, $idata->mamonhoc);
+         $ten_url = \html_writer::link($url, $idata->ma_decuong);
          $ten_khoi=get_name_khoikienthuc($idata->ma_ctdt,$idata->mamonhoc);
          
          if ($page < 0) { // Get all data without page
@@ -128,7 +128,7 @@ function get_decuong_table($key_search = '', $page = 0)
 
             $checkbox = html_writer::tag('input', ' ', array('class' => 'decuong_checkbox', 'type' => "checkbox", 'name' => $idata->id, 'id' => 'decuongmonhoc' . $idata->id, 'value' => '0', 'onclick' => "changecheck_decuongmonhoc($idata->id)"));
 
-            $table->data[] = [$checkbox, (string) $stt, (string)$idata->ma_decuong,(string) $idata->ma_ctdt, $ten_khoi,$ten_url, (string)$idata->mota];
+            $table->data[] = [$checkbox, (string) $stt, $ten_url,(string) $idata->ma_ctdt, $ten_khoi,(string)$idata->mamonhoc, (string)$idata->mota];
             $stt = $stt + 1;
          }
          $pos_in_table = $pos_in_table + 1;

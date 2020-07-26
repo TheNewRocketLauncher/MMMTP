@@ -3,14 +3,19 @@ require_once(__DIR__ . '/../../../config.php');
 
 require_once('global_model.php');
 require_once('decuong_model.php');
+require_once('../../model/chuandaura_ctdt_model.php');
 
-function insert_ctdt($param)
+function insert_ctdt($param, $chuandaura)
 {
     global $DB, $USER, $CFG, $COURSE;
-    if (userIsAdmin()) {
-        $id = $DB->insert_record('eb_ctdt', $param);
-    } else {
-    	$id = NULL;
+    $id = $DB->insert_record('eb_ctdt', $param);
+
+    foreach($chuandaura as $item){
+        $param_cdr = new stdClass();
+        $param_cdr->ma_ctdt = $param->ma_ctdt;
+        $param_cdr->ma_cdr = $item;
+
+        $DB->insert_record('eb_cdr_thuoc_ctdt', $param);
     }
 	return $id;
 }
@@ -36,9 +41,14 @@ function get_ctdt_byID($id)
 function get_ctdt_byMa($ma_ctdt)
 {
     global $DB, $USER, $CFG, $COURSE;
-
     $ctdt = $DB->get_record('eb_ctdt', array('ma_ctdt' => $ma_ctdt));
     return $ctdt;
+}
+
+function exist_ma_ctdt($ma_ctdt)
+{
+    global $DB, $USER, $CFG, $COURSE;
+    return $DB->record_exists('eb_ctdt', array('ma_ctdt' => $ma_ctdt));
 }
 
 function delete_ctdt($id)
@@ -56,7 +66,7 @@ function get_ctdt($courseid)
 {
     global $DB, $USER, $CFG, $COURSE;
     $table = new html_table();
-    $table->head = array('STT', 'Mã CTĐT', 'Mã niên khóa', 'Mã ngành', 'Mã chuyên ngành', 'Thời gian đào tạo', 'Khối lượng kiến thức', 'Đối tượng tuyển sinh');
+    $table->head = array('STT', 'Mã CTĐT', 'Mã khóa tuyển', 'Mã ngành', 'Mã chuyên ngành', 'Thời gian đào tạo', 'Khối lượng kiến thức', 'Đối tượng tuyển sinh');
     $allctdts = $DB->get_records('eb_ctdt', []);
     $stt = 1;
     foreach ($allctdts as $ictdt) {
@@ -66,13 +76,22 @@ function get_ctdt($courseid)
     return $table;
 }
 
-function update_ctdt($old_ma_ctdt, $param)
+function update_ctdt($param, $list_newcdr)
 {
     global $DB, $USER, $CFG, $COURSE;
-    $oldctdt = get_ctdt_byMa($old_ma_ctdt);
-    if(can_edit_ctdt(NULL, $old_ma_ctdt)){
-        $param->id = $oldctdt->id;
-        $DB->update_record('eb_ctdt', $param, $bulk = false);
+    
+    $param->id = $oldctdt->id;
+
+    echo '<br> param ctdt new <br>';
+    echo json_encode($param);
+    // $DB->update_record('eb_ctdt', $param, $bulk = false);
+
+    $list_cdr = get_list_cdr_thuoc_ctdt($old_ma_ctdt);
+    foreach($list_cdr as $item){
+        $item->ma_ctdt = $param->ma_ctdt;
+        
+        echo '<br> param cdr new <br>';
+        // $DB->update_record('eb_cdr_thuoc_ctdt', $item, $bulk = false);
     }
     return true;
 }

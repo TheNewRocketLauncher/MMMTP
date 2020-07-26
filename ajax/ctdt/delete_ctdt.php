@@ -4,8 +4,9 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once('../../model/ctdt_model.php');
 $id = required_param('id', PARAM_INT);
-
-if(can_edit_ctdt($id)){
+require_once('../../controller/auth.php');
+require_permission("ctdt", "edit");
+if (can_edit_ctdt($id)) {
     delete_ctdt($id);
     echo json_encode(['error' => 0]);
 } else{

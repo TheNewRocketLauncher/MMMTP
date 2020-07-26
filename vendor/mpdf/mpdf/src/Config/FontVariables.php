@@ -93,6 +93,14 @@ class FontVariables
 			 */
 
 			'fontdata' => [
+				"mysegoe" => [
+					'R' => "seguisym.ttf",
+					'B' => "seguisym.ttf",
+					'I' => "seguisym.ttf",
+					'BI' => "seguisym.ttf",
+					'useOTL' => 0xFF,
+					'useKashida' => 75,
+				],
 				"mytimes" => [
 					'R' => "times.ttf",
 					'B' => "timesbd.ttf",

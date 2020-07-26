@@ -17,8 +17,8 @@ if(!$link){
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("import", "");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -317,7 +317,7 @@ if ($mform2->is_cancelled()) {
       
         /////////////////////////////////TABLE KE HOACH GIANG DAY/////////////////////////////////
         $table_nienkhoa = new html_table();
-        $table_nienkhoa->head = ['Mã bậc', 'Mã hệ ','Mã niên khóa','Tên niên khóa', 'Mô tả'];
+        $table_nienkhoa->head = ['Mã bậc', 'Mã hệ ','Mã khóa tuyển','Tên khóa tuyển', 'Mô tả'];
         foreach($arr_nienkhoa as $item){
             
             if(requiredRules('eb_nienkhoa', $item['ma_bac'],$item['ma_he'],$item['ma_nienkhoa'],'','') == true){
@@ -328,7 +328,7 @@ if ($mform2->is_cancelled()) {
             }
             
         }
-        echo "<h2 style='color: #1177d1;font-weight: 350; text-decoration: underline;'>Niên khóa</h2>";echo "<br>";
+        echo "<h2 style='color: #1177d1;font-weight: 350; text-decoration: underline;'>khóa tuyển</h2>";echo "<br>";
         echo html_writer::table($table_nienkhoa);echo "<br>";
 
         
@@ -336,7 +336,7 @@ if ($mform2->is_cancelled()) {
         /////////////////////////////////TABLE DANH GIA/////////////////////////////////
 
         $table_nganhdt = new html_table();
-        $table_nganhdt->head = ['Mã bậc', 'Mã hệ','Mã niên khóa','Mã ngành','Tên ngành', 'Mô tả'];
+        $table_nganhdt->head = ['Mã bậc', 'Mã hệ','Mã khóa tuyển','Mã ngành','Tên ngành', 'Mô tả'];
         foreach($arr_nganhdt as $item){
             
             if(requiredRules('eb_nganhdt', $item['ma_bac'], $item['ma_he'],$item['ma_nienkhoa'],$item['ma_nganh'],'') == true){
@@ -351,7 +351,7 @@ if ($mform2->is_cancelled()) {
       
         /////////////////////////////////TABLE TAI NGUYEN/////////////////////////////////
         $table_chuyennganhdt = new html_table();
-        $table_chuyennganhdt->head = ['Mã bậc', 'Mã hệ','Mã niên khóa','Mã ngành','Mã chuyên ngành' ,'Tên chuyên ngành', 'Mô tả'];
+        $table_chuyennganhdt->head = ['Mã bậc', 'Mã hệ','Mã khóa tuyển','Mã ngành','Mã chuyên ngành' ,'Tên chuyên ngành', 'Mô tả'];
         foreach($arr_chuyennganhdt as $item){    
             
             if(requiredRules('eb_chuyennganhdt', $item['ma_bac'],$item['ma_he'],$item['ma_nienkhoa'],$item['ma_nganh'],$item['ma_chuyennganh']) == true){

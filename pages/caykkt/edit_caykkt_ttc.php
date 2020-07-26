@@ -15,8 +15,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("caykkt", "edit");
+
 
 ///-------------------------------------------------------------------------------------------------------///
 // Setting up the page.
@@ -79,7 +79,7 @@ if ($mform->is_cancelled()) {
     $mform->set_data($toform);
 }
 $mform->display();
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 

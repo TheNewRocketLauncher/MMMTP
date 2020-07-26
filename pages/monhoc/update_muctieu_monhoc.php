@@ -13,8 +13,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "edit");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
@@ -69,10 +69,11 @@ if ($mform->is_cancelled()) {
         $param1->danhsach_cdr = null;
     }
     else{
-        
         foreach($tem as $item){
+            if($item!= null && $item != ''){
+                $tem1 .= $item . ', ';    
+            }
             
-            $tem1 .= $item . ', ';
             
         }
         $param1->danhsach_cdr = substr($tem1, 0, -2);
@@ -106,12 +107,7 @@ if ($mform->is_cancelled()) {
 
     $toform->chuandaura_cdio_muctieumonhoc  = $list_cdr;
     
-    //$toform += ['chuandaura_cdio_muctieumonhoc' => $list_cdr];
-    // echo($chitietmh->muctieu);
-    // echo '<br>';
-    // echo($toform->muctieu_muctieumonhoc);
-    // echo '<br>';
-    //echo($)
+ 
     $mform->set_data($toform);
     $mform->display();
 }
@@ -136,7 +132,6 @@ function get_list_cdr($muctieu) {
             }
         }
     }
-    //echo json_encode($list_cdr1); echo "<br>";
     return $list_cdr1;
 }
 

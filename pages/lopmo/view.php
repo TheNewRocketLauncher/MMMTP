@@ -33,7 +33,8 @@ echo $OUTPUT->header();
 require_once('../../form/lopmo/view_lopmo_form.php');
 $form_select = new select_ctdt_form();
 echo "<h3 style='color: 1177d1;text-decoration: underline; '><strong>Danh sách lớp mở</strong></h3>";
-
+require_once('../../controller/auth.php');
+require_permission("lopmo", "edit");
 // Process form
 if ($form_select->is_cancelled()) {
     // Process button cancel

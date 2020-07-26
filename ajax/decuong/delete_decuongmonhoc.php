@@ -5,6 +5,8 @@ require_once(__DIR__ . '/../../../../config.php');
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
 
+require_once('../../controller/auth.php');
+require_permission("decuong", "edit");
 
 
 

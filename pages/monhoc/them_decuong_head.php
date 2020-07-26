@@ -17,8 +17,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "edit");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
@@ -42,9 +42,8 @@ echo $OUTPUT->header();
 
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 require_once('../../form/decuongmonhoc/them_decuongmonhoc_form.php');
-$chitietmh->mamonhoc = 'csc500';
-$a = $chitietmh->mamonhoc;
-
+// $chitietmh->mamonhoc = 'csc500';
+// $a = $chitietmh->mamonhoc; 
 
 ///==========================================================================
 //TUY CHON
@@ -59,18 +58,47 @@ if ($mforms->is_cancelled()) {
     // Button no_submit
     $mforms->display();
 } else if ($fromform = $mforms->get_data()) {
-    $param2 = new stdClass();
-    $param2->mamonhoc = $mforms->get_submit_value('tuychon_mon');
-    $param2->ma_decuong = $mforms->get_submit_value('madc');
-    $param2->ma_ctdt = $mforms->get_submit_value('tuychon_ctdt');
-    $param2->mota = $mforms->get_submit_value('mota_decuong');
     
-    $mforms->madc_copy = $param2->ma_decuong;
-    insert_decuong($param2);
-    // $courseid = required_param('courseid', PARAM_INT);
-    $url = new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['ma_ctdt'=>$param2->ma_ctdt, 'mamonhoc'=>$param2->mamonhoc, 'ma_decuong'=>$param2->ma_decuong]);
-    redirect($url);
-    // $mforms->display();
+    
+    $param2 = new stdClass();
+    
+    $optiondecuong = $mforms->get_submit_value('option_decuong');
+
+
+    $param2->ma_decuong = $mforms->get_submit_value('madc');
+    $param2->mota = $mforms->get_submit_value('mota_decuong');
+
+    $param2->mamonhoc; 
+
+    if($optiondecuong == 0 || $optiondecuong == '0'){
+        
+        $param2->mamonhoc = $mforms->get_submit_value('tuychon_mon_batky');
+        $param2->ma_ctdt = null;
+         
+        if($param2->mamonhoc){
+            
+            insert_decuong($param2);
+            $url = new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['ma_ctdt'=>$param2->ma_ctdt, 'mamonhoc'=>$param2->mamonhoc, 'ma_decuong'=>$param2->ma_decuong]);
+            redirect($url);
+        }else{
+            $url = new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuong_head.php');
+            redirect($url);
+        }
+    }else 
+    if($optiondecuong == 1 || $optiondecuong == '1'){
+        $param2->mamonhoc = $mforms->get_submit_value('tuychon_mon');
+        $param2->ma_ctdt = $mforms->get_submit_value('tuychon_ctdt');
+
+        if($param2->mamonhoc){
+            
+            insert_decuong($param2);
+            $url = new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuongmonhoc.php', ['ma_ctdt'=>$param2->ma_ctdt, 'mamonhoc'=>$param2->mamonhoc, 'ma_decuong'=>$param2->ma_decuong]);
+            redirect($url);
+        }else{
+            $url = new moodle_url('/blocks/educationpgrs/pages/monhoc/them_decuong_head.php');
+            redirect($url);
+        }
+    }
     
 }else if ($mforms->is_submitted()) {
     $mforms->display();

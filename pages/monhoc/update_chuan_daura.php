@@ -12,8 +12,8 @@ $courseid = optional_param('courseid', SITEID, PARAM_INT);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "edit");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/xsdasdasdem_bacdt.php', ['courseid' => $courseid]));
@@ -63,8 +63,28 @@ if ($mform->is_cancelled()) {
     $param1->mota = $fromform->mota_chuandaura;
     $param1->mucdo_introduce = 1;
     $param1->mucdo_teach = 1;
-    $param1->mucdo_utilize = $fromform->mucdo_itu_chuandaura;
-    //echo json_encode($param1);
+    //$param1->mucdo_utilize = $fromform->mucdo_itu_chuandaura;
+    $tem = $mform->get_data()->mucdo_itu_chuandaura;
+    foreach($tem as $item){       
+        $str .= $item . ', ';
+    }
+    $tem1;
+
+    if(count($tem) == 1){
+        $param1->mucdo_utilize = $tem[0];
+    }elseif (count($tem)==0) {
+        $param1->mucdo_utilize = null;
+    }
+    else{
+        
+        foreach($tem as $item){
+            
+            $tem1 .= $item . ', ';
+            
+        }
+        $param1->mucdo_utilize = substr($tem1, 0, -2);
+    }
+
 
     update_chuandaura_monhoc_table($param1);
     
@@ -77,18 +97,42 @@ if ($mform->is_cancelled()) {
     // Button submit
 } else {
     //Set default data from DB
+    
+    $list_utilize=get_list_utilize($chitietmh->ma_cdr);
+    
+
     $toform;
     $toform->id = $chitietmh->id;
     $toform->chuandaura = $chitietmh->ma_cdr;
     $toform->mamonhoc = $mamonhoc;
     $toform->ma_decuong = $ma_decuong;
     $toform->mota_chuandaura = $chitietmh->mota;
-    //$toform->ma_ctdt = $ma_ctdt;
-    $toform->mucdo_itu_chuandaura = $chitietmh->mucdo_utilize;    
-    //echo json_encode($toform);
+    // $toform->mucdo_itu_chuandaura = $chitietmh->mucdo_utilize;   
+    $toform->mucdo_itu_chuandaura = $list_utilize;
+
     $mform->set_data($toform);  
     $mform->display();
 }
 
 // Print footer
 echo $OUTPUT->footer();
+
+function get_list_utilize($ma_cdr) {
+    global $DB, $USER, $CFG, $COURSE;
+    $list_cdr = $DB->get_records('eb_chuandaura', ['ma_cdr'=>$ma_cdr]);
+
+    $list_cdr1 = array();
+    foreach ($list_cdr as $item) {
+        $arr = explode(', ', $item->mucdo_utilize);
+        if(!empty($arr)){
+            if(count($arr) == 1){
+                $list_cdr1[] = $item->mucdo_utilize;
+            } else{
+                foreach ($arr as $i) {
+                    $list_cdr1[] = $i;
+                }
+            }
+        }
+    }
+    return $list_cdr1;
+}

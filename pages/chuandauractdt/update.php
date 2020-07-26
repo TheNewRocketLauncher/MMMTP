@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/chuandaura_ctdt_model.php');
 
-$ma_cay_cdr = optional_param('ma_cay_cdr', NULL, PARAM_NOTAGS);
+$id = optional_param('id', NULL, PARAM_NOTAGS);
 
 global $COURSE, $USER;
 
@@ -20,7 +20,7 @@ $PAGE->navbar->add("Danh sách chuẩn đầu ra chương trình đào tạo", n
 $PAGE->navbar->add('Chỉnh sửa chuẩn đầu ra chương trình đào tạo');
 // Title.
 $PAGE->set_title('Chỉnh sửa chuẩn đầu ra chương trình đào tạo'  );
-$PAGE->set_heading('Chỉnh sửa đầu ra chương trình đào tạo'  );
+$PAGE->set_heading('Chỉnh sửa chuẩn đầu ra chương trình đào tạo'  );
 global $CFG;
 $CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
@@ -29,27 +29,28 @@ echo $OUTPUT->header();
 
 ///-------------------------------------------------------------------------------------------------------///
 // Form
-require_once('../../form/chuandauractdt/add_chuandaura_form.php');
-$mform = new add_cdr_form();
+require_once('../../form/chuandauractdt/create_cdr_form.php');
+$mform = new create_cdr_form();
+require_once('../../controller/auth.php');
+require_permission("chuandauractdt", "edit");
 
 // Process form
 if ($mform->is_cancelled()) {
     // Handle form cancel operation
+    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/chuandauractdt/index.php");
 } else if ($mform->no_submit_button_pressed()) {
+    redirect("$CFG->wwwroot/blocks/educationpgrs/pages/chuandauractdt/index.php");
     $mform->display();
 } else if ($fromform = $mform->get_data()) {
-    
-    if(can_edit_cdr($fromform->ma_cay_cdr)){
-        $param = get_chuandaura_ctdt_byMaCayCDR($fromform->ma_cay_cdr);
-        $param->ten = $fromform->txt_ten;
-        $param->mota = $fromform->mota;
-        update_chuandaura_ctdt($param);
+    $cdr = get_cdr_byID($fromform->id);
+
+    if(can_edit_cdr($cdr->ma_cdr)){
+        $cdr->ten = $fromform->ten;
+        $cdr->mota = $fromform->mota;
+        $cdr->ma_loai = $fromform->ma_loai;
+        update_chuandaura_ctdt($cdr);
         
-        echo '<h2>Cập nhật thành công!</h2>';
-        echo '<br>';
-        $url = new \moodle_url('/blocks/educationpgrs/pages/chuandauractdt/index.php');
-        $linktext = 'Danh sách chuẩn đầu ra';
-        echo \html_writer::link($url, $linktext);
+        redirect("$CFG->wwwroot/blocks/educationpgrs/pages/chuandauractdt/add_cdr.php?id=" . $cdr->id);
     } else{
         echo '<h2>Cập nhật thất bại vì chuẩn đầu ra đang được sử dụng!</h2>';
         echo '<br>';
@@ -59,14 +60,15 @@ if ($mform->is_cancelled()) {
     }
     
 } else {
-    if($ma_cay_cdr != NULL){
-        $cdr = get_chuandaura_ctdt_byMaCayCDR($ma_cay_cdr);
+    if($id != NULL){
+        $cdr = get_cdr_byID($id);
     
         $toform = new stdClass();
-        $toform->txt_ten = $cdr->ten;
+        $toform->ten = $cdr->ten;
         $toform->mota = $cdr->mota;
-        $toform->submitbutton = "Cập nhật";
-        $toform->ma_cay_cdr = $ma_cay_cdr;
+        $toform->btn_create = "Cập nhật";
+        $toform->ma_loai = $cdr->ma_loai;
+        $toform->id = $id;
         $mform->set_data($toform);
         $mform->display();
     }

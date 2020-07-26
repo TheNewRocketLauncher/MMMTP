@@ -5,15 +5,14 @@ require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/chuyennganhdt_model.php');
 
-global $COURSE;
+global $COURSE, $DB;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
 // Check permission.
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+ 
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/add_chuyennganhdt.php', ['courseid' => $courseid]));
@@ -22,7 +21,8 @@ $PAGE->set_pagelayout('standard');
 
 // Navbar.
 $PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
-$PAGE->navbar->add(get_string('label_chuyennganh', 'block_educationpgrs'));
+$PAGE->navbar->add("Quản lý chuyên ngành dt", new moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php'));
+
 
 // Title.
 $PAGE->set_title('Thêm chuyên ngành đào tạo ');
@@ -55,11 +55,26 @@ if ($mform->is_cancelled()) {
     $param1->ma_chuyennganh = $mform->get_data()->machuyennganh;
     $param1->ten = $mform->get_data()->tenchuyennganh;
     $param1->mota = $mform->get_data()->mota;
-    insert_chuyennganhdt($param1);
-    
-    // Hiển thị thêm thành công
-    echo '<h2>Thêm mới thành công!</h2>';
-    echo '<br>';
+
+
+
+    $current_data = $DB->get_record('eb_chuyennganhdt', [
+        'ma_bac' => $param1->ma_bac, 'ma_he' => $param1->ma_he,
+        'ma_nienkhoa' => $param1->ma_nienkhoa, 'ma_nganh' => $param1->ma_nganh, 'ma_chuyennganh' => $param1->ma_chuyennganh
+    ]);
+    if (!$current_data) {
+        insert_chuyennganhdt($param1);
+        // Hiển thị thêm thành công
+        echo '<h2>Thêm mới thành công!</h2>';
+        echo '<br>';
+    } else {
+        echo "<strong>Dữ liệu đã tồn tại</strong>";
+        echo '<br>';
+    }
+
+
+
+
     // Link đến trang danh sách
     $url = new \moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_chuyennganh', 'block_educationpgrs');

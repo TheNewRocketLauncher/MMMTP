@@ -4,6 +4,8 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once('../../model/lopmo_model.php');
 $id = required_param('id', PARAM_INT);
+require_once('../../controller/auth.php');
+require_permission("lopmo", "edit");
 function clone_lopmo($id) {
     global $DB, $USER, $CFG, $COURSE;    
     $param = $DB->get_record('eb_lop_mo', array('id' => $id));

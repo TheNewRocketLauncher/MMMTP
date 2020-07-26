@@ -36,7 +36,8 @@ $CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
 // Print header
 echo $OUTPUT->header();
-
+require_once('../../controller/auth.php');
+require_permission("khoikienthuc", "edit");
 ///-------------------------------------------------------------------------------------------------------///
 //TRỎ ĐẾN FORM TƯƠNG ỨNG CỦA MÌNH TRONG THƯ MỤC FORM
 require_once('../../form/khoikienthuc/newkkt_form.php');
@@ -73,7 +74,7 @@ print_table_kkt($ma_khoi);
 
 
 
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 ///----------------------------------------------------------------------------------------------------------------------///        
@@ -82,6 +83,8 @@ echo $OUTPUT->footer();
 function print_table_kkt($ma_khoi){
     $khoi = get_kkt_byMaKhoi($ma_khoi);
     echo '<h4>[' . $khoi->ma_khoi . '] ' . $khoi->ten_khoi . '<h4>';
+    echo '<br>';
+    echo '<h4>' . $khoi->mota . '<h4>';
     print_preview_table_kkt(get_list_monhoc($ma_khoi), get_list_khoicon($ma_khoi));
 }
 

@@ -3,6 +3,8 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 $id = required_param('id', PARAM_INT);
+require_once('../../controller/auth.php');
+require_permission("monhoc", "edit");
 function clone_monhoc($id)
 {
     global $DB, $USER, $CFG, $COURSE;

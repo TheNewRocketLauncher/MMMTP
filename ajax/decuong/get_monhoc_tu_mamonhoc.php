@@ -4,6 +4,8 @@
 require_once(__DIR__ . '/../../../../config.php');
 $mamonhoc = optional_param('mamonhoc','', PARAM_ALPHANUMEXT);
 
+require_once('../../controller/auth.php');
+require_permission("decuong", "edit");
 
 
 function getMonhocByMaMonhoc($mamonhoc) {

@@ -49,16 +49,16 @@ class qlchuyennganh_form extends moodleform
     $mform->addGroup($eGroup, 'hedt', '', array(' '), false);
     $mform->disabledIf('hedt', '');
 
-    // Mã niên khóa
+    // Mã khóa tuyển
     $manienkhoa = array();
     $allnienkhoadts = $DB->get_records('eb_nienkhoa', []);
     $arr_manienkhoa = array();
-    $arr_manienkhoa += [""=> "Chọn niên khóa đào tạo"];
+    $arr_manienkhoa += [""=> "Chọn khóa tuyển đào tạo"];
 
     foreach ($allnienkhoadts as $inienkhoadt) {
       $arr_manienkhoa += [$inienkhoadt->ma_nienkhoa => $inienkhoadt->ma_nienkhoa];
     }
-    $mform->addElement('select', 'manienkhoa', 'Mã niên khóa đào tạo:', $arr_manienkhoa, array());
+    $mform->addElement('select', 'manienkhoa', 'Mã khóa tuyển đào tạo:', $arr_manienkhoa, array());
     $mform->addRule('manienkhoa', get_string('error'), 'required', 'extraruledata', 'server', false, false);
     
     $eGroup = array();

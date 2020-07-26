@@ -15,8 +15,7 @@ $search = trim(optional_param('search', '', PARAM_NOTAGS));
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+ 
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/chuyennganhdt/index.php',  ['courseid' => $courseid]));
@@ -120,7 +119,7 @@ function get_chuyennganhdt_checkbox($key_search = '', $page = 0)
    global $DB, $USER, $CFG, $COURSE;
    $count = 20;
    $table = new html_table();
-   $table->head = array('', 'STT','Bậc đào tạo','Hệ đào tạo','Niên khóa đào tạo', 'Ngành đào tạo', 'Mã chuyên ngành đào tạo','Tên chuyên ngành đào tạo', 'Mô tả');
+   $table->head = array('', 'STT','Bậc đào tạo','Hệ đào tạo','khóa tuyển đào tạo', 'Ngành đào tạo', 'Mã chuyên ngành đào tạo','Tên chuyên ngành đào tạo', 'Mô tả');
    $allchuyennganhdts = $DB->get_records('eb_chuyennganhdt', []);
    $stt = 1 + $page * $count;
    $pos_in_table = 1;

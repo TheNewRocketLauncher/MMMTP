@@ -16,8 +16,8 @@ $link = optional_param('linkto', NULL, PARAM_NOTAGS);
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("import", "");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -236,7 +236,7 @@ function print_preview_table_kkt($list_khoi){
 
     foreach($list_khoi as $key => $item){
         $stt = 1;
-        echo '<h4> ' .$key. ' ' . $item['ten_khoi'];
+        echo '<h4> [' .$key. '] ' . $item['ten_khoi'];
         $table = new html_table();
         $table->head = array('STT', 'Mã', 'Tên', 'Số TC', 'LT', 'TH', 'BT');
 

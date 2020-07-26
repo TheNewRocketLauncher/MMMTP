@@ -2,9 +2,10 @@
 
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
-$ma_ctdt = required_param('ma_ctdt', PARAM_ALPHANUMEXT);
+$ma_ctdt = required_param('ma_ctdt', PARAM_NOTAGS);
 $courseid = required_param('course', PARAM_INT);
-
+require_once('../../controller/auth.php');
+require_permission("lopmo", "edit");
 function get_mamonhoc_from_mactdt($ma_ctdt)
 {
   global $DB, $USER, $CFG, $COURSE;

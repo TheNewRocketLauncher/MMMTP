@@ -3,7 +3,8 @@
 // Standard config file and local library.
 require_once(__DIR__ . '/../../../../config.php');
 require_once('../../model/chuandaura_ctdt_model.php');
-
+require_once('../../controller/auth.php');
+require_permission("chuandaura_ctdt", "edit");
 $ma_cay_cdr = required_param('ma_cay_cdr', PARAM_NOTAGS);
 
 $list_cdr = get_node_cdr_byMaCDR($ma_cay_cdr);

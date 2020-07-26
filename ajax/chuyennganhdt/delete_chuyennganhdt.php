@@ -4,7 +4,10 @@
 require_once(__DIR__ . '/../../../../config.php');
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('course', PARAM_INT);
-function delete_chuyennganhdt($id) {
+require_once('../../controller/auth.php');
+require_permission("chuyennganhdt", "edit");
+function delete_chuyennganhdt($id)
+{
     global $DB, $USER, $CFG, $COURSE;
     $DB->delete_records('eb_chuyennganhdt', array('id' => $id));
 }

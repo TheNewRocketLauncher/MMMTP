@@ -22,7 +22,7 @@ $PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/e
 $PAGE->navbar->add(get_string('label_nienkhoa', 'block_educationpgrs'));
 
 // Title.
-$PAGE->set_title(get_string('label_nienkhoa', 'block_educationpgrs') . ' - Course ID: ' );
+$PAGE->set_title(get_string('label_nienkhoa', 'block_educationpgrs') . ' - Course ID: ');
 $PAGE->set_heading(get_string('head_nienkhoa', 'block_educationpgrs'));
 global $CFG;
 $CFG->cachejs = false;
@@ -37,7 +37,8 @@ $table = get_nienkhoa_checkbox($search, $page);
 // Search
 require_once('../../form/nienkhoa/mo_nienkhoa_form.php');
 $form_search = new nienkhoa_search();
-
+require_once('../../controller/auth.php');
+require_permission("nienkhoa", "view");
 // Process form
 if ($form_search->is_cancelled()) {
     // Process button cancel
@@ -101,31 +102,30 @@ echo $OUTPUT->footer();
 
 function get_nienkhoa_checkbox($key_search = '', $page = 0)
 {
-   global $DB, $USER, $CFG, $COURSE;
-   $count = 20;
-   $table = new html_table();
-   $table->head = array('', 'STT','Bậc đào tạo','Hệ đào tạo',  'Mã niên khóa đào tạo','Tên niên khóa đào tạo', 'Mô tả');
-   $allnienkhoas = $DB->get_records('eb_nienkhoa', []);
-   $stt = 1 + $page * $count;
-   $pos_in_table = 1;
-   foreach ($allnienkhoas as $inienkhoa) {
-      if (findContent($inienkhoa->ten_nienkhoa, $key_search) || $key_search == '') {
+    global $DB, $USER, $CFG, $COURSE;
+    $count = 20;
+    $table = new html_table();
+    $table->head = array('', 'STT', 'Mã khóa tuyển', 'Tên khóa tuyển', 'Mô tả');
+    $allnienkhoas = $DB->get_records('eb_nienkhoa', []);
+    $stt = 1 + $page * $count;
+    $pos_in_table = 1;
+    foreach ($allnienkhoas as $inienkhoa) {
+        if (findContent($inienkhoa->ten_nienkhoa, $key_search) || $key_search == '') {
 
-      $checkbox = html_writer::tag('input', ' ', array('class' => 'nienkhoacheckbox', 'type' => "checkbox", 'name' => $inienkhoa->id, 'id' => 'bdt' . $inienkhoa->id, 'value' => '0', 'onclick' => "changecheck($inienkhoa->id)"));
-      $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/update.php', ['id' => $inienkhoa->id]);
-      $ten_url = \html_writer::link($url, $inienkhoa->ten_nienkhoa);
+            $checkbox = html_writer::tag('input', ' ', array('class' => 'nienkhoacheckbox', 'type' => "checkbox", 'name' => $inienkhoa->id, 'id' => 'bdt' . $inienkhoa->id, 'value' => '0', 'onclick' => "changecheck($inienkhoa->id)"));
+            $url = new \moodle_url('/blocks/educationpgrs/pages/nienkhoa/detail.php', ['id' => $inienkhoa->id]);
+            $ten_url = \html_writer::link($url, $inienkhoa->ten_nienkhoa);
 
 
-      if ($page < 0) { // Get all data without page
-         $table->data[] = [$checkbox, (string) $stt,(string)$inienkhoa->ma_bac,(string)$inienkhoa->ma_he,(string)$inienkhoa->ma_nienkhoa,$ten_url, (string) $inienkhoa->mota];
-         $stt = $stt + 1;
-      } else if ($pos_in_table > $page * $count && $pos_in_table <= $page * $count + $count) {
-         $table->data[] = [$checkbox, (string) $stt,(string)$inienkhoa->ma_bac,(string)$inienkhoa->ma_he,(string)$inienkhoa->ma_nienkhoa,$ten_url, (string) $inienkhoa->mota];
-         $stt = $stt + 1;
-      }
-      $pos_in_table = $pos_in_table + 1;
-
-      }
-   }
-   return $table;
+            if ($page < 0) { // Get all data without page
+                $table->data[] = [$checkbox, (string) $stt, (string)$inienkhoa->ma_nienkhoa, $ten_url, (string) $inienkhoa->mota];
+                $stt = $stt + 1;
+            } else if ($pos_in_table > $page * $count && $pos_in_table <= $page * $count + $count) {
+                $table->data[] = [$checkbox, (string) $stt, (string)$inienkhoa->ma_nienkhoa, $ten_url, (string) $inienkhoa->mota];
+                $stt = $stt + 1;
+            }
+            $pos_in_table = $pos_in_table + 1;
+        }
+    }
+    return $table;
 }

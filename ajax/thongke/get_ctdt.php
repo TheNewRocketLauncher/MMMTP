@@ -4,7 +4,8 @@
 require_once(__DIR__ . '/../../../../config.php');
 
 $ma_ctdt = optional_param('ma_ctdt', '', PARAM_NOTAGS);
-
+require_once('../../controller/auth.php');
+require_permission("nienkhoa", "edit");
 function fetch($ma_ctdt)
 {
 

@@ -16,9 +16,7 @@ if(!$link){
 // Check permission.
 require_login();
 $context = \context_system::instance();
-require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/decuong/index.php', []));
@@ -36,7 +34,8 @@ $PAGE->set_heading("Import chuẩn đầu ra ctđt");
 global $CFG;
 $CFG->cachejs = false;
 $PAGE->requires->js_call_amd('block_educationpgrs/module', 'init');
-
+require_once('../../controller/auth.php');
+require_permission("chuandauractdt", "edit");
 // Print header
 echo $OUTPUT->header();
 

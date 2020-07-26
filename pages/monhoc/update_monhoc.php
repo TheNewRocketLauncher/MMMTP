@@ -14,13 +14,14 @@ if (optional_param('id', 0, PARAM_INT)) {
 }
 $courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
 $chitietmh = get_monhoc_by_id_monhoc($id);
+$mamonhoc=$chitietmh->mamonhoc;
 
 // Check permission.
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("monhoc", "edit");
+
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/monhoc/update_monhoc.php', ['courseid' => $courseid, 'id' => $id]));
@@ -57,13 +58,42 @@ $url = new \moodle_url('them_decuongmonhoc.php', ['id' => $id]);
 
 
 echo '<br>';
+// Action
+//check môn học có đề cương chưa
+$check = check_exist_decuong($mamonhoc);
+if($check==0){
+    $action_form =
+        html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))  
+        . '<br>'
+            . html_writer::tag(
+                'button',
+                'Tạo đề cương môn học',          
+                array('id' => 'btn_add_decuong', 'onClick' => "window.location.href='them_decuong_head.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 140px; height:35px; padding: 0; background-color: #1177d1; color: white;')
+                
+            )
+        . html_writer::end_tag('div');
+    echo $action_form;
+}
+
+//cần phải get ma_ctdt và
+if($check==1)
+{
+    $action_form =
+        html_writer::start_tag('div', array('style' => 'display: flex; justify-content:flex-end;'))  
+        . '<br>'
+            . html_writer::tag(
+                'button',
+                'Sửa đề cương môn học',          
+                array('id' => 'btn_update_decuong', 'onClick' => "window.location.href='them_decuongmonhoc.php'", 'style' => 'margin:0 5px;border: 1px solid #333; border-radius: 3px;width: 150px; height:50px; padding: 0; background-color: #1177d1; color: white;')
+                
+            )
+        . html_writer::end_tag('div');
+    echo $action_form;
+}
 
 // Process form
 if ($mform->is_cancelled()) {
-    // echo '<h2>Hủy cập nhật</h2>';
-    // $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['courseid' => $courseid]);
-    // $linktext = get_string('label_monhoc', 'block_educationpgrs');
-    // echo \html_writer::link($url, $linktext);
+    
     redirect($CFG->wwwroot.'/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php?courseid='.$courseid);
 } else if($mform->no_submit_button_pressed()) {
     $mform->display();
@@ -71,7 +101,7 @@ if ($mform->is_cancelled()) {
     $param1 = new stdClass();
     //$param1->id = $mform->get_data()->id;
     $param1->id = $fromform->idmonhoc;
-    $param1->mamonhoc = $mform->get_data()->mamonhoc1;
+    $param1->mamonhoc = $mform->get_data()->mamonhoc;
     $param1->tenmonhoc_vi = $mform->get_data()->tenmonhoc_vi;
     $param1->tenmonhoc_en = $mform->get_data()->tenmonhoc_en;
     $param1->sotinchi = $mform->get_data()->sotinchi;
@@ -88,16 +118,12 @@ if ($mform->is_cancelled()) {
     $linktext = get_string('label_monhoc', 'block_educationpgrs');
     echo \html_writer::link($url, $linktext);
 } else if ($mform->is_submitted()) {
-    // echo '<h2>Nhập sai thông tin</h2>';
-    // $url = new \moodle_url('/blocks/educationpgrs/pages/monhoc/danhsach_monhoc.php', ['courseid' => $courseid]);
-    // $linktext = get_string('label_monhoc', 'block_educationpgrs');
-    // echo \html_writer::link($url, $linktext);
     $mform->display();
 } else {
     //Set default data from DB
     $toform;
     $toform->idmonhoc = $chitietmh->id;
-    $toform->mamonhoc1 = $chitietmh->mamonhoc;
+    $toform->mamonhoc = $chitietmh->mamonhoc;
     $toform->tenmonhoc_vi = $chitietmh->tenmonhoc_vi;
     $toform->tenmonhoc_en = $chitietmh->tenmonhoc_en;
     $toform->sotinchi = $chitietmh->sotinchi;

@@ -8,7 +8,10 @@ $nienkhoadt = trim(required_param('nienkhoadt', PARAM_NOTAGS));
 $ma_nganh = trim(required_param('ma_nganh', PARAM_NOTAGS));
 $courseid = required_param('course', PARAM_INT);
 
-function get_chuyennganhdt_from_nganhdt($ma_bac, $ma_he, $ma_nienkhoa, $ma_nganh){
+require_once('../../controller/auth.php');
+require_permission("chuyennganhdt", "edit");
+function get_chuyennganhdt_from_nganhdt($ma_bac, $ma_he, $ma_nienkhoa, $ma_nganh)
+{
   global $DB, $USER, $CFG, $COURSE;
   $chuyennganhdt = $DB->get_records('eb_chuyennganhdt', array('ma_bac' => $ma_bac, 'ma_he' => $ma_he, 'ma_nienkhoa' => $ma_nienkhoa, 'ma_nganh' => $ma_nganh));
   return $chuyennganhdt;

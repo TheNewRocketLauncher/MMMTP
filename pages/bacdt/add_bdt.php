@@ -2,16 +2,16 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('../../model/bacdt_model.php');
+require_once('../../controller/validate.php');
 
-global $COURSE;
+global $COURSE, $DB;
 $courseid = optional_param('courseid', SITEID, PARAM_INT);
 
 // Check permission.
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("bacdt","edit");
 
 // Setting up the page.
 $PAGE->set_url(new moodle_url('/blocks/educationpgrs/pages/bacdt/add_bdt.php', ['courseid' => $courseid]));
@@ -20,7 +20,7 @@ $PAGE->set_pagelayout('standard');
 
 // Navbar.
 $PAGE->navbar->add('Các danh mục quản lý chung', new moodle_url('/blocks/educationpgrs/pages/main.php'));
-$PAGE->navbar->add(get_string('label_bacdt', 'block_educationpgrs'));
+$PAGE->navbar->add('Quản lý bậc đào tạo', new moodle_url('/blocks/educationpgrs/pages/bacdt/index.php'));
 
 // Title.
 $PAGE->set_title('Thêm Bậc đào tạo ');
@@ -47,12 +47,27 @@ if ($mform->is_cancelled()) {
     $param1->ma_bac = $mform->get_data()->mabac;
     $param1->ten = $mform->get_data()->tenbac;
     $param1->mota = $mform->get_data()->mota;
-    insert_bacdt($param1);
 
-    // Hiển thị thêm thành công
-    echo '<h2>Thêm mới thành công!</h2>';
-    echo '<br>';
+    $data = array();
+    $data['ma_bac'] = $param1->ma_bac;
+    $arr_bacdt = array();
+    $arr_bacdt = $DB->get_records('eb_bacdt', []);
+    if (is_check($arr_bacdt, $data['ma_bac'], '', '', '', '') == true) {
+        insert_bacdt($param1);
 
+        // Hiển thị thêm thành công
+        echo '<h2>Thêm mới thành công!</h2>';
+        echo '<br>';
+    } else {
+        echo "<strong>Dữ liệu đã tồn tại</strong>";
+
+        $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/add_bdt.php', []);
+        echo '<br>';
+
+        $linktext = "Thêm mới bậc đào tạo";
+        echo \html_writer::link($url, $linktext);
+        echo '<br>';
+    }
     // Link đến trang danh sách
     $url = new \moodle_url('/blocks/educationpgrs/pages/bacdt/index.php', ['courseid' => $courseid]);
     $linktext = get_string('label_bacdt', 'block_educationpgrs');

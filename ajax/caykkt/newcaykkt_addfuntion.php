@@ -4,7 +4,8 @@
 require_once(__DIR__ . '/../../../../config.php');
 require_once('../../model/global_model.php');
 require_once('../../model/khoikienthuc_model.php');
-
+require_once('../../controller/auth.php');
+require_permission("caykkt", "edit");
 $id = required_param('id', PARAM_ALPHANUMEXT);
 $type = required_param('type', PARAM_ALPHANUMEXT);
 $paramfirst = required_param('paramfirst', PARAM_ALPHANUMEXT);

@@ -5,13 +5,15 @@ require_once('../../controller/support.php');
 
 function insert_nganhdt($param)
 {
-   global $DB, $USER, $CFG, $COURSE;
-   $DB->insert_record('eb_nganhdt', $param);
+   global $DB;
+   if(!$DB->count_records('eb_nganhdt', ['ma_nganh' => $param->ma_nganh])) {
+      $DB->insert_record('eb_nganhdt', $param);
+    }
 }
 
 function update_nganhdt($param)
 {
-   global $DB, $USER, $CFG, $COURSE;
+   global $DB;
    $DB->update_record('eb_nganhdt', $param, $bulk = false);
 }
 

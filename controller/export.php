@@ -61,7 +61,7 @@ function exportmdf($formdata)
     $pdf->setFooter($footer);
 
     // Custom Header & Footer
-    $pdf->SetHTMLHeader('<img src="../mpdf/header.png"/>');
+    $pdf->SetHTMLHeader('<img src="../mpdf/header.PNG"/>');
 
     // Header Table HTML
     $headerHTML = '<table>
@@ -182,12 +182,12 @@ function exportmdf($formdata)
 
     /* 2. THỜI GIAN ĐÀO TẠO*/
     $thoigian = $formdata->txt_tgdt;
-    $pdf->writeHTML('<b style = "font-family: myTimes; font-size: 16px">2.&nbsp;&nbsp;<u>THỜI GIAN ĐÀO TẠO</u>: ' . $thoigian . ' năm<b/>');
+    $pdf->writeHTML('<b style = "font-family: myTimes; font-size: 16px">2.&nbsp;&nbsp;<u>THỜI GIAN ĐÀO TẠO</u>: ' . $thoigian . '<b/>');
     $pdf->Ln(4);
 
     /* 3. KHỐI LƯỢNG KIẾN THỨC TOÀN KHÓA*/
     $tinchi = $formdata->txt_klkt;
-    $pdf->writeHTML('<b style = "font-family: myTimes; font-size: 16px">3.&nbsp;&nbsp;<u>KHỐI LƯỢNG KIẾN THỨC TOÀN KHÓA</u>: ' . $tinchi . ' tín chỉ<b/>');
+    $pdf->writeHTML('<b style = "font-family: myTimes; font-size: 16px">3.&nbsp;&nbsp;<u>KHỐI LƯỢNG KIẾN THỨC TOÀN KHÓA</u>: ' . $tinchi . '<b/>');
     $pdf->Ln(4);
 
     /* 4. ĐỐI TƯỢNG TUYỂN SINH*/
@@ -208,7 +208,7 @@ function exportmdf($formdata)
     $pdf->writeHTML($html);
 
     /* 6. CẤU TRÚC CHƯƠNG TRÌNH*/
-    $pdf->writeHTML('<b style = "font-family: myTimes; font-size: 16px">6.&nbsp;&nbsp;<u>ĐỐI TƯỢNG TUYỂN SINH</u>');
+    $pdf->writeHTML('<b style = "font-family: myTimes; font-size: 16px">6.&nbsp;&nbsp;<u>CẤU TRÚC CHƯƠNG TRÌNH</u>');
     $pdf->Ln(4);
     function chitiet_tc_khoi($makhoi)
     {

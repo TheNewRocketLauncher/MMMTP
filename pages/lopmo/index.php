@@ -16,8 +16,8 @@ global $COURSE,$USER,$SESSION;
 require_login();
 $context = \context_system::instance();
 require_once('../../controller/auth.php');
-$list = [1, 2, 3];
-require_permission($list);
+require_permission("lopmo", "view");
+
 
 
 // Setting up the page.
@@ -101,7 +101,7 @@ function get_lopmo_checkbox($key_search = '', $page = 0)
       if (findContent($item->full_name, $key_search) || $key_search == '') {
 
       $checkbox = html_writer::tag('input', ' ', array('class' => 'lopmocheckbox', 'type' => "checkbox", 'name' => $item->id, 'id' => 'bdt' . $item->id, 'value' => '0', 'onclick' => "changecheck($item->id)"));
-      $url = new \moodle_url('/blocks/educationpgrs/pages/lopmo/update.php', [ 'id' => $item->id]);
+      $url = new \moodle_url('/course/view.php', [ 'id' => $item->course_id]);
       $ten_url = \html_writer::link($url, $item->full_name);
 
 
@@ -109,7 +109,7 @@ function get_lopmo_checkbox($key_search = '', $page = 0)
          $table->data[] = [$checkbox, (string) $stt,(string)$item->mamonhoc, (string)$item->full_name, (string) $item->assign_to, (string) $item->mota];
          $stt = $stt + 1;
       } else if ($pos_in_table > $page * 20 && $pos_in_table <= $page * 20 + 20) {
-         $table->data[] = [$checkbox, (string) $stt,(string)$item->mamonhoc, (string)$item->full_name, (string) $item->assign_to, (string) $item->mota];
+         $table->data[] = [$checkbox, (string) $stt,(string)$item->mamonhoc, $ten_url, (string) $item->assign_to, (string) $item->mota];
          $stt = $stt + 1;
       }
       $pos_in_table = $pos_in_table + 1;
@@ -127,7 +127,7 @@ $baseurl = new \moodle_url('/blocks/educationpgrs/pages/lopmo/index.php', ['sear
 echo $OUTPUT->paging_bar(count(get_lopmo_checkbox($search, -1)->data), $page, 20, $baseurl);
 
 
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 

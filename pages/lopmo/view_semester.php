@@ -39,7 +39,8 @@ echo $OUTPUT->header();
 // Danh mục
 $tendanhmuc = "Học kỳ " . $hoc_ky . " (". $nam_hoc . "-" . ($nam_hoc + 1) . ")";
 echo "<h3 style='color: 1177d1;text-decoration: underline; '><strong>".$tendanhmuc."</strong></h3>";
-
+require_once('../../controller/auth.php');
+require_permission("lopmo", "edit");
 // Tìm kiếm
 require_once('../../form/lopmo/view_lopmo_form.php');
 $form_search = new search_lopmo_thuocdanhmuc();

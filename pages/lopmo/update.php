@@ -47,6 +47,8 @@ if (optional_param('id', 0, PARAM_INT))
     $id = optional_param('id', 0, PARAM_INT);
     $founded_id = true;
 }
+require_once('../../controller/auth.php');
+require_permission("lopmo", "edit");
 // $courseid = optional_param('courseid', SITEID, PARAM_INT) || 1;
 
 // Force user login in course (SITE or Course).
@@ -165,7 +167,7 @@ echo $OUTPUT->header();
     
 }
 
- // Footere
+ // Footer
 echo $OUTPUT->footer();
 
 
